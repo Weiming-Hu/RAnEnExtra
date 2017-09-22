@@ -1,0 +1,17 @@
+Package: RAnEnExtra
+Type: Package
+Title: RAnEnExtra provides helpful functions for carrying out the AnEn analysis
+Version: 0.1.0
+Author: Weiming Hu
+Maintainer: Weiming Hu <weiming@psu.edu>
+Description: RAnEnExtra povides extra helpful functions for carrying out the
+    AnEn analysis, including checking, storing, and others.
+Encoding: UTF-8
+LazyData: true
+Imports:
+    raster,
+    ncdf4,
+    maptools,
+    spatstat,
+    deldir,
+    RANN,
