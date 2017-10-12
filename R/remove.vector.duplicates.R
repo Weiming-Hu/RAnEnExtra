@@ -13,7 +13,12 @@
 remove.vector.duplicates <- function(v) {
   if (is.vector(v)) {
     index.duplicated <- which(duplicated(v))
-    return(v[-index.duplicated])
+
+    if (length(index.duplicated) > 0) {
+      return(v[-index.duplicated])
+    } else {
+      return(v)
+    }
   } else {
     warning(paste("Not implemented for",
                   class(v)))
