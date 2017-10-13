@@ -21,17 +21,7 @@ random.points.in.triangle <- function (
   require(splancs)
   require(raster)
 
-  # create lattice points over the triangle extent
-  ext <- extent(triangle)
-  xs <- extent(triangle)[1]: extent(triangle)[2]
-  ys <- extent(triangle)[3]: extent(triangle)[4]
-  pts.lattice <- expand.grid(x=xs, y=ys)
-  colnames(pts.lattice) <- c('x', 'y')
-
-  # find the points within the triangle
-  outline <- triangle@polygons[[1]]@Polygons[[1]]@coords
-  pts.triangle <- pts.lattice[inout(pts.lattice, outline,
-                                    bound = bound), ]
+  pts.triangle <- get.points.in.triangle(triangle, bound)
 
   # randomly select from the points in the triangle
   pts.triangle.total <- nrow(pts.triangle)
