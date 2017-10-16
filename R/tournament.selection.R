@@ -24,8 +24,6 @@ tournament.selection <- function (
   # check parameters
   if (!is.vector(fitness)) {
     stop("fitness should be a vector")
-  } else {
-    fitness <- as.numeric(fitness)
   }
   if (length(tournament.size) != 1 ||
       class(tournament.size) != 'numeric') {

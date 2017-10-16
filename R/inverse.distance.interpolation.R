@@ -18,19 +18,13 @@ inverse.distance.interpolation <- function (
   if (class(pts.interpolate) != 'matrix') {
     stop(paste('pts.interpolate is expected to be a matrix. Found',
                class(pts.interpolate)))
-  } else {
-    pts.interpolate <- apply(pts.interpolate, 2, as.numeric)
   }
   if (class(pts.known) != 'matrix') {
     stop(paste('pts.known is expected to be a matrix. Found',
                class(pts.interpolate)))
-  } else {
-    pts.known <- apply(pts.known, 2, as.numeric)
   }
   if (!is.vector(pts.values)) {
     stop(paste('pts.values is expected to be a vector.'))
-  } else {
-    pts.values <- as.numeric(pts.values)
   }
 
   if (dim(pts.known)[1] != length(pts.values)) {
