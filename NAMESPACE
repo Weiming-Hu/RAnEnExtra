@@ -2,6 +2,7 @@
 
 export(cut.pixels.along.y)
 export(get.points.in.triangle)
+export(include.boundaries)
 export(include.corners)
 export(inverse.distance.interpolation)
 export(nni)
