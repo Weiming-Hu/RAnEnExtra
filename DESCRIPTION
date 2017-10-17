@@ -15,5 +15,6 @@ Imports:
     spatstat,
     deldir,
     RANN,
-    splancs
+    splancs,
+    prodlim
 RoxygenNote: 6.0.1
