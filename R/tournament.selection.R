@@ -44,7 +44,6 @@ tournament.selection <- function (
   samples <- vector(mode = 'numeric')
   elements <- 1:length(fitness)
   while (length(samples) < num.samples) {
-
     if (length(elements) < tournament.size) {
       warning(paste("Not enough elements to choose from.",
                     "Please try with replacement"))
@@ -54,8 +53,9 @@ tournament.selection <- function (
     champions <- indices[order(fitness[indices],
                                decreasing = T)[1:num.champions]]
     samples <- c(samples, champions)
+    elements <- elements[!elements %in% champions]
     if (!replacement) {
-      elements <- elements[!elements %in% champions]
+      elements <- elements[!elements %in% indices]
     }
   }
 
