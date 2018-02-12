@@ -13,7 +13,7 @@
 #' @return an interpolated raster object
 #'
 #' @export
-nni <- function(x, y, z, rast, n = 3) {
+nni <- function(x, y, z, rast, n = 3, ...) {
   require(raster)
   require(RANN)
 
@@ -23,7 +23,7 @@ nni <- function(x, y, z, rast, n = 3) {
   cp <- rasterToPoints(rast)
 
   # search for the nearest neighbors for query points
-  nn <- nn2(cbind(x, y), cp, k = n)
+  nn <- nn2(cbind(x, y), cp, k = n, ...)
 
   # compute the mean for each query point across the
   # n nearest neighbors
