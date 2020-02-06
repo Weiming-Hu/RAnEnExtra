@@ -40,8 +40,11 @@
 #' @export
 generatePersistence <- function(
   config, forecast.time.interval = 86400, show.progress = F, silent = F) {
+
+  check.package('RAnEn')
+
   # Get config names
-  names <- getConfigNames()
+  names <- RAnEn::getConfigNames()
 
   # Sanity checks
   if (class(config) != 'Rcpp_Config') {
