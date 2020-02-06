@@ -110,9 +110,6 @@ plotAnalogSelection <- function(
   config = new(RAnEn::Config)
   config.names <- config$getNames()
 
-  # Sanity check
-  stopifnot(!config[[config.names$`_QUICK`]])
-
   # Check input parameters
   if (length(parameter.names) != dim(config[[config.names$`_FCSTS`]])[1]) {
     stop("Parameter names and the first dimension of configuration forecasts do not match.")
