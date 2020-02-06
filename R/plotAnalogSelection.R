@@ -107,7 +107,8 @@ plotAnalogSelection <- function(
   check.package('RAnEn')
 
   # Get config names
-  config.names <- RAnEn::getConfigNames()
+  config = new(RAnEn::Config)
+  config.names <- config$getNames()
 
   # Some of the cases that I don't deal with for now
   stopifnot(class(config) == 'Configuration')
