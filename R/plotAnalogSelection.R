@@ -110,9 +110,7 @@ plotAnalogSelection <- function(
   config = new(RAnEn::Config)
   config.names <- config$getNames()
 
-  # Some of the cases that I don't deal with for now
-  stopifnot(class(config) == 'Configuration')
-  stopifnot(config$mode == 'independentSearch')
+  # Sanity check
   stopifnot(!config[[config.names$`_QUICK`]])
 
   # Check input parameters
