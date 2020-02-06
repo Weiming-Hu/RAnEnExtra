@@ -44,7 +44,8 @@ generatePersistence <- function(
   check.package('RAnEn')
 
   # Get config names
-  names <- RAnEn::getConfigNames()
+  config = new(RAnEn::Config)
+  config.names <- config$getNames()
 
   # Sanity checks
   if (class(config) != 'Rcpp_Config') {
