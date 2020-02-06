@@ -126,13 +126,21 @@ analogs.</p>
     </div>
 
     <pre class="usage"><span class='fu'>plotAnalogSample</span>(
+  <span class='no'>forecasts</span>,
+  <span class='no'>fcst.id</span>,
+  <span class='no'>fcst.times</span>,
+  <span class='no'>flts</span>,
+  <span class='no'>observations</span>,
+  <span class='no'>obs.id</span>,
+  <span class='no'>obs.times</span>,
   <span class='no'>analogs</span>,
   <span class='no'>sims</span>,
   <span class='no'>sims.index</span>,
-  <span class='no'>config</span>,
+  <span class='no'>test.times</span>,
   <span class='no'>i.station</span>,
   <span class='no'>i.test.day</span>,
-  <span class='no'>fcst.id</span>,
+  <span class='no'>num.analogs</span>,
+  <span class='no'>weights</span>,
   <span class='no'>parameter.names</span>,
   <span class='kw'>share.parameter.names</span> <span class='kw'>=</span> <span class='no'>F</span>,
   <span class='kw'>flts.fraction</span> <span class='kw'>=</span> <span class='fl'>3600</span>,
@@ -156,12 +164,48 @@ analogs.</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>forecasts</th>
+      <td><p>The forecast data array</p></td>
+    </tr>
+    <tr>
+      <th>fcst.id</th>
+      <td><p>The index in forecast parameters that which parameter is predicted.</p></td>
+    </tr>
+    <tr>
+      <th>fcst.times</th>
+      <td><p>Forecast times</p></td>
+    </tr>
+    <tr>
+      <th>flts</th>
+      <td><p>Forecast lead times</p></td>
+    </tr>
+    <tr>
+      <th>observations</th>
+      <td><p>Observation data array</p></td>
+    </tr>
+    <tr>
+      <th>obs.id</th>
+      <td><p>Observation variable id</p></td>
+    </tr>
+    <tr>
+      <th>obs.times</th>
+      <td><p>Observation times</p></td>
+    </tr>
+    <tr>
       <th>analogs</th>
       <td><p>The generated analogs with 4 dimensions.</p></td>
     </tr>
     <tr>
-      <th>config</th>
-      <td><p>A Configuration object generated from <code>generateConfiguration</code>.</p></td>
+      <th>sims</th>
+      <td><p>Similarity values</p></td>
+    </tr>
+    <tr>
+      <th>sims.index</th>
+      <td><p>Similarity time index</p></td>
+    </tr>
+    <tr>
+      <th>test.times</th>
+      <td><p>Test times for analogs</p></td>
     </tr>
     <tr>
       <th>i.station</th>
@@ -172,8 +216,12 @@ analogs.</p>
       <td><p>The test day index from analogs.</p></td>
     </tr>
     <tr>
-      <th>fcst.id</th>
-      <td><p>The index in forecast parameters that which parameter is predicted.</p></td>
+      <th>num.analogs</th>
+      <td><p>The number of analogs.</p></td>
+    </tr>
+    <tr>
+      <th>weights</th>
+      <td><p>The weights used in analog generation.</p></td>
     </tr>
     <tr>
       <th>parameter.names</th>
@@ -254,12 +302,16 @@ when you have bias corrected analog members in AnEn that you would like to plot.
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><strong>This function only works for AnEnIS.</strong></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#details">Details</a></li>
     </ul>
 
     <h2>Author</h2>

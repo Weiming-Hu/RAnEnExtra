@@ -17,18 +17,16 @@
 #' It also shows the selected forecasts for each parameter used during the
 #' analog generation, compared with the other unselected forecasts.
 #'
-#' The visualization works better when more similaries are preserved. If you don't
-#' see many similarity value point, you probably are using a very small max_num_sims
-#' in the configuration. But if it is negative or 0, then it means you simply have
-#' too few search data.
-#'
+#' @param forecasts The forecasts data array
+#' @param fcst.times Forecast times
 #' @param sims The similarity member from analogs.
 #' @param sims.index The similarity index member from analogs.
-#' @param config A Configuration object generated from \code{\link{generateConfiguration}}.
 #' @param i.station The station index from analogs.
 #' @param i.test.day The test day index from analogs.
 #' @param i.flt The FLT index from analogs.
-#' @param parameter.names The parameter names that are associated with forecasts in the configuration.
+#' @param parameter.names The parameter names that are associated with forecasts.
+#' @param num.analogs Number of analogs 
+#' @param weights The weights used for AnEn
 #' @param cex.lab The font size of labels.
 #' @param pch.selected The point type for selected points.
 #' @param pch.unselected The point type for unselected points.
@@ -39,7 +37,7 @@
 #' @param col.reference The color for the reference line.
 #' @param lty.reference The line type for the reference line.
 #' @param lwd.reference The line width for the reference line.
-#' @param as.POSIXct Whether the time information in config should be converted to R date/time.
+#' @param as.POSIXct Whether the time information should be converted to R date/time.
 #' @param origin The origin for times in forecasts. This will be passed to as.POSIXct to convert
 #' times in forecasts to date/time objects.
 #' @param tz The time zone in forecasts. This will be passed to as.POSIXct to convert
@@ -68,13 +66,11 @@
 #' @md
 #' @export
 plotAnalogSelection <- function(
-
+  forecasts, fcst.times,
   sims, sims.index,
-  config,
-  i.station,
-  i.test.day,
-  i.flt,
-  parameter.names,
+  test.times, search.times,
+  i.station, i.test.day, i.flt,
+  parameter.names, num.analogs, weights,
 
   cex.lab = 1.5,
   pch.selected = 16,
@@ -104,15 +100,9 @@ plotAnalogSelection <- function(
   spikedash = 'solid',
   spikecolor = 'grey') {
 
-  check.package('RAnEn')
-
-  # Get config names
-  config = new(RAnEn::Config)
-  config.names <- config$getNames()
-
   # Check input parameters
-  if (length(parameter.names) != dim(config[[config.names$`_FCSTS`]])[1]) {
-    stop("Parameter names and the first dimension of configuration forecasts do not match.")
+  if (length(parameter.names) != dim(forecasts)[1]) {
+    stop("Parameter names and the first dimension of forecasts do not match.")
   }
   if (use.plotly) {
     check.package('plotly')
@@ -121,10 +111,10 @@ plotAnalogSelection <- function(
   }
 
   # Remove the parameters with weight equals to 0
-  if (length(config[[config.names$`_WEIGHTS`]]) == 0) {
+  if (length(weights) == 0) {
     parameter.names.used <- parameter.names
   } else {
-    parameter.names.used <- parameter.names[which(config[[config.names$`_WEIGHTS`]] != 0)]
+    parameter.names.used <- parameter.names[which(weights != 0)]
   }
 
   # Get the similarity matrix of this particular station, test day, and flt
@@ -137,21 +127,19 @@ plotAnalogSelection <- function(
   sims.index <- sims.index[valid.pos]
 
   # Get the start and end index for searching in the forecasts
-  test.start <- which(config[[config.names$`_FCST_TIMES`]] == config[[config.names$`_TEST_TIMES`]][1])
-  test.end <- which(config[[config.names$`_FCST_TIMES`]] == config[[config.names$`_TEST_TIMES`]][
-    length(config[[config.names$`_TEST_TIMES`]])])
+  test.start <- which(fcst.times == test.times[1])
+  test.end <- which(fcst.times == test.times[length(test.times)])
 
-  search.start <- which(config[[config.names$`_FCST_TIMES`]] == config[[config.names$`_SEARCH_TIMES`]][1])
-  search.end <- which(config[[config.names$`_FCST_TIMES`]] == config[[config.names$`_SEARCH_TIMES`]][
-    length(config[[config.names$`_SEARCH_TIMES`]])])
+  search.start <- which(fcst.times == search.times[1])
+  search.end <- which(fcst.times == search.times[length(search.times)])
 
   # Generate the x axis. The x axis will be the search days
   if (as.POSIXct) {
-    x.days <- as.POSIXct(config[[config.names$`_FCST_TIMES`]][search.start:search.end], origin = origin, tz = tz)
-    current.forecast.x <- as.POSIXct(config[[config.names$`_FCST_TIMES`]][test.start+i.test.day-1], origin = origin, tz = tz)
+    x.days <- as.POSIXct(fcst.times[search.start:search.end], origin = origin, tz = tz)
+    current.forecast.x <- as.POSIXct(fcst.times[test.start+i.test.day-1], origin = origin, tz = tz)
   } else {
-    x.days <- config[[config.names$`_FCST_TIMES`]][search.start:search.end]
-    current.forecast.x <- config[[config.names$`_FCST_TIMES`]][test.start+i.test.day-1]
+    x.days <- fcst.times[search.start:search.end]
+    current.forecast.x <- fcst.times[test.start+i.test.day-1]
   }
 
   # This is the day index associated with each row in the similarity matrix.
@@ -167,8 +155,8 @@ plotAnalogSelection <- function(
 
     p <- plotly::plot_ly(x = x.days[days.index], y = sims, type = 'scatter', name = "Similarity",
                          mode = 'markers', marker = list(color = col.unselected, symbol= pch.unselected)) %>%
-      plotly::add_markers(x = x.days[days.index[1:config[[config.names$`_NUM_MEMBERS`]]]],
-                          y = sims[1:config[[config.names$`_NUM_MEMBERS`]]], name = "Selected",
+      plotly::add_markers(x = x.days[days.index[1:num.analogs]],
+                          y = sims[1:num.analogs], name = "Selected",
                           marker = list(color = col.selected, symbol= pch.selected)) %>%
       plotly::layout(yaxis = list(title = 'Similarity', titlefont = cex.lab, showspikes = T, spikedash = spikedash,
                                   spikesnap = 'cursor', spikemode = spikemode, spikethickness = spikethickness,
@@ -186,11 +174,11 @@ plotAnalogSelection <- function(
     for (index in 1:length(parameter.names.used)) {
       i.parameter <- which(parameter.names.used[index] == parameter.names)
 
-      current.forecast.value <- config[[config.names$`_FCSTS`]][
+      current.forecast.value <- forecasts[
         i.parameter, i.station, (i.test.day+test.start-1), i.flt]
 
       # Extract the values for the forecasts for this particular parameter
-      forecast.values <- config[[config.names$`_FCSTS`]][i.parameter, i.station, search.start:search.end, i.flt]
+      forecast.values <- forecasts[i.parameter, i.station, search.start:search.end, i.flt]
 
       # A sanity check
       stopifnot(length(x.days) == length(forecast.values))
@@ -198,8 +186,8 @@ plotAnalogSelection <- function(
       p <- plotly::plot_ly(type = 'scatter', mode = 'markers+lines') %>%
         plotly::add_markers(x = x.days, y = forecast.values, name = parameter.names[i.parameter],
                             marker = list(color = col.unselected, symbol= pch.unselected)) %>%
-        plotly::add_markers(x = x.days[days.index[1:config[[config.names$`_NUM_MEMBERS`]]]],
-                            y = forecast.values[days.index[1:config[[config.names$`_NUM_MEMBERS`]]]], name = 'Selected',
+        plotly::add_markers(x = x.days[days.index[1:num.analogs]],
+                            y = forecast.values[days.index[1:num.analogs]], name = 'Selected',
                             marker = list(color = col.selected, symbol= pch.selected)) %>%
         plotly::add_segments(x = x.days[1], xend = current.forecast.x,
                              y = current.forecast.value, yend = current.forecast.value,
@@ -238,24 +226,25 @@ plotAnalogSelection <- function(
     plot(c(x.days[days.index], current.forecast.x),
          c(sims, NA), xlab = '', ylab = 'Similarity', xlim = range(x.days),
          pch = pch.unselected, col = col.unselected, cex.lab = cex.lab)
-    points(x.days[days.index[1:config[[config.names$`_NUM_MEMBERS`]]]],
-           sims[1:config[[config.names$`_NUM_MEMBERS`]]], pch = pch.selected, col = col.selected)
+    points(x.days[days.index[1:num.analogs]],
+           sims[1:num.analogs], pch = pch.selected, col = col.selected)
 
     for (index in 1:length(parameter.names.used)) {
       i.parameter <- which(parameter.names.used[index] == parameter.names)
 
-      current.forecast.value <- config[[config.names$`_FCSTS`]][
+      current.forecast.value <- forecasts[
         i.parameter, i.station, (i.test.day+test.start-1), i.flt]
 
       # Extract the values for the forecasts for this particular parameter
-      forecast.values <- config[[config.names$`_FCSTS`]][i.parameter, i.station, search.start:search.end, i.flt]
+      forecast.values <- forecasts[i.parameter, i.station, search.start:search.end, i.flt]
 
       # A sanity check
       stopifnot(length(x.days) == length(forecast.values))
 
       plot(x.days, forecast.values, pch = pch.unselected, col = col.unselected,
            xlab = '', ylab = parameter.names[i.parameter], cex.lab = cex.lab)
-      points(x.days[days.index[1:config[[config.names$`_NUM_MEMBERS`]]]], forecast.values[days.index[1:config[[config.names$`_NUM_MEMBERS`]]]],
+      points(x.days[days.index[1:num.analogs]],
+             forecast.values[days.index[1:num.analogs]],
              pch = pch.selected, col = col.selected)
 
       segments(x0 = x.days[1], y0 = current.forecast.value,

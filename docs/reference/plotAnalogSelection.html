@@ -124,13 +124,18 @@ analog generation, compared with the other unselected forecasts.</p>
     </div>
 
     <pre class="usage"><span class='fu'>plotAnalogSelection</span>(
+  <span class='no'>forecasts</span>,
+  <span class='no'>fcst.times</span>,
   <span class='no'>sims</span>,
   <span class='no'>sims.index</span>,
-  <span class='no'>config</span>,
+  <span class='no'>test.times</span>,
+  <span class='no'>search.times</span>,
   <span class='no'>i.station</span>,
   <span class='no'>i.test.day</span>,
   <span class='no'>i.flt</span>,
   <span class='no'>parameter.names</span>,
+  <span class='no'>num.analogs</span>,
+  <span class='no'>weights</span>,
   <span class='kw'>cex.lab</span> <span class='kw'>=</span> <span class='fl'>1.5</span>,
   <span class='kw'>pch.selected</span> <span class='kw'>=</span> <span class='fl'>16</span>,
   <span class='kw'>pch.unselected</span> <span class='kw'>=</span> <span class='fl'>16</span>,
@@ -159,16 +164,20 @@ analog generation, compared with the other unselected forecasts.</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>forecasts</th>
+      <td><p>The forecasts data array</p></td>
+    </tr>
+    <tr>
+      <th>fcst.times</th>
+      <td><p>Forecast times</p></td>
+    </tr>
+    <tr>
       <th>sims</th>
       <td><p>The similarity member from analogs.</p></td>
     </tr>
     <tr>
       <th>sims.index</th>
       <td><p>The similarity index member from analogs.</p></td>
-    </tr>
-    <tr>
-      <th>config</th>
-      <td><p>A Configuration object generated from <code>generateConfiguration</code>.</p></td>
     </tr>
     <tr>
       <th>i.station</th>
@@ -184,7 +193,15 @@ analog generation, compared with the other unselected forecasts.</p>
     </tr>
     <tr>
       <th>parameter.names</th>
-      <td><p>The parameter names that are associated with forecasts in the configuration.</p></td>
+      <td><p>The parameter names that are associated with forecasts.</p></td>
+    </tr>
+    <tr>
+      <th>num.analogs</th>
+      <td><p>Number of analogs</p></td>
+    </tr>
+    <tr>
+      <th>weights</th>
+      <td><p>The weights used for AnEn</p></td>
     </tr>
     <tr>
       <th>cex.lab</th>
@@ -228,7 +245,7 @@ analog generation, compared with the other unselected forecasts.</p>
     </tr>
     <tr>
       <th>as.POSIXct</th>
-      <td><p>Whether the time information in config should be converted to R date/time.</p></td>
+      <td><p>Whether the time information should be converted to R date/time.</p></td>
     </tr>
     <tr>
       <th>origin</th>
@@ -284,19 +301,12 @@ plotly is used.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>The visualization works better when more similaries are preserved. If you don't
-see many similarity value point, you probably are using a very small max_num_sims
-in the configuration. But if it is negative or 0, then it means you simply have
-too few search data.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#details">Details</a></li>
     </ul>
 
     <h2>Author</h2>

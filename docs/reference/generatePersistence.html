@@ -126,7 +126,13 @@ ensemble members desired.</p>
     </div>
 
     <pre class="usage"><span class='fu'>generatePersistence</span>(
-  <span class='no'>config</span>,
+  <span class='no'>forecasts</span>,
+  <span class='no'>flts</span>,
+  <span class='no'>observations</span>,
+  <span class='no'>obs.id</span>,
+  <span class='no'>obs.times</span>,
+  <span class='no'>test.times</span>,
+  <span class='no'>num.analogs</span>,
   <span class='kw'>forecast.time.interval</span> <span class='kw'>=</span> <span class='fl'>86400</span>,
   <span class='kw'>show.progress</span> <span class='kw'>=</span> <span class='no'>F</span>,
   <span class='kw'>silent</span> <span class='kw'>=</span> <span class='no'>F</span>
@@ -136,8 +142,32 @@ ensemble members desired.</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>config</th>
-      <td><p>A Configuration object.</p></td>
+      <th>forecasts</th>
+      <td><p>Forecast data array</p></td>
+    </tr>
+    <tr>
+      <th>flts</th>
+      <td><p>Forecast lead times</p></td>
+    </tr>
+    <tr>
+      <th>observations</th>
+      <td><p>Observation data array</p></td>
+    </tr>
+    <tr>
+      <th>obs.id</th>
+      <td><p>Observation vairable index</p></td>
+    </tr>
+    <tr>
+      <th>obs.times</th>
+      <td><p>Observation times</p></td>
+    </tr>
+    <tr>
+      <th>test.times</th>
+      <td><p>Test times of analog ensemble</p></td>
+    </tr>
+    <tr>
+      <th>num.analogs</th>
+      <td><p>The number of analogs</p></td>
     </tr>
     <tr>
       <th>forecast.time.interval</th>

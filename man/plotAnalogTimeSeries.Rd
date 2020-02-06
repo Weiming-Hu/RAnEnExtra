@@ -43,11 +43,9 @@ this is \code{observations$Times}.}
 \item{obs.data}{An array for observation data. Usually
 this is \code{observations$Data}.}
 
-\item{anen.times}{A vector for AnEn times. Usually
-this is \code{config$test_time_compares}.}
+\item{anen.times}{A vector for AnEn test times.}
 
-\item{anen.flts}{A vector for AnEn flts. Usually
-this is \code{config$flts}.}
+\item{anen.flts}{A vector for AnEn flts.}
 
 \item{anen.data}{An 4-dimensional array for analogs.}
 

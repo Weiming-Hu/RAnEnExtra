@@ -5,14 +5,32 @@
 \title{RAnEnExtra::generatePersistence}
 \usage{
 generatePersistence(
-  config,
+  forecasts,
+  flts,
+  observations,
+  obs.id,
+  obs.times,
+  test.times,
+  num.analogs,
   forecast.time.interval = 86400,
   show.progress = F,
   silent = F
 )
 }
 \arguments{
-\item{config}{A Configuration object.}
+\item{forecasts}{Forecast data array}
+
+\item{flts}{Forecast lead times}
+
+\item{observations}{Observation data array}
+
+\item{obs.id}{Observation vairable index}
+
+\item{obs.times}{Observation times}
+
+\item{test.times}{Test times of analog ensemble}
+
+\item{num.analogs}{The number of analogs}
 
 \item{forecast.time.interval}{The forecast time interval in seconds. This is
 usually \code{24 * 60 * 60} because the third dimension of forecasts is usually day.

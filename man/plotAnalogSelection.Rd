@@ -5,13 +5,18 @@
 \title{RAnEnExtra::plotAnalogSelection}
 \usage{
 plotAnalogSelection(
+  forecasts,
+  fcst.times,
   sims,
   sims.index,
-  config,
+  test.times,
+  search.times,
   i.station,
   i.test.day,
   i.flt,
   parameter.names,
+  num.analogs,
+  weights,
   cex.lab = 1.5,
   pch.selected = 16,
   pch.unselected = 16,
@@ -37,11 +42,13 @@ plotAnalogSelection(
 )
 }
 \arguments{
+\item{forecasts}{The forecasts data array}
+
+\item{fcst.times}{Forecast times}
+
 \item{sims}{The similarity member from analogs.}
 
 \item{sims.index}{The similarity index member from analogs.}
-
-\item{config}{A Configuration object generated from \code{\link{generateConfiguration}}.}
 
 \item{i.station}{The station index from analogs.}
 
@@ -49,7 +56,11 @@ plotAnalogSelection(
 
 \item{i.flt}{The FLT index from analogs.}
 
-\item{parameter.names}{The parameter names that are associated with forecasts in the configuration.}
+\item{parameter.names}{The parameter names that are associated with forecasts.}
+
+\item{num.analogs}{Number of analogs}
+
+\item{weights}{The weights used for AnEn}
 
 \item{cex.lab}{The font size of labels.}
 
@@ -71,7 +82,7 @@ plotAnalogSelection(
 
 \item{lwd.reference}{The line width for the reference line.}
 
-\item{as.POSIXct}{Whether the time information in config should be converted to R date/time.}
+\item{as.POSIXct}{Whether the time information should be converted to R date/time.}
 
 \item{origin}{The origin for times in forecasts. This will be passed to as.POSIXct to convert
 times in forecasts to date/time objects.}
@@ -108,12 +119,6 @@ RAnEnExtra::plotAnalogSelection visualize the selection of analog ensemble membe
 It shows how ensemble members are selected based on the similarity metrics.
 It also shows the selected forecasts for each parameter used during the
 analog generation, compared with the other unselected forecasts.
-}
-\details{
-The visualization works better when more similaries are preserved. If you don't
-see many similarity value point, you probably are using a very small max_num_sims
-in the configuration. But if it is negative or 0, then it means you simply have
-too few search data.
 }
 \author{
 Weiming Hu \email{cervone@psu.edu}

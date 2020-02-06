@@ -18,12 +18,23 @@
 #' compares them with current forecasts for each parameters used to generate
 #' analogs.
 #'
+#' **This function only works for AnEnIS.**
 #'
+#' @param forecasts The forecast data array
+#' @param fcst.id The index in forecast parameters that which parameter is predicted.
+#' @param fcst.times Forecast times
+#' @param flts Forecast lead times
+#' @param observations Observation data array
+#' @param obs.id Observation variable id
+#' @param obs.times Observation times
 #' @param analogs The generated analogs with 4 dimensions.
-#' @param config A Configuration object generated from \code{\link{generateConfiguration}}.
+#' @param sims Similarity values
+#' @param sims.index Similarity time index
+#' @param test.times Test times for analogs
 #' @param i.station The station index from analogs.
 #' @param i.test.day The test day index from analogs.
-#' @param fcst.id The index in forecast parameters that which parameter is predicted.
+#' @param num.analogs The number of analogs.
+#' @param weights The weights used in analog generation.
 #' @param parameter.names The forecast parameter names.
 #' @param share.parameter.names Whether forecasts and observations have the same
 #' parameters. If this is TRUE, the observations will be plot on the other parameters
@@ -56,14 +67,24 @@
 #' @md
 #' @export
 plotAnalogSample <- function(
-  analogs, sims, sims.index,
-  config,
+  forecasts,
+  fcst.id,
+  fcst.times,
+  flts,
+  observations,
+  obs.id,
+  obs.times,
+  analogs,
+  sims,
+  sims.index,
+  test.times,
   i.station,
   i.test.day,
-  fcst.id,
+  num.analogs,
+  weights,
   parameter.names,
-  share.parameter.names = F,
 
+  share.parameter.names = F,
   flts.fraction = 3600,
   boxplot.outliers = F,
   border.anen.box = 'grey',
@@ -82,18 +103,8 @@ plotAnalogSample <- function(
   mar = c(1.5, 5, 1, 1) + 0.1,
   omi = c(.3, 0, 0, 0)) {
 
-  check.package('RAnEn')
-
-  # Get configuration names
-  config = new(RAnEn::Config)
-  config.names <- config$getNames()
-
-  # Check input parameters
-  stopifnot(class(config) == 'Configuration')
-  stopifnot(config$mode == 'independentSearch')
-
-  if (length(parameter.names) != dim(config[[config.names$`_FCSTS`]])[1]) {
-    stop("Parameter names and the first dimension of configuration forecasts do not match.")
+  if (length(parameter.names) != dim(forecasts)[1]) {
+    stop("Parameter names and the first dimension of forecasts do not match.")
   }
 
   if (dim(analogs)[3] == 1) {
@@ -101,37 +112,37 @@ plotAnalogSample <- function(
   }
 
   # Remove the parameters with weight equals to 0
-  if (length(config[[config.names$`_WEIGHTS`]]) == 0) {
+  if (length(weights) == 0) {
     parameter.names.used <- parameter.names
   } else {
-    parameter.names.used <- parameter.names[which(config[[config.names$`_WEIGHTS`]] != 0)]
+    parameter.names.used <- parameter.names[which(weights != 0)]
   }
 
   # Get the start and end index for searching in the forecasts
-  test.start <- which(config[[config.names$`_FCST_TIMES`]] == config[[config.names$`_TEST_TIMES`]][1])
+  test.start <- which(fcst.times == test.times[1])
 
   # Get the AnEn forecasts for the test day and the station
   values.anen <- analogs[i.station, i.test.day, , ]
 
   # Get the current forecasts
-  values.fcsts <- config[[config.names$`_FCSTS`]][fcst.id, i.station, (i.test.day+test.start-1), ]
+  values.fcsts <- forecasts[fcst.id, i.station, (i.test.day+test.start-1), ]
 
   # Get the observations for current forecasts. These are the values that really happen for
   # for this test day and test station.
   #
-  time.index.obs <- sapply(config[[config.names$`_FCST_TIMES`]][i.test.day+test.start-1] + config[[config.names$`_FLTS`]], function(x) {
-    i <- which(x == config[[config.names$`_OBS_TIMES`]])
+  time.index.obs <- sapply(fcst.times[i.test.day+test.start-1] + flts, function(x) {
+    i <- which(x == obs.times)
     if (length(i) == 1) return(i)
     else return(NA)})
   stopifnot(length(time.index.obs) == length(values.fcsts))
-  values.obs <- config[[config.names$`_OBS`]][config[[config.names$`_OBS_ID`]], i.station, time.index.obs]
+  values.obs <- observations[obs.id, i.station, time.index.obs]
 
   # Get the index for historical most similar forecasts
-  day.index.similar.forecasts <- sims.index[i.station, i.test.day, , 1:config[[config.names$`_NUM_MEMBERS`]]]
+  day.index.similar.forecasts <- sims.index[i.station, i.test.day, , 1:num.analogs]
 
   # Remove the indices when the corresponding similarity is NA
   day.index.similar.forecasts[which(is.na(
-    sims[i.station, i.test.day, , 1:config[[config.names$`_NUM_MEMBERS`]]]))] <- NA
+    sims[i.station, i.test.day, , 1:num.analogs]))] <- NA
 
   # Remove the negative values because they are only for debugging purposes
   negative.pos <- which(day.index.similar.forecasts<0)
@@ -140,7 +151,7 @@ plotAnalogSample <- function(
   }
 
   # This is our x axis ticks and labels
-  xs <- config[[config.names$`_FLTS`]] / flts.fraction
+  xs <- flts / flts.fraction
 
   if (single.figure) {
     # If you want to plot all figures in a single plot
@@ -163,12 +174,12 @@ plotAnalogSample <- function(
   for (index in 1:length(parameter.names.used)) {
     i.par <- which(parameter.names.used[index] == parameter.names)
 
-    values.par.fcsts <- config[[config.names$`_FCSTS`]][i.par, i.station, (test.start+i.test.day-1), ]
+    values.par.fcsts <- forecasts[i.par, i.station, (test.start+i.test.day-1), ]
     complex.index <- cbind(i.par, i.station, as.vector(day.index.similar.forecasts),
-                           rep(1:dim(config[[config.names$`_FCSTS`]])[4], times = config[[config.names$`_NUM_MEMBERS`]]))
+                           rep(1:dim(forecasts)[4], times = num.analogs))
     values.similar.forecasts <- matrix(
       ncol = dim(day.index.similar.forecasts)[2],
-      data = config[[config.names$`_FCSTS`]][complex.index])
+      data = forecasts[complex.index])
 
     ylim <- range(values.similar.forecasts, values.par.fcsts, na.rm = T)
 
@@ -179,7 +190,7 @@ plotAnalogSample <- function(
           col = col.current.fcsts, cex = cex.current.fcst)
 
     if (share.parameter.names) {
-      values.obs <- config[[config.names$`_OBS`]][i.par, i.station, time.index.obs]
+      values.obs <- observations[i.par, i.station, time.index.obs]
       points(xs, values.obs, pch = pch.current.obs,
              col = col.current.obs, cex = cex.current.obs)
     }

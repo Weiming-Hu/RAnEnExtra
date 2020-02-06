@@ -5,13 +5,21 @@
 \title{RAnEnExtra::plotAnalogSample}
 \usage{
 plotAnalogSample(
+  forecasts,
+  fcst.id,
+  fcst.times,
+  flts,
+  observations,
+  obs.id,
+  obs.times,
   analogs,
   sims,
   sims.index,
-  config,
+  test.times,
   i.station,
   i.test.day,
-  fcst.id,
+  num.analogs,
+  weights,
   parameter.names,
   share.parameter.names = F,
   flts.fraction = 3600,
@@ -32,15 +40,35 @@ plotAnalogSample(
 )
 }
 \arguments{
+\item{forecasts}{The forecast data array}
+
+\item{fcst.id}{The index in forecast parameters that which parameter is predicted.}
+
+\item{fcst.times}{Forecast times}
+
+\item{flts}{Forecast lead times}
+
+\item{observations}{Observation data array}
+
+\item{obs.id}{Observation variable id}
+
+\item{obs.times}{Observation times}
+
 \item{analogs}{The generated analogs with 4 dimensions.}
 
-\item{config}{A Configuration object generated from \code{\link{generateConfiguration}}.}
+\item{sims}{Similarity values}
+
+\item{sims.index}{Similarity time index}
+
+\item{test.times}{Test times for analogs}
 
 \item{i.station}{The station index from analogs.}
 
 \item{i.test.day}{The test day index from analogs.}
 
-\item{fcst.id}{The index in forecast parameters that which parameter is predicted.}
+\item{num.analogs}{The number of analogs.}
+
+\item{weights}{The weights used in analog generation.}
 
 \item{parameter.names}{The forecast parameter names.}
 
@@ -89,6 +117,9 @@ for one particular station and test time across all FLTs available in forecasts.
 It also plots the historical forecasts that are identified by AnEn, and
 compares them with current forecasts for each parameters used to generate
 analogs.
+}
+\details{
+\strong{This function only works for AnEnIS.}
 }
 \author{
 Weiming Hu \email{cervone@psu.edu}

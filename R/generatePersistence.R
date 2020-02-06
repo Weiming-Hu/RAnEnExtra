@@ -26,7 +26,13 @@
 #' the **observations** associated with the historical forecasts on July 22,
 #' 24, and 24 will be included in the persistent analogs.
 #'
-#' @param config A Configuration object.
+#' @param forecasts Forecast data array
+#' @param flts Forecast lead times
+#' @param observations Observation data array
+#' @param obs.id Observation vairable index
+#' @param obs.times Observation times
+#' @param test.times Test times of analog ensemble
+#' @param num.analogs The number of analogs
 #' @param forecast.time.interval The forecast time interval in seconds. This is
 #' usually `24 * 60 * 60` because the third dimension of forecasts is usually day.
 #' If it is half day, change the value accordingly.
@@ -39,38 +45,37 @@
 #' @md
 #' @export
 generatePersistence <- function(
-  config, forecast.time.interval = 86400, show.progress = F, silent = F) {
+
+  forecasts,
+  flts,
+  observations,
+  obs.id,
+  obs.times,
+  test.times,
+  num.analogs,
+
+  forecast.time.interval = 86400, show.progress = F, silent = F) {
 
   check.package('RAnEn')
 
-  # Get config names
-  config = new(RAnEn::Config)
-  config.names <- config$getNames()
-
-  # Sanity checks
-  if (class(config) != 'Rcpp_Config') {
-    stop('config should be of class RAnEn::Config')
+  if (length(unique(obs.times)) != length(obs.times)) {
+    stop('Observation times have duplicates!')
   }
 
-  if (length(unique(config[[names$`_OBS_TIMES`]])) != length(config[[names$`_OBS_TIMES`]])) {
-    stop('Observation times in configuration have duplicates!')
-  }
-
-  if (max(config[[names$`_OBS_TIMES`]]) < max(config[[names$`_TEST_TIMES`]]) + max(config[[names$`_FLTS`]])) {
+  if (max(obs.times) < max(test.times) + max(flts)) {
     stop('The observation times do not cover all test times!')
   }
 
   # Read meta info
-  num.grids <- dim(config[[names$`_FCSTS`]])[2]
-  num.test.times <- length(config[[names$`_TEST_TIMES`]])
-  num.flts <- dim(config[[names$`_FCSTS`]])[4]
+  num.grids <- dim(forecasts)[2]
+  num.test.times <- length(test.times)
+  num.flts <- dim(forecasts)[4]
 
   # Generate a historical time sequence for each test time. Observations for this historical
   # time sequence will be collected for persistence.
   #
-  time.prev <- sapply(
-    config[[names$`_TEST_TIMES`]],
-    function(x) {return(x - (0:config[[names$`_NUM_MEMBERS`]]) * forecast.time.interval)})
+  time.prev <- sapply(test.times, function(x) {
+    return(x - (0:num.analogs) * forecast.time.interval)})
 
   # Generate the times that will be extracted for persistence
   times.to.extract <- sort(toDateTime(unique(as.vector(time.prev))))
@@ -78,12 +83,12 @@ generatePersistence <- function(
   # Align observations
   if (!silent) cat('Aligning observations ...\n')
   obs.align <- alignObservations(
-    config[[names$`_OBS`]][config[[names$`_OBS_ID`]], , , drop = F],
-    config[[names$`_OBS_TIMES`]], times.to.extract, config[[names$`_FLTS`]],
+    observations[obs.id, , , drop = F],
+    obs.times, times.to.extract, flts,
     silent = silent, show.progress = show.progress)
 
   # Generate mapping from the forecast times to be extracted to observation times
-  mapping <- generateTimeMapping(times.to.extract, config[[names$`_FLTS`]], config[[names$`_OBS_TIMES`]])
+  mapping <- RAnEn::generateTimeMapping(times.to.extract, flts, obs.times)
 
   # Transpose this mapping so that it has flts by rows and times by columns
   mapping <- t(mapping)
@@ -96,7 +101,7 @@ generatePersistence <- function(
 
   # Initialize memory for persistent analogs
   persistent <- array(NA, dim = c(
-    num.grids, num.test.times, num.flts, config[[names$`_NUM_MEMBERS`]], 3))
+    num.grids, num.test.times, num.flts, num.analogs, 3))
 
   if (!silent) cat('Generating persistence ...\n')
   if (show.progress) {
@@ -105,9 +110,9 @@ generatePersistence <- function(
   }
 
   for (i.test.time in 1:num.test.times) {
-    extract.times <- which(config[[names$`_TEST_TIMES`]][i.test.time] == times.to.extract) - 1:config[[names$`_NUM_MEMBERS`]]
+    extract.times <- which(test.times[i.test.time] == times.to.extract) - 1:num.analogs
     persistent[, i.test.time, , , 1] <- obs.align[, , extract.times]
-    persistent[, i.test.time, , , 2] <- rep(1:num.grids, times = num.flts*config$num_members)
+    persistent[, i.test.time, , , 2] <- rep(1:num.grids, times = num.flts*num_members)
     persistent[, i.test.time, , , 3] <- rep(mapping[as.matrix(expand.grid(1:num.flts, extract.times))], each = num.grids)
 
     if (show.progress) {
@@ -115,7 +120,6 @@ generatePersistence <- function(
       setTxtProgressBar(pb, counter)
     }
   }
-
 
   if (show.progress) {
     close(pb)

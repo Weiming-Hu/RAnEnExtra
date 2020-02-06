@@ -40,10 +40,8 @@
 #' this is `observations$Times`.
 #' @param obs.data An array for observation data. Usually
 #' this is `observations$Data`.
-#' @param anen.times A vector for AnEn times. Usually
-#' this is `config$test_time_compares`.
-#' @param anen.flts A vector for AnEn flts. Usually
-#' this is `config$flts`.
+#' @param anen.times A vector for AnEn test times.
+#' @param anen.flts A vector for AnEn flts.
 #' @param anen.data An 4-dimensional array for analogs.
 #' @param fcst.id The forecast parameter ID.
 #' @param fcst.times A vector for forecast times. Usually
@@ -195,7 +193,7 @@ plotAnalogTimeSeries <- function(
     
     # Make sure the unique found
     if (length(i.start) != 1 | length(i.end) != 1) {
-      stop('Start and/or end times can not be found in forecast times from the configuration!')
+      stop('Start and/or end times can not be found in forecast times!')
     }
     
     # Subset forecast data
