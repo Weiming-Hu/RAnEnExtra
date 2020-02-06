@@ -1,0 +1,38 @@
+URL: https://weiming-hu.github.io/RAnEnExtra/
+
+authors:
+    Weiming Hu:
+        href: https://weiming.ddns.net
+
+    Guido Cervone:
+        href: http://geoinf.psu.edu/
+
+    Laura Clemente-Harding:
+        href: http://geoinf.psu.edu/
+
+    Martina Calovi:
+        href: http://geoinf.psu.edu/
+
+reference:
+    - title: Forecast Methods
+      desc: Alternative forecast methods to Analog Ensemble
+      contents:
+          - generatePersistence
+
+    - title: Verification
+      desc: Analog ensemble verification
+      contents:
+          - showVerificationMetrics
+          - starts_with("verify")
+
+    - title: Visualization
+      desc: Analog ensemble visualization
+      contents:
+          - starts_with("plot")
+
+    - title : Coordinate manipulation
+      desc: Coordinate manipulation and index conversion
+      contents:
+          - starts_with("subset")
+          - starts_with("pixels")
+
