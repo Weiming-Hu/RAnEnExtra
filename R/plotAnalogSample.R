@@ -85,7 +85,8 @@ plotAnalogSample <- function(
   check.package('RAnEn')
 
   # Get configuration names
-  config.names <- RAnEn::getConfigNames()
+  config = new(RAnEn::Config)
+  config.names <- config$getNames()
 
   # Check input parameters
   stopifnot(class(config) == 'Configuration')
