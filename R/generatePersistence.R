@@ -112,7 +112,7 @@ generatePersistence <- function(
   for (i.test.time in 1:num.test.times) {
     extract.times <- which(test.times[i.test.time] == times.to.extract) - 1:num.analogs
     persistent[, i.test.time, , , 1] <- obs.align[, , extract.times]
-    persistent[, i.test.time, , , 2] <- rep(1:num.grids, times = num.flts*num_members)
+    persistent[, i.test.time, , , 2] <- rep(1:num.grids, times = num.flts*num.analogs)
     persistent[, i.test.time, , , 3] <- rep(mapping[as.matrix(expand.grid(1:num.flts, extract.times))], each = num.grids)
 
     if (show.progress) {
