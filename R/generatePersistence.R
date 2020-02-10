@@ -78,7 +78,7 @@ generatePersistence <- function(
     return(x - (0:num.analogs) * forecast.time.interval)})
 
   # Generate the times that will be extracted for persistence
-  times.to.extract <- sort(toDateTime(unique(as.vector(time.prev))))
+  times.to.extract <- sort(as.POSIXct(unique(as.vector(time.prev)), origin = '1970-01-01', tz = 'UTC'))
 
   # Align observations
   if (!silent) cat('Aligning observations ...\n')
