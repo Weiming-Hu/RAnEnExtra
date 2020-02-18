@@ -8,11 +8,11 @@ verifyDispersion(anen.ver, obs.ver, boot = F, R = 1000, na.rm = T)
 }
 \arguments{
 \item{anen.ver}{A 4-dimensional array. This array is usually created from the `value` column of
-the `analogs` member in the results of \code{\link{generateAnalogs}}. The dimensions should be
+the `analogs` member in the results of `RAnEn::generateAnalogs`. The dimensions should be
 `[stations, times, lead times, members]`.}
 
 \item{obs.ver}{A 3-dimensional array. The dimensions should be `[stations, times, lead times]`.
-You can generate the array using \code{\link{alignObservations}}.}
+You can generate the array using `RAnEn::alignObservations`.}
 
 \item{boot}{Whether to use bootstrap.}
 

@@ -25,10 +25,10 @@
 #' @author Laura Clemente-Harding \email{laura@@psu.edu}
 #' 
 #' @param anen.ver A 4-dimensional array. This array is usually created from the `value` column of
-#' the `analogs` member in the results of \code{\link{generateAnalogs}}. The dimensions should be
+#' the `analogs` member in the results of `RAnEn::generateAnalogs`. The dimensions should be
 #' `[stations, times, lead times, members]`.
 #' @param obs.ver A 3-dimensional array. The dimensions should be `[stations, times, lead times]`.
-#' You can generate the array using \code{\link{alignObservations}}.
+#' You can generate the array using `RAnEn::alignObservations`.
 #' @param boot Whether to use bootstrap.
 #' @param R The number of bootstrap replicates. Used by the function `boot::boot`.
 #' @param na.rm Whether to remove NA values.
