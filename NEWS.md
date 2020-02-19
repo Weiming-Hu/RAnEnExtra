@@ -1,6 +1,7 @@
 ## RAnEnExtra 0.2.1
 
 - Updated document links
+- Added the data fram POI support to 'subsetCoordinates'
 
 ## RAnEnExtra 0.2.0
 

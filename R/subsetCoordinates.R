@@ -90,13 +90,19 @@ subsetCoordinates <- function(
   # Sanity check
   stopifnot(length(xs) == length(ys))
 
-  # Determine the type of the inpur poi
+  # Determine the type of the input poi
   if (is.vector(poi)) {
     if (!all(c('left', 'right', 'bottom', 'top') %in% names(poi))) {
       stop('The vector poi should be a named vector with left, right, bottom, and top.')
     }
 
     poi.type <- 'vector'
+  } else if (is.data.frame(poi)) {
+    if (!all(c('X', 'Y') %in% names(poi))) {
+      stop('The POI data frame should have columns X and Y')
+    }
+
+    poi.type <- 'data.frame'
   } else {
     stop('The input poi can should be a named vector')
   }
@@ -119,6 +125,18 @@ subsetCoordinates <- function(
     # Extract points from the extent
     df <- subset(df,  X >= xmin & X <= xmax &
                    Y >= ymin & Y <= ymax)
+
+  } else if (poi.type == 'data.frame') {
+
+    nearest <- sapply(1:nrow(poi), function(poi.row.i) {
+      distances <- sapply(1:nrow(df), function(pt.i) {
+        (poi$X[poi.row.i] - df$X[pt.i])^2 +
+          (poi$Y[poi.row.i] - df$Y[pt.i])^2
+      })
+      which.min(distances)
+    })
+
+    df <- df[nearest, ]
 
   } else {
     stop('Unknown poi.type.')
