@@ -1,3 +1,7 @@
+## RAnEnExtra 0.2.2
+
+- Fixed an issue with the missing function in `plotAnalogTimeSeries`
+
 ## RAnEnExtra 0.2.1
 
 - Updated document links

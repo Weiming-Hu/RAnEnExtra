@@ -52,6 +52,8 @@
 #' this is `forecasts$Data`.
 #' @param max.flt The cut off point value for both
 #' forecasts and AnEn lead times.
+#' @param origin The origin for as.POSIXct
+#' @param tz The tz for as.POSIXct
 #' @param par.name The variable name to be shown on figures.
 #' @param return.data Whether to return the plot data
 #' so that you can generate your own plots. This will
@@ -69,8 +71,8 @@ plotAnalogTimeSeries <- function(
   anen.times, anen.flts, anen.data,
   fcst.id = NULL, fcst.times = NULL,
   fcst.flts = NULL, fcst.data = NULL,
-  max.flt = 82800, par.name = '',
-  return.data = F) {
+  max.flt = 82800, origin = '1970-01-01',
+  tz = 'UTC', par.name = '', return.data = F) {
   
   # Sanity checks  
   for (name in c('ggplot2', 'abind', 'dplyr')) {
@@ -87,13 +89,13 @@ plotAnalogTimeSeries <- function(
   stopifnot(length(obs.id) == 1)
   
   if (inherits(anen.times, 'numeric')) {
-    anen.times <- toDateTime(anen.times)
+    anen.times <- as.POSIXct(anen.times, origin = origin, tz = tz)
   } else {
     stopifnot(inherits(anen.times, 'POSIXct'))
   }
   
   if (inherits(obs.times, 'numeric')) {
-    obs.times <- toDateTime(obs.times)
+    obs.times <- as.POSIXct(obs.times, origin = origin, tz = tz)
   } else {
     stopifnot(inherits(obs.times, 'POSIXct'))
   }
@@ -130,7 +132,7 @@ plotAnalogTimeSeries <- function(
     stopifnot(i.fcst.station <= dim(fcst.data)[2])
     
     if (inherits(fcst.times, 'numeric')) {
-      fcst.times <- toDateTime(fcst.times)
+      fcst.times <- as.POSIXct(fcst.times, origin = origin, tz = tz)
     } else {
       stopifnot(inherits(fcst.times, 'POSIXct'))
     }

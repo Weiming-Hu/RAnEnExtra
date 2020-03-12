@@ -4,14 +4,8 @@
 \alias{pixelsSplitByY}
 \title{RAnEnExtra::pixelsSplitByY}
 \usage{
-pixelsSplitByY(
-  pixels,
-  ycuts,
-  xgrids.total,
-  ygrids.total,
-  start = 1,
-  flag.sort = T
-)
+pixelsSplitByY(pixels, ycuts, xgrids.total, ygrids.total, start = 1,
+  flag.sort = T)
 }
 \arguments{
 \item{pixels}{a vector of indices of pixels that

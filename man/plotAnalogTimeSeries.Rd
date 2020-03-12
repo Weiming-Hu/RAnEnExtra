@@ -4,24 +4,11 @@
 \alias{plotAnalogTimeSeries}
 \title{RAnEnExtra::plotAnalogTimeSeries}
 \usage{
-plotAnalogTimeSeries(
-  start.time,
-  end.time,
-  i.station,
-  obs.id,
-  obs.times,
-  obs.data,
-  anen.times,
-  anen.flts,
-  anen.data,
-  fcst.id = NULL,
-  fcst.times = NULL,
-  fcst.flts = NULL,
-  fcst.data = NULL,
-  max.flt = 82800,
-  par.name = "",
-  return.data = F
-)
+plotAnalogTimeSeries(start.time, end.time, i.station, obs.id, obs.times,
+  obs.data, anen.times, anen.flts, anen.data, fcst.id = NULL,
+  fcst.times = NULL, fcst.flts = NULL, fcst.data = NULL,
+  max.flt = 82800, origin = "1970-01-01", tz = "UTC",
+  par.name = "", return.data = F)
 }
 \arguments{
 \item{start.time}{A POSIXct for the start time.}
@@ -62,6 +49,10 @@ this is \code{forecasts$Data}.}
 
 \item{max.flt}{The cut off point value for both
 forecasts and AnEn lead times.}
+
+\item{origin}{The origin for as.POSIXct}
+
+\item{tz}{The tz for as.POSIXct}
 
 \item{par.name}{The variable name to be shown on figures.}
 
