@@ -90,7 +90,7 @@ subsetStations <- function(index, l, verbose = T) {
 	names <- c('StationNames', 'Xs', 'Ys', 'Data')
 	
 	for (name in names) {
-		if (name %in% names(l)) {
+		if (name %in% names(l) & !is.null(l[[name]])) {
 			
 			if (verbose) {
 				cat('Subset the list member', name, '...\n')
