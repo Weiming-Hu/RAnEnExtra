@@ -104,7 +104,7 @@ subsetCoordinates <- function(
 
     poi.type <- 'data.frame'
   } else {
-    stop('The input poi can should be a named vector')
+    stop('The input poi can be a named vector or a data frame. Refer to the doc for details.')
   }
 
   # Create a data frame with the entire set of coordinates
