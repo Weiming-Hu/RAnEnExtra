@@ -28,6 +28,8 @@
 #' @param ensemble.func A function that takes a vector as input and then
 #' converts the ensemble members (the 4th dimension of analogs) into a scalar.
 #' This scalar is usually a probability within `[0, 1]`. Please see examples.
+#' @param baseline TRUE if the anen.ver is an one-member forecast array. This is
+#' usually used for deterministic baseline model.
 #' @param ... Extra parameters for the ensemble.func.
 #' 
 #' @examples 
@@ -94,22 +96,37 @@
 #' 
 #' @md
 #' @export
-verifyBrier <- function(anen.ver, obs.ver, threshold, ensemble.func, ...) {
+verifyBrier <- function(
+  anen.ver, obs.ver, threshold,
+  ensemble.func = stop('Ensemble function missing. If it is not an ensemble, set baseline = T'),
+  baseline = F, ...) {
   
   check.package('verification')
+  check.package('stringr')
   
   stopifnot(length(dim(anen.ver)) == 4)
   stopifnot(length(dim(obs.ver)) == 3)
+  stopifnot(is.logical(baseline))
   
   if ( !identical(dim(anen.ver)[1:3], dim(obs.ver)[1:3]) ) {
     cat("Error: Observations and analogs have incompatible dimensions.\n")
     return(NULL)
   }
   
-  stopifnot(is.function(ensemble.func))
-  
   # Convert each AnEn ensemble to a probability using the ensemble.func
-  anen.ver <- apply(anen.ver, 1:3, ensemble.func, ...)
+  if (!baseline) {
+    stopifnot(is.function(ensemble.func))
+    stopifnot(dim(anen.ver)[4] > 1)
+    
+    # The anen.ver is an ensemble, apply ensemble function to it
+    anen.ver <- apply(anen.ver, 1:3, ensemble.func, ...)
+    
+  } else {
+    # The anen.ver is a deterministic baseline model, apply threshold to it
+    stopifnot(dim(anen.ver)[4] == 1)
+    anen.ver <- anen.ver >= threshold
+    dim(anen.ver) <- dim(anen.ver)[-4]
+  }
   
   # Convert observations to a binary variable using the threshold
   obs.ver <- obs.ver >= threshold
@@ -119,11 +136,19 @@ verifyBrier <- function(anen.ver, obs.ver, threshold, ensemble.func, ...) {
   
   for (i.flt in 1:num.flts) {
     
-    ret.flt <- verification::brier(obs = obs.ver[, , i.flt], pred = anen.ver[, , i.flt])
-    stopifnot(all(ret.flt$check - ret.flt$bs < 1e-6))
+    # Check for invalid values
+    obs.ver.flt <- obs.ver[, , i.flt]
+    anen.ver.flt <- anen.ver[, , i.flt]
     
-    ret.flts <- rbind(ret.flts, c(
-      ret.flt$bs, ret.flt$ss, ret.flt$bs.reliability, ret.flt$bs.resol))
+    id <- is.finite(obs.ver.flt) & is.finite(anen.ver.flt)
+    if (any(id)) {
+      ret.flt <- verification::brier(obs = obs.ver.flt, pred = anen.ver.flt)
+      stopifnot(all(ret.flt$check - ret.flt$bs < 1e-6))
+      
+      ret.flts <- rbind(ret.flts, c(ret.flt$bs, ret.flt$ss, ret.flt$bs.reliability, ret.flt$bs.resol))
+    } else {
+      ret.flts <- rbind(ret.flts, rep(NA, 4))
+    }
   }
   
   # Compute the overall brier score for all lead times
@@ -135,7 +160,7 @@ verifyBrier <- function(anen.ver, obs.ver, threshold, ensemble.func, ...) {
     ret.flt$bs, ret.flt$ss, ret.flt$bs.reliability, ret.flt$bs.resol))
   
   colnames(ret.flts) <- c('bs', 'ss', 'reliability', 'resol')
-  rownames(ret.flts) <- c(paste('FLT', 1:num.flts, sep = ''), 'All')
+  rownames(ret.flts) <- c(paste('FLT', stringr::str_pad(1:num.flts, width = nchar(num.flts), pad = 0), sep = ''), 'All')
   
   return(ret.flts)
 }

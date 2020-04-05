@@ -68,7 +68,6 @@ verifyThreatScore <- function(anen.ver, obs.ver, threshold, ensemble.func, ...) 
   }
   
   colnames(ret.flts) <- c('ts', 'correct', 'forecasted', 'observed')
-  rownames(ret.flts) <- paste('FLT', 1:num.flts, sep = '')
   
   return(ret.flts)
 }
