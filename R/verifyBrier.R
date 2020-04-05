@@ -21,7 +21,7 @@
 #' @param anen.ver A 4-dimensional array for analogs.
 #' @param obs.ver A 3-dimensional array for observations.
 #' @param threshold The numeric threshold for computing the brier score.
-#' Observation and baseline values larger than or equal to the threshold
+#' Observation larger than or equal to the threshold
 #' will be converted to 1. Analog values will *not* be processed with this
 #' threshold value because it is assumed that the ensemble function `ensemble.func`
 #' will convert analog ensemble to probability values. Please see examples.
@@ -29,7 +29,6 @@
 #' converts the ensemble members (the 4th dimension of analogs) into a scalar.
 #' This scalar is usually a probability within `[0, 1]`. Please see examples.
 #' @param ... Extra parameters for the ensemble.func.
-#' @param baseline A 3-dimensional array for the baseline forecasts.
 #' 
 #' @examples 
 #' 
@@ -40,9 +39,8 @@
 #' 
 #' anen.ver <- array(rnorm(5000), dim = c(10, 2, 5, 50))
 #' obs.ver <- array(runif(100, min = -5, max = 5), dim = c(10, 2, 5))
-#' baseline <- array(rgamma(100, shape = 1), dim = c(10, 2, 5))
 #' 
-#' # Set the threshold for observation and baseline. Values larger
+#' # Set the threshold for observation. Values larger
 #' # than or equal to this value will be converted to 1, otherwise 
 #' # to 0.
 #' #
@@ -63,10 +61,7 @@
 #' # function. Otherwise you will receive an error complaining 
 #' # about a missing argument.
 #' # 
-#' score <- verifyBrier(anen.ver, obs.ver, threshold,
-#'                      ensemble.func,
-#'                      split = threshold,
-#'                      baseline = baseline)
+#' score <- verifyBrier(anen.ver, obs.ver, threshold, ensemble.func, split = threshold)
 #' 
 #' print(score)
 #' 
@@ -99,7 +94,7 @@
 #' 
 #' @md
 #' @export
-verifyBrier <- function(anen.ver, obs.ver, threshold, ensemble.func, ..., baseline = NULL) {
+verifyBrier <- function(anen.ver, obs.ver, threshold, ensemble.func, ...) {
   
   check.package('verification')
   
@@ -113,15 +108,6 @@ verifyBrier <- function(anen.ver, obs.ver, threshold, ensemble.func, ..., baseli
   
   stopifnot(is.function(ensemble.func))
   
-  if (!identical(baseline, NULL)) {
-    if ( !identical(dim(baseline), dim(obs.ver))) {
-      cat("Error: Observations and baseline forecasts have incompatible dimensions\n")
-      return(NULL)
-    }
-    
-    baseline <- baseline >= threshold
-  }
-  
   # Convert each AnEn ensemble to a probability using the ensemble.func
   anen.ver <- apply(anen.ver, 1:3, ensemble.func, ...)
   
@@ -133,9 +119,7 @@ verifyBrier <- function(anen.ver, obs.ver, threshold, ensemble.func, ..., baseli
   
   for (i.flt in 1:num.flts) {
     
-    ret.flt <- verification::brier(
-      obs = obs.ver[, , i.flt], pred = anen.ver[, , i.flt],
-      baseline = baseline[, , i.flt])
+    ret.flt <- verification::brier(obs = obs.ver[, , i.flt], pred = anen.ver[, , i.flt])
     stopifnot(all(ret.flt$check - ret.flt$bs < 1e-6))
     
     ret.flts <- rbind(ret.flts, c(
@@ -144,7 +128,7 @@ verifyBrier <- function(anen.ver, obs.ver, threshold, ensemble.func, ..., baseli
   
   # Compute the overall brier score for all lead times
   ret.flt <- verification::brier(
-    obs = obs.ver, pred = anen.ver, baseline = baseline)
+    obs = obs.ver, pred = anen.ver)
   stopifnot(all(ret.flt$check - ret.flt$bs < 1e-6))
   
   ret.flts <- rbind(ret.flts, c(
