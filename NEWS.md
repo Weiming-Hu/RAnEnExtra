@@ -1,3 +1,7 @@
+## RAnEnExtra 0.2.3
+
+- Added chunks to `subsetCoordinates`
+
 ## RAnEnExtra 0.2.2
 
 - Fixed an issue with the missing function in `plotAnalogTimeSeries`

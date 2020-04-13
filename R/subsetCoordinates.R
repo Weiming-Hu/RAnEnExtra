@@ -27,8 +27,10 @@
 #' vector with `left`, `right`, `top`, and `bottom` or a data frame for
 #' a set of target point coordinates as rows with variable names `X` and `Y`.
 #' @param file.output A file name to write the ID of subset stations.
-#' @param arg.name If you are going to use the output file with `fileSlice`,
-#' this is `slice-stations`; if the app is `gribConverter`, this is `subset-stations`.
+#' @param arg.name The configuration argument name. By default, it is `stations-index`
+#' from `anen_grib` and `grib_convert`.
+#' @param num.chunks How many chunks to break the stations into. Each chunk will
+#' be saved to a separate configuration file.
 #'
 #' @return A data frame with ID and coordinates for subset stations. The column `ID.C`
 #' should be used for C++ programs. The column `ID.R` should be used in R.
@@ -83,12 +85,14 @@
 #'
 #' @md
 #' @export
-subsetCoordinates <- function(
-  xs, ys, poi, file.output = NULL,
-  arg.name = stop('Specify the argument name!')) {
+subsetCoordinates <- function(xs, ys, poi, file.output = NULL, arg.name = 'stations-index', num.chunks = NULL) {
 
   # Sanity check
   stopifnot(length(xs) == length(ys))
+
+  if (!identical(num.chunks, NULL)) {
+    requireNamespace("stringr", quietly = T)
+  }
 
   # Determine the type of the input poi
   if (is.vector(poi)) {
@@ -147,23 +151,50 @@ subsetCoordinates <- function(
     old.value <- getOption("scipen")
     options(scipen = 999)
 
-    if (file.exists(file.output)) {
-      stop('File exists. Skip writing.')
+    if (identical(num.chunks, NULL)) {
+      # Write all stations to a single file
+      .write.file(file.output, df$ID.C, arg.name)
+      cat('Arguments written to file', file.output, '\n')
+
+    } else {
+      # Chunk stations to different files
+      if (num.chunks > nrow(df)) {
+        warning("More chunks than the total number of stations. Skipping writing")
+      } else {
+        if (!grepl('\\.cfg$', file.output)) {
+          warning("File name should have extension .cfg. Skipping writing")
+        } else {
+          for (chunk.i in seq_len(num.chunks)) {
+            chunk.start <- ceiling((chunk.i - 1) * nrow(df) / num.chunks) + 1
+            chunk.end <- ceiling(chunk.i * nrow(df) / num.chunks)
+
+            file.output.chunk <- gsub('\\.cfg$', paste0('_chunk-', stringr::str_pad(chunk.i, nchar(num.chunks), pad = 0), '.cfg'), file.output)
+            .write.file(file.output.chunk, df$ID.C[chunk.start:chunk.end], arg.name)
+            cat('Chunk arguments written to file', file.output.chunk, '\n')
+          }
+        }
+      }
     }
 
-    file.lines <- c(
-      paste("# Author:", paste("RAnEn", packageVersion("RAnEn"))),
-      paste("# Time of creation:", format(
-        Sys.time(), format = "%Y/%m/%d %H:%M:%S UTC%z")),
-      '\n', paste(arg.name, '=', df$ID.C))
-
-    con <- file(file.output, "w")
-    writeLines(file.lines, con = con)
-    close(con)
-
-    cat('Arguments written to file', file.output, '\n')
     options(scipen = old.value)
   }
 
   return(df)
+}
+
+.write.file <- function(file.output, stations.index, arg.name) {
+
+  if (file.exists(file.output)) {
+    warning('File exists. Skip writing.')
+  } else {
+    file.lines <- c(
+      paste("# Author:", paste("RAnEn", packageVersion("RAnEn"))),
+      paste("# Time of creation:", format(
+        Sys.time(), format = "%Y/%m/%d %H:%M:%S UTC%z")),
+      '\n', paste(arg.name, '=', stations.index))
+
+    con <- file(file.output, "w")
+    writeLines(file.lines, con = con)
+    close(con)
+  }
 }
