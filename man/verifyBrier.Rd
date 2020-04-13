@@ -4,8 +4,15 @@
 \alias{verifyBrier}
 \title{RAnEnExtra::verifyBrier}
 \usage{
-verifyBrier(anen.ver, obs.ver, threshold, ensemble.func, ...,
-  baseline = NULL)
+verifyBrier(
+  anen.ver,
+  obs.ver,
+  threshold,
+ 
+    ensemble.func = stop("Ensemble function missing. If it is not an ensemble, set baseline = T"),
+  baseline = F,
+  ...
+)
 }
 \arguments{
 \item{anen.ver}{A 4-dimensional array for analogs.}
@@ -13,18 +20,19 @@ verifyBrier(anen.ver, obs.ver, threshold, ensemble.func, ...,
 \item{obs.ver}{A 3-dimensional array for observations.}
 
 \item{threshold}{The numeric threshold for computing the brier score.
-Observation and baseline values larger than or equal to the threshold
+Observation larger than or equal to the threshold
 will be converted to 1. Analog values will \emph{not} be processed with this
 threshold value because it is assumed that the ensemble function \code{ensemble.func}
 will convert analog ensemble to probability values. Please see examples.}
 
 \item{ensemble.func}{A function that takes a vector as input and then
 converts the ensemble members (the 4th dimension of analogs) into a scalar.
-This scalar is usually a probability within \code{[0, 1]}. Please see examples.}
+This scalar is usually a probability within \verb{[0, 1]}. Please see examples.}
+
+\item{baseline}{TRUE if the anen.ver is an one-member forecast array. This is
+usually used for deterministic baseline model.}
 
 \item{...}{Extra parameters for the ensemble.func.}
-
-\item{baseline}{A 3-dimensional array for the baseline forecasts.}
 }
 \description{
 RAnEnExtra::verifyBrier computes the Brier score and its decomposition for each
@@ -39,9 +47,8 @@ all lead times available. This function used the NCAR verification package.
 
 anen.ver <- array(rnorm(5000), dim = c(10, 2, 5, 50))
 obs.ver <- array(runif(100, min = -5, max = 5), dim = c(10, 2, 5))
-baseline <- array(rgamma(100, shape = 1), dim = c(10, 2, 5))
 
-# Set the threshold for observation and baseline. Values larger
+# Set the threshold for observation. Values larger
 # than or equal to this value will be converted to 1, otherwise 
 # to 0.
 #
@@ -62,10 +69,7 @@ ensemble.func <- function(v, split) {return(
 # function. Otherwise you will receive an error complaining 
 # about a missing argument.
 # 
-score <- verifyBrier(anen.ver, obs.ver, threshold,
-                     ensemble.func,
-                     split = threshold,
-                     baseline = baseline)
+score <- verifyBrier(anen.ver, obs.ver, threshold, ensemble.func, split = threshold)
 
 print(score)
 

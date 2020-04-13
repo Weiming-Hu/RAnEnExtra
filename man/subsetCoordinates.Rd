@@ -4,8 +4,14 @@
 \alias{subsetCoordinates}
 \title{RAnEnExtra::subsetCoordinates}
 \usage{
-subsetCoordinates(xs, ys, poi, file.output = NULL,
-  arg.name = stop("Specify the argument name!"))
+subsetCoordinates(
+  xs,
+  ys,
+  poi,
+  file.output = NULL,
+  arg.name = "stations-index",
+  num.chunks = NULL
+)
 }
 \arguments{
 \item{xs}{A vector with X coordinates.}
@@ -18,8 +24,11 @@ a set of target point coordinates as rows with variable names \code{X} and \code
 
 \item{file.output}{A file name to write the ID of subset stations.}
 
-\item{arg.name}{If you are going to use the output file with \code{fileSlice},
-this is \code{slice-stations}; if the app is \code{gribConverter}, this is \code{subset-stations}.}
+\item{arg.name}{The configuration argument name. By default, it is \code{stations-index}
+from \code{anen_grib} and \code{grib_convert}.}
+
+\item{num.chunks}{How many chunks to break the stations into. Each chunk will
+be saved to a separate configuration file.}
 }
 \value{
 A data frame with ID and coordinates for subset stations. The column \code{ID.C}

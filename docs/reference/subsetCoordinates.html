@@ -127,8 +127,14 @@ in <a href='https://github.com/Weiming-Hu/AnalogsEnsemble/tree/master/apps'>othe
 in the PAnEn packages.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>subsetCoordinates</span>(<span class='no'>xs</span>, <span class='no'>ys</span>, <span class='no'>poi</span>, <span class='kw'>file.output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>arg.name</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span>(<span class='st'>"Specify the argument name!"</span>))</pre>
+    <pre class="usage"><span class='fu'>subsetCoordinates</span>(
+  <span class='no'>xs</span>,
+  <span class='no'>ys</span>,
+  <span class='no'>poi</span>,
+  <span class='kw'>file.output</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>arg.name</span> <span class='kw'>=</span> <span class='st'>"stations-index"</span>,
+  <span class='kw'>num.chunks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -153,8 +159,13 @@ a set of target point coordinates as rows with variable names <code>X</code> and
     </tr>
     <tr>
       <th>arg.name</th>
-      <td><p>If you are going to use the output file with <code>fileSlice</code>,
-this is <code>slice-stations</code>; if the app is <code>gribConverter</code>, this is <code>subset-stations</code>.</p></td>
+      <td><p>The configuration argument name. By default, it is <code>stations-index</code>
+from <code>anen_grib</code> and <code>grib_convert</code>.</p></td>
+    </tr>
+    <tr>
+      <th>num.chunks</th>
+      <td><p>How many chunks to break the stations into. Each chunk will
+be saved to a separate configuration file.</p></td>
     </tr>
     </table>
 
