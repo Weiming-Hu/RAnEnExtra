@@ -1,5 +1,6 @@
 ## RAnEnExtra 0.2.3
 
+- Added `verifyBinnedSpreadSkill`
 - Added chunks to `subsetCoordinates`
 
 ## RAnEnExtra 0.2.2

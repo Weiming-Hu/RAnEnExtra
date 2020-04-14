@@ -4,14 +4,8 @@
 \alias{subsetCoordinates}
 \title{RAnEnExtra::subsetCoordinates}
 \usage{
-subsetCoordinates(
-  xs,
-  ys,
-  poi,
-  file.output = NULL,
-  arg.name = "stations-index",
-  num.chunks = NULL
-)
+subsetCoordinates(xs, ys, poi, file.output = NULL,
+  arg.name = "stations-index", num.chunks = NULL)
 }
 \arguments{
 \item{xs}{A vector with X coordinates.}

@@ -119,15 +119,9 @@ all lead times available. This function used the NCAR verification package." />
 all lead times available. This function used the NCAR verification package.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>verifyBrier</span>(
-  <span class='no'>anen.ver</span>,
-  <span class='no'>obs.ver</span>,
-  <span class='no'>threshold</span>,
-
-    <span class='kw'>ensemble.func</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span>(<span class='st'>"Ensemble function missing. If it is not an ensemble, set baseline = T"</span>),
-  <span class='kw'>baseline</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>verifyBrier</span>(<span class='no'>anen.ver</span>, <span class='no'>obs.ver</span>, <span class='no'>threshold</span>,
+  <span class='kw'>ensemble.func</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span>(<span class='st'>"Ensemble function missing. If it is not an ensemble, set baseline = T"</span>),
+  <span class='kw'>baseline</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -217,15 +211,15 @@ usually used for deterministic baseline model.</p></td>
   <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>melted</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'FLT'</span>, <span class='st'>'Type'</span>, <span class='st'>'Value'</span>)
 
   <span class='co'># Generate ggplot</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/ggplot.html'>ggplot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>melted</span>) +
-    <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/ggtheme.html'>theme_bw</a></span>() +
-    <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/geom_bar.html'>geom_bar</a></span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>FLT</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>Value</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>Type</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='no'>Type</span>),
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>melted</span>) +
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span>() +
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>FLT</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>Value</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>Type</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='no'>Type</span>),
              <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>'identity'</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>'dodge'</span>) +
-    <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/scale_brewer.html'>scale_fill_brewer</a></span>(<span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>'Paired'</span>, <span class='kw'>direction</span> <span class='kw'>=</span> -<span class='fl'>1</span>) +
-    <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/geom_text.html'>geom_text</a></span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>FLT</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>Value</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='no'>Value</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>),
-                            <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>Type</span>), <span class='kw'>position</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/position_dodge.html'>position_dodge</a></span>(<span class='fl'>0.9</span>), <span class='kw'>vjust</span> <span class='kw'>=</span> -<span class='fl'>0.2</span>) +
-    <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/labs.html'>labs</a></span>(<span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>'Score'</span>) +
-    <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/theme.html'>theme</a></span>(<span class='kw'>legend.position</span> <span class='kw'>=</span> <span class='st'>'top'</span>)
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_fill_brewer</a></span>(<span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>'Paired'</span>, <span class='kw'>direction</span> <span class='kw'>=</span> -<span class='fl'>1</span>) +
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>FLT</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>Value</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='no'>Value</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>),
+                            <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>Type</span>), <span class='kw'>position</span> <span class='kw'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/position_dodge.html'>position_dodge</a></span>(<span class='fl'>0.9</span>), <span class='kw'>vjust</span> <span class='kw'>=</span> -<span class='fl'>0.2</span>) +
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>'Score'</span>) +
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span>(<span class='kw'>legend.position</span> <span class='kw'>=</span> <span class='st'>'top'</span>)
 
 } <span class='kw'>else</span> {
   <span class='co'># Use the base graphics</span>

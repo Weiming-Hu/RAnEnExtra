@@ -15,7 +15,13 @@
 
 #' RAnEnExtra::verifySpreadSkill
 #' 
-#' RAnEnExtra::verifySpreadSkill calculates the spread skill.
+#' RAnEnExtra::verifySpreadSkill calculates the spread skill correlation between ensemble
+#' variance and squared error. **Read details for caveats**.
+#' 
+#' Spread skill correlation without normalization or binning has several caveats during
+#' its interpretation. Please make sure you have read through [several materials](https://www.ecmwf.int/sites/default/files/elibrary/2007/15443-verifying-relationship-between-ensemble-forecast-spread-and-skill.pdf) before
+#' applying this verification technique. Alternatively, `RAnEn::verifyBinnedSpreadSkill` is
+#' an improved version of this function.
 #' 
 #' @author Weiming Hu \email{weiming@@psu.edu}
 #' 

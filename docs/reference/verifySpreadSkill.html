@@ -36,7 +36,8 @@
 
 
 <meta property="og:title" content="RAnEnExtra::verifySpreadSkill — verifySpreadSkill" />
-<meta property="og:description" content="RAnEnExtra::verifySpreadSkill calculates the spread skill." />
+<meta property="og:description" content="RAnEnExtra::verifySpreadSkill calculates the spread skill correlation between ensemble
+variance and squared error. Read details for caveats." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -114,17 +115,12 @@
     </div>
 
     <div class="ref-description">
-    <p>RAnEnExtra::verifySpreadSkill calculates the spread skill.</p>
+    <p>RAnEnExtra::verifySpreadSkill calculates the spread skill correlation between ensemble
+variance and squared error. <strong>Read details for caveats</strong>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>verifySpreadSkill</span>(
-  <span class='no'>anen.ver</span>,
-  <span class='no'>obs.ver</span>,
-  <span class='kw'>boot</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>R</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='no'>T</span>,
-  <span class='kw'>keep.cor</span> <span class='kw'>=</span> <span class='no'>F</span>
-)</pre>
+    <pre class="usage"><span class='fu'>verifySpreadSkill</span>(<span class='no'>anen.ver</span>, <span class='no'>obs.ver</span>, <span class='kw'>boot</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>R</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>keep.cor</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,12 +154,19 @@ You can generate the array using <code><a href='https://rdrr.io/pkg/RAnEn/man/al
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Spread skill correlation without normalization or binning has several caveats during
+its interpretation. Please make sure you have read through <a href='https://www.ecmwf.int/sites/default/files/elibrary/2007/15443-verifying-relationship-between-ensemble-forecast-spread-and-skill.pdf'>several materials</a> before
+applying this verification technique. Alternatively, <code>RAnEn::verifyBinnedSpreadSkill</code> is
+an improved version of this function.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#details">Details</a></li>
     </ul>
 
     <h2>Author</h2>

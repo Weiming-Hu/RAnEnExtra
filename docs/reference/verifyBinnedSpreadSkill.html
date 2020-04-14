@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>RAnEnExtra::verifyCRMSE — verifyCRMSE • RAnEnExtra</title>
+<title>RAnEn::verifySpreadSkill — verifyBinnedSpreadSkill • RAnEnExtra</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,9 @@
 
 
 
-<meta property="og:title" content="RAnEnExtra::verifyCRMSE — verifyCRMSE" />
-<meta property="og:description" content="RAnEnExtra::verfiyCRMSE computes the center RMSE." />
+<meta property="og:title" content="RAnEn::verifySpreadSkill — verifyBinnedSpreadSkill" />
+<meta property="og:description" content="RAnEn::verifySpreadSkill calculates the binned spread skill correlation between ensemble spread
+and error." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -108,21 +109,33 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>RAnEnExtra::verifyCRMSE</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Weiming-Hu/RAnEnExtra/blob/master/R/verifyCRMSE.R'><code>R/verifyCRMSE.R</code></a></small>
-    <div class="hidden name"><code>verifyCRMSE.Rd</code></div>
+    <h1>RAnEn::verifySpreadSkill</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Weiming-Hu/RAnEnExtra/blob/master/R/verifyBinnedSpreadSkill.R'><code>R/verifyBinnedSpreadSkill.R</code></a></small>
+    <div class="hidden name"><code>verifyBinnedSpreadSkill.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>RAnEnExtra::verfiyCRMSE computes the center RMSE.</p>
+    <p>RAnEn::verifySpreadSkill calculates the binned spread skill correlation between ensemble spread
+and error.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>verifyCRMSE</span>(<span class='no'>anen.ver</span>, <span class='no'>obs.ver</span>, <span class='kw'>boot</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>R</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='no'>T</span>,
-  <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
+    <pre class="usage"><span class='fu'>verifyBinnedSpreadSkill</span>(<span class='no'>anen.ver</span>, <span class='no'>obs.ver</span>, <span class='kw'>boot</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>R</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
+  <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='fl'>13</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='no'>T</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>anen.ver</th>
+      <td><p>A 4-dimensional array. This array is usually created from the <code>value</code> column of
+the <code>analogs</code> member in the results of <code>RAnEn::generateAnalogs</code>. The dimensions should be
+<code>[stations, times, lead times, members]</code>.</p></td>
+    </tr>
+    <tr>
+      <th>obs.ver</th>
+      <td><p>A 3-dimensional array. The dimensions should be <code>[stations, times, lead times]</code>.
+You can generate the array using <code><a href='https://rdrr.io/pkg/RAnEn/man/alignObservations.html'>RAnEn::alignObservations</a></code>.</p></td>
+    </tr>
     <tr>
       <th>boot</th>
       <td><p>Whether to use bootstrap.</p></td>
@@ -132,29 +145,27 @@
       <td><p>The number of bootstrap replicates. Used by the function <code><a href='https://rdrr.io/pkg/boot/man/boot.html'>boot::boot</a></code>.</p></td>
     </tr>
     <tr>
+      <th>intervals</th>
+      <td><p>The number of entries of days and lead times in each calculation iteration.</p></td>
+    </tr>
+    <tr>
       <th>na.rm</th>
       <td><p>Whether to remove NA values.</p></td>
     </tr>
-    <tr>
-      <th>parallel</th>
-      <td><p>Whether to use parallel processing.</p></td>
-    </tr>
     </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>RMSE ^ 2 = CRMSE ^ 2 + Bias ^ 2</p>
-<p>To set the number of cores to use when parallel is used,
-<code><a href='https://rdrr.io/r/base/options.html'>options(mc.cores = 8)</a></code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#details">Details</a></li>
     </ul>
 
+    <h2>Author</h2>
+    <p>Guido Cervone <a href='mailto:cervone@psu.edu'>cervone@psu.edu</a></p>
+<p>Martina Calovi <a href='mailto:mxc895@psu.edu'>mxc895@psu.edu</a></p>
+<p>Laura Clemente-Harding <a href='mailto:laura@psu.edu'>laura@psu.edu</a></p>
   </div>
 </div>
 

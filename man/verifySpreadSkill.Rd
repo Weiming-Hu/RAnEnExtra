@@ -4,21 +4,15 @@
 \alias{verifySpreadSkill}
 \title{RAnEnExtra::verifySpreadSkill}
 \usage{
-verifySpreadSkill(
-  anen.ver,
-  obs.ver,
-  boot = F,
-  R = 1000,
-  na.rm = T,
-  keep.cor = F
-)
+verifySpreadSkill(anen.ver, obs.ver, boot = F, R = 1000, na.rm = T,
+  keep.cor = F)
 }
 \arguments{
 \item{anen.ver}{A 4-dimensional array. This array is usually created from the \code{value} column of
 the \code{analogs} member in the results of \code{RAnEn::generateAnalogs}. The dimensions should be
-\verb{[stations, times, lead times, members]}.}
+\code{[stations, times, lead times, members]}.}
 
-\item{obs.ver}{A 3-dimensional array. The dimensions should be \verb{[stations, times, lead times]}.
+\item{obs.ver}{A 3-dimensional array. The dimensions should be \code{[stations, times, lead times]}.
 You can generate the array using \code{RAnEn::alignObservations}.}
 
 \item{boot}{Whether to use bootstrap.}
@@ -30,7 +24,14 @@ You can generate the array using \code{RAnEn::alignObservations}.}
 \item{keep.cor}{Whether to keep all spread and errors.}
 }
 \description{
-RAnEnExtra::verifySpreadSkill calculates the spread skill.
+RAnEnExtra::verifySpreadSkill calculates the spread skill correlation between ensemble
+variance and squared error. \strong{Read details for caveats}.
+}
+\details{
+Spread skill correlation without normalization or binning has several caveats during
+its interpretation. Please make sure you have read through \href{https://www.ecmwf.int/sites/default/files/elibrary/2007/15443-verifying-relationship-between-ensemble-forecast-spread-and-skill.pdf}{several materials} before
+applying this verification technique. Alternatively, \code{RAnEn::verifyBinnedSpreadSkill} is
+an improved version of this function.
 }
 \author{
 Weiming Hu \email{weiming@psu.edu}

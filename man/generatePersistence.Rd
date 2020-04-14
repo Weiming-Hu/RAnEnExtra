@@ -4,18 +4,9 @@
 \alias{generatePersistence}
 \title{RAnEnExtra::generatePersistence}
 \usage{
-generatePersistence(
-  forecasts,
-  flts,
-  observations,
-  obs.id,
-  obs.times,
-  test.times,
-  num.analogs,
-  forecast.time.interval = 86400,
-  show.progress = F,
-  silent = F
-)
+generatePersistence(forecasts, flts, observations, obs.id, obs.times,
+  test.times, num.analogs, forecast.time.interval = 86400,
+  show.progress = F, silent = F)
 }
 \arguments{
 \item{forecasts}{Forecast data array}
@@ -42,7 +33,7 @@ If it is half day, change the value accordingly.}
 }
 \value{
 An 5-dimension array
-\verb{[stations, times, flts, members, index for (values, stations, times)]}.
+\code{[stations, times, flts, members, index for (values, stations, times)]}.
 }
 \description{
 RAnEnExtra::generatePersistence generates persistent analog ensemble forecasts.
