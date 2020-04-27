@@ -1,3 +1,7 @@
+## RAnEnExtra 0.2.4
+
+- Added more arguments to `plotAnalogTimeSeries`
+
 ## RAnEnExtra 0.2.3
 
 - Added `verifyBinnedSpreadSkill`

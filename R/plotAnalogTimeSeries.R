@@ -54,10 +54,14 @@
 #' forecasts and AnEn lead times.
 #' @param origin The origin for as.POSIXct
 #' @param tz The tz for as.POSIXct
-#' @param par.name The variable name to be shown on figures.
+#' @param y.lab The variable name to be shown on figures.
 #' @param return.data Whether to return the plot data
 #' so that you can generate your own plots. This will
 #' suppress plotting the figure inside this function.
+#' @param legend.names The names to use in the legend. It must 
+#' be a named vector.
+#' @param color.func.line The `ggplot` function to use for coloring lines.
+#' @param color.func.shade The `ggplot` function to use for coloring shades.
 #' 
 #' @return If `return.data` is TRUE, a list with two
 #' data frames is returned; otherwise, it returns a ggplot
@@ -67,12 +71,18 @@
 #' @export
 plotAnalogTimeSeries <- function(
   start.time, end.time, i.station,
-  obs.id, obs.times, obs.data,
+  obs.id = NULL, obs.times = NULL, obs.data = NULL,
   anen.times, anen.flts, anen.data,
   fcst.id = NULL, fcst.times = NULL,
   fcst.flts = NULL, fcst.data = NULL,
   max.flt = 82800, origin = '1970-01-01',
-  tz = 'UTC', par.name = '', return.data = F) {
+  tz = 'UTC', y.lab = '', return.data = F,
+  legend.names = c(anen = 'AnEn median',
+  								 obs = 'Observations',
+  								 fcst = 'Forecasts'),
+  color.func.line = ggplot2::scale_color_brewer('', palette = 'Dark2'),
+  color.func.shade = ggplot2::scale_fill_manual('', values = c(
+  	'AnEn range' = 'lightgrey', 'AnEn 25% ~ 75%' = 'lightblue'))) {
   
   # Sanity checks  
   for (name in c('ggplot2', 'abind', 'dplyr')) {
@@ -83,10 +93,7 @@ plotAnalogTimeSeries <- function(
   
   stopifnot(inherits(start.time, 'POSIXct'))
   stopifnot(inherits(end.time, 'POSIXct'))
-  stopifnot(length(dim(obs.data)) == 3)
   stopifnot(length(dim(anen.data)) == 4)
-  stopifnot(obs.id <= dim(obs.data)[1])
-  stopifnot(length(obs.id) == 1)
   
   if (inherits(anen.times, 'numeric')) {
     anen.times <- as.POSIXct(anen.times, origin = origin, tz = tz)
@@ -94,10 +101,16 @@ plotAnalogTimeSeries <- function(
     stopifnot(inherits(anen.times, 'POSIXct'))
   }
   
-  if (inherits(obs.times, 'numeric')) {
-    obs.times <- as.POSIXct(obs.times, origin = origin, tz = tz)
-  } else {
-    stopifnot(inherits(obs.times, 'POSIXct'))
+  if (!identical(NULL, obs.data)) {
+  	stopifnot(length(dim(obs.data)) == 3)
+  	stopifnot(obs.id <= dim(obs.data)[1])
+  	stopifnot(length(obs.id) == 1)
+  	
+  	if (inherits(obs.times, 'numeric')) {
+  		obs.times <- as.POSIXct(obs.times, origin = origin, tz = tz)
+  	} else {
+  		stopifnot(inherits(obs.times, 'POSIXct'))
+  	}
   }
   
   if (length(i.station) == 3 || length(i.station) == 2) {
@@ -142,23 +155,27 @@ plotAnalogTimeSeries <- function(
     stopifnot(length(dim(fcst.data)) == 4)
   }
   
-  # Find the subset for observation time
-  i.start <- max(which(obs.times <= start.time))
-  i.end <- min(which(obs.times >= end.time + max.flt))
-  
-  # Make sure there is only one time found for start and end
-  if (length(i.start) != 1 | length(i.end) != 1) {
-    stop('Start and/or end times can not be found in observation times!')
+  if (!identical(obs.data, NULL)) {
+  	# Find the subset for observation time
+  	i.start <- max(which(obs.times <= start.time))
+  	i.end <- min(which(obs.times >= end.time + max.flt))
+  	
+  	# Make sure there is only one time found for start and end
+  	if (length(i.start) != 1 | length(i.end) != 1) {
+  		stop('Start and/or end times can not be found in observation times!')
+  	}
+  	
+  	# Subset observation data
+  	obs <- obs.data[obs.id, i.obs.station, i.start:i.end, drop = F]
+  	obs <- abind::adrop(obs, drop = 1:2)
+  	df.obs <- data.frame(
+  		Time = obs.times[i.start:i.end],
+  		Value = obs,
+  		Method = rep(legend.names['obs'], length(obs)))
+  	rm(obs)
+  } else {
+  	df.obs <- data.frame(Time = c(), Value = c(), Method = c())
   }
-  
-  # Subset observation data
-  obs <- obs.data[obs.id, i.obs.station, i.start:i.end, drop = F]
-  obs <- abind::adrop(obs, drop = 1:2)
-  df.obs <- data.frame(
-    Time = obs.times[i.start:i.end],
-    Value = obs,
-    Method = "Observation")
-  rm(obs)
   
   # Find the subset for analogs time
   i.start <- which(anen.times == start.time)
@@ -188,7 +205,6 @@ plotAnalogTimeSeries <- function(
   
   rm(anen)
   
-  # Find the subset for forecast time
   if (!is.null(fcst.data)) {
     i.start <- which(fcst.times == start.time)
     i.end <- which(fcst.times == end.time)
@@ -211,7 +227,7 @@ plotAnalogTimeSeries <- function(
       Time = rep(fcst.times[i.start:i.end], times = num.flts) +
         rep(fcst.flts, each = num.times),
       Value = as.vector(fcsts),
-      Method = 'Forecast')
+      Method = rep(legend.names['fcst'], length(fcsts)))
     
     # Combine forecast and observation data frames
     df.c <- rbind(df.obs, df.fcst)
@@ -248,7 +264,7 @@ plotAnalogTimeSeries <- function(
   df.c <- rbind(df.c, data.frame(
     Time = df.anen.ribbons$Time,
     Value = df.anen.ribbons$median,
-    Method = 'AnEn'))
+    Method = rep(legend.names['anen'], length(df.anen.ribbons$Time))))
   
   if (return.data) {
     return(list(AnEn.Ensemble = df.anen.ribbons,
@@ -256,17 +272,24 @@ plotAnalogTimeSeries <- function(
   } else {
     ggplot2::ggplot() +
       ggplot2::theme_minimal() +
+  		
       ggplot2::geom_ribbon(
-        data = df.anen.ribbons, fill = 'lightgrey',
-        mapping = ggplot2::aes(x = Time, ymin = min, ymax = max)) +
+        data = df.anen.ribbons,
+        mapping = ggplot2::aes(
+        	x = Time, ymin = min, ymax = max, fill = 'AnEn range')) +
       ggplot2::geom_ribbon(
-        data = df.anen.ribbons, fill = 'lightblue',
-        mapping = ggplot2::aes(x = Time, ymin = low, ymax = high)) +
+        data = df.anen.ribbons,
+        mapping = ggplot2::aes(
+        	x = Time, ymin = low, ymax = high, fill = 'AnEn 25% ~ 75%')) +
+  		
       ggplot2::geom_line(
         data = df.c, size = 1, mapping = ggplot2::aes(
           x = Time, y = Value, color = Method)) +
-      ggplot2::labs(x = 'Time', y = par.name) +
-      ggplot2::scale_color_brewer(palette = 'Dark2') +
+  		
+      color.func.line +
+  		color.func.shade +
+  		
+      ggplot2::labs(x = '', y = y.lab) +
       ggplot2::theme(legend.position = 'bottom')
   }
 }
