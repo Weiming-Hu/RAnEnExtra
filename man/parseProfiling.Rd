@@ -4,10 +4,12 @@
 \alias{parseProfiling}
 \title{RAnEnExtra::parseProfiling}
 \usage{
-parseProfiling(file)
+parseProfiling(file, first_up = T)
 }
 \arguments{
 \item{file}{The file to parse}
+
+\item{first_up}{Convert the first letter in the name column to uppercase.}
 }
 \value{
 A data frame with parsed messages as columns

@@ -20,11 +20,12 @@
 #' @author Weiming Hu \email{weiming@@psu.edu}
 #'
 #' @param file The file to parse
+#' @param first_up Convert the first letter in the name column to uppercase.
 #' @return A data frame with parsed messages as columns
 #' 
 #' @md
 #' @export
-parseProfiling <- function(file) {
+parseProfiling <- function(file, first_up = T) {
 	
 	stopifnot(requireNamespace('stringr', quietly = T))
 	stopifnot(requireNamespace('chron', quietly = T))
@@ -61,11 +62,17 @@ parseProfiling <- function(file) {
 	wall_time_ratio <- stringr::str_match(pattern = '.*wall time \\(.*?, +(.*?)%\\).*', string = lines)
 	peak_heap <- stringr::str_match(pattern = '.*peak memory \\((.*?) bytes.*', string = lines)
 	
-	return(data.frame(
+	df <- data.frame(
 		name = factor(1:nrow(names), labels = names[, 2]),
 		cpu_time = chron::chron(times. = cpu_time[, 2]),
 		cpu_time_ratio = as.numeric(cpu_time_ratio[, 2]),
 		wall_time = chron::chron(times. = wall_time[, 2]),
 		wall_time_ratio = as.numeric(wall_time_ratio[, 2]),
-		peak_heap = as.numeric(peak_heap[, 2])))
+		peak_heap = as.numeric(peak_heap[, 2]))
+	
+	if (first_up) {
+		df <- stringr::str_to_title(df$name)
+	}
+	
+	return(df)
 }

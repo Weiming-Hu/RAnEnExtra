@@ -4,15 +4,30 @@
 \alias{plotAnalogTimeSeries}
 \title{RAnEnExtra::plotAnalogTimeSeries}
 \usage{
-plotAnalogTimeSeries(start.time, end.time, i.station, obs.id = NULL,
-  obs.times = NULL, obs.data = NULL, anen.times, anen.flts, anen.data,
-  fcst.id = NULL, fcst.times = NULL, fcst.flts = NULL,
-  fcst.data = NULL, max.flt = 82800, origin = "1970-01-01",
-  tz = "UTC", y.lab = "", return.data = F, legend.names = c(anen =
-  "AnEn median", obs = "Observations", fcst = "Forecasts"),
+plotAnalogTimeSeries(
+  start.time,
+  end.time,
+  i.station,
+  obs.id = NULL,
+  obs.times = NULL,
+  obs.data = NULL,
+  anen.times,
+  anen.flts,
+  anen.data,
+  fcst.id = NULL,
+  fcst.times = NULL,
+  fcst.flts = NULL,
+  fcst.data = NULL,
+  max.flt = 82800,
+  origin = "1970-01-01",
+  tz = "UTC",
+  y.lab = "",
+  return.data = F,
+  legend.names = c(anen = "AnEn median", obs = "Observations", fcst = "Forecasts"),
   color.func.line = ggplot2::scale_color_brewer("", palette = "Dark2"),
-  color.func.shade = ggplot2::scale_fill_manual("", values = c(`AnEn
-  range` = "lightgrey", `AnEn 25\% ~ 75\%` = "lightblue")))
+  color.func.shade = ggplot2::scale_fill_manual("", values = c(`AnEn range` =
+    "lightgrey", `AnEn 25\% ~ 75\%` = "lightblue"))
+)
 }
 \arguments{
 \item{start.time}{A POSIXct for the start time.}

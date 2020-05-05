@@ -4,17 +4,40 @@
 \alias{plotAnalogSample}
 \title{RAnEnExtra::plotAnalogSample}
 \usage{
-plotAnalogSample(forecasts, fcst.id, fcst.times, flts, observations,
-  obs.id, obs.times, analogs, sims, sims.index, test.times, i.station,
-  i.test.day, num.analogs, weights, parameter.names,
-  share.parameter.names = F, flts.fraction = 3600,
-  boxplot.outliers = F, border.anen.box = "grey",
-  lty.current.fcsts = "longdash", col.current.fcsts = "red",
-  cex.current.fcst = 1, pch.current.obs = 1,
-  col.current.obs = "black", cex.current.obs = 1.5, cex.label = 1.5,
-  legend.texts = c("Observations", "NAM"), legend.position = "topleft",
-  single.figure = T, mar = c(1.5, 5, 1, 1) + 0.1, omi = c(0.3, 0, 0,
-  0))
+plotAnalogSample(
+  forecasts,
+  fcst.id,
+  fcst.times,
+  flts,
+  observations,
+  obs.id,
+  obs.times,
+  analogs,
+  sims,
+  sims.index,
+  test.times,
+  i.station,
+  i.test.day,
+  num.analogs,
+  weights,
+  parameter.names,
+  share.parameter.names = F,
+  flts.fraction = 3600,
+  boxplot.outliers = F,
+  border.anen.box = "grey",
+  lty.current.fcsts = "longdash",
+  col.current.fcsts = "red",
+  cex.current.fcst = 1,
+  pch.current.obs = 1,
+  col.current.obs = "black",
+  cex.current.obs = 1.5,
+  cex.label = 1.5,
+  legend.texts = c("Observations", "NAM"),
+  legend.position = "topleft",
+  single.figure = T,
+  mar = c(1.5, 5, 1, 1) + 0.1,
+  omi = c(0.3, 0, 0, 0)
+)
 }
 \arguments{
 \item{forecasts}{The forecast data array}

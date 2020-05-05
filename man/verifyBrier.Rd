@@ -4,9 +4,15 @@
 \alias{verifyBrier}
 \title{RAnEnExtra::verifyBrier}
 \usage{
-verifyBrier(anen.ver, obs.ver, threshold,
-  ensemble.func = stop("Ensemble function missing. If it is not an ensemble, set baseline = T"),
-  baseline = F, ...)
+verifyBrier(
+  anen.ver,
+  obs.ver,
+  threshold,
+ 
+    ensemble.func = stop("Ensemble function missing. If it is not an ensemble, set baseline = T"),
+  baseline = F,
+  ...
+)
 }
 \arguments{
 \item{anen.ver}{A 4-dimensional array for analogs.}
@@ -21,7 +27,7 @@ will convert analog ensemble to probability values. Please see examples.}
 
 \item{ensemble.func}{A function that takes a vector as input and then
 converts the ensemble members (the 4th dimension of analogs) into a scalar.
-This scalar is usually a probability within \code{[0, 1]}. Please see examples.}
+This scalar is usually a probability within \verb{[0, 1]}. Please see examples.}
 
 \item{baseline}{TRUE if the anen.ver is an one-member forecast array. This is
 usually used for deterministic baseline model.}
