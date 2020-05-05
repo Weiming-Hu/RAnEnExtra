@@ -71,7 +71,7 @@ parseProfiling <- function(file, first_up = T) {
 		peak_heap = as.numeric(peak_heap[, 2]))
 	
 	if (first_up) {
-		df <- stringr::str_to_title(df$name)
+		df$name <- stringr::str_to_title(df$name)
 	}
 	
 	return(df)
