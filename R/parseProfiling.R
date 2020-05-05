@@ -63,7 +63,7 @@ parseProfiling <- function(file, first_up = T) {
 	peak_heap <- stringr::str_match(pattern = '.*peak memory \\((.*?) bytes.*', string = lines)
 	
 	if (first_up) {
-		names <- stringr::str_to_title(names)
+		names[, 2] <- stringr::str_to_title(names[, 2])
 	}
 	
 	df <- data.frame(
