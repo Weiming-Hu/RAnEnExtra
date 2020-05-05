@@ -70,7 +70,7 @@ for comparison over time." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RAnEnExtra</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -119,11 +119,15 @@ for comparison over time." />
 for comparison over time.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plotAnalogTimeSeries</span>(<span class='no'>start.time</span>, <span class='no'>end.time</span>, <span class='no'>i.station</span>, <span class='no'>obs.id</span>, <span class='no'>obs.times</span>,
-  <span class='no'>obs.data</span>, <span class='no'>anen.times</span>, <span class='no'>anen.flts</span>, <span class='no'>anen.data</span>, <span class='kw'>fcst.id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>fcst.times</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fcst.flts</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fcst.data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>max.flt</span> <span class='kw'>=</span> <span class='fl'>82800</span>, <span class='kw'>origin</span> <span class='kw'>=</span> <span class='st'>"1970-01-01"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>,
-  <span class='kw'>par.name</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>return.data</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
+    <pre class="usage"><span class='fu'>plotAnalogTimeSeries</span>(<span class='no'>start.time</span>, <span class='no'>end.time</span>, <span class='no'>i.station</span>, <span class='kw'>obs.id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>obs.times</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>obs.data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>anen.times</span>, <span class='no'>anen.flts</span>, <span class='no'>anen.data</span>,
+  <span class='kw'>fcst.id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fcst.times</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fcst.flts</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>fcst.data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>max.flt</span> <span class='kw'>=</span> <span class='fl'>82800</span>, <span class='kw'>origin</span> <span class='kw'>=</span> <span class='st'>"1970-01-01"</span>,
+  <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>, <span class='kw'>y.lab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>return.data</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>legend.names</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>anen</span> <span class='kw'>=</span>
+  <span class='st'>"AnEn median"</span>, <span class='kw'>obs</span> <span class='kw'>=</span> <span class='st'>"Observations"</span>, <span class='kw'>fcst</span> <span class='kw'>=</span> <span class='st'>"Forecasts"</span>),
+  <span class='kw'>color.func.line</span> <span class='kw'>=</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_color_brewer</a></span>(<span class='st'>""</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"Dark2"</span>),
+  <span class='kw'>color.func.shade</span> <span class='kw'>=</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span>(<span class='st'>""</span>, <span class='kw'>values</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>`AnEn
+  range`</span> <span class='kw'>=</span> <span class='st'>"lightgrey"</span>, <span class='kw'>`AnEn 25% ~ 75%`</span> <span class='kw'>=</span> <span class='st'>"lightblue"</span>)))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -204,7 +208,7 @@ forecasts and AnEn lead times.</p></td>
       <td><p>The tz for as.POSIXct</p></td>
     </tr>
     <tr>
-      <th>par.name</th>
+      <th>y.lab</th>
       <td><p>The variable name to be shown on figures.</p></td>
     </tr>
     <tr>
@@ -212,6 +216,19 @@ forecasts and AnEn lead times.</p></td>
       <td><p>Whether to return the plot data
 so that you can generate your own plots. This will
 suppress plotting the figure inside this function.</p></td>
+    </tr>
+    <tr>
+      <th>legend.names</th>
+      <td><p>The names to use in the legend. It must
+be a named vector.</p></td>
+    </tr>
+    <tr>
+      <th>color.func.line</th>
+      <td><p>The <code>ggplot</code> function to use for coloring lines.</p></td>
+    </tr>
+    <tr>
+      <th>color.func.shade</th>
+      <td><p>The <code>ggplot</code> function to use for coloring shades.</p></td>
     </tr>
     </table>
 

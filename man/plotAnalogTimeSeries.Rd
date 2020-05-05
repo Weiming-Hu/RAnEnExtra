@@ -4,11 +4,15 @@
 \alias{plotAnalogTimeSeries}
 \title{RAnEnExtra::plotAnalogTimeSeries}
 \usage{
-plotAnalogTimeSeries(start.time, end.time, i.station, obs.id, obs.times,
-  obs.data, anen.times, anen.flts, anen.data, fcst.id = NULL,
-  fcst.times = NULL, fcst.flts = NULL, fcst.data = NULL,
-  max.flt = 82800, origin = "1970-01-01", tz = "UTC",
-  par.name = "", return.data = F)
+plotAnalogTimeSeries(start.time, end.time, i.station, obs.id = NULL,
+  obs.times = NULL, obs.data = NULL, anen.times, anen.flts, anen.data,
+  fcst.id = NULL, fcst.times = NULL, fcst.flts = NULL,
+  fcst.data = NULL, max.flt = 82800, origin = "1970-01-01",
+  tz = "UTC", y.lab = "", return.data = F, legend.names = c(anen =
+  "AnEn median", obs = "Observations", fcst = "Forecasts"),
+  color.func.line = ggplot2::scale_color_brewer("", palette = "Dark2"),
+  color.func.shade = ggplot2::scale_fill_manual("", values = c(`AnEn
+  range` = "lightgrey", `AnEn 25\% ~ 75\%` = "lightblue")))
 }
 \arguments{
 \item{start.time}{A POSIXct for the start time.}
@@ -54,11 +58,18 @@ forecasts and AnEn lead times.}
 
 \item{tz}{The tz for as.POSIXct}
 
-\item{par.name}{The variable name to be shown on figures.}
+\item{y.lab}{The variable name to be shown on figures.}
 
 \item{return.data}{Whether to return the plot data
 so that you can generate your own plots. This will
 suppress plotting the figure inside this function.}
+
+\item{legend.names}{The names to use in the legend. It must
+be a named vector.}
+
+\item{color.func.line}{The \code{ggplot} function to use for coloring lines.}
+
+\item{color.func.shade}{The \code{ggplot} function to use for coloring shades.}
 }
 \value{
 If \code{return.data} is TRUE, a list with two

@@ -1,3 +1,7 @@
+## RAnEnExtra 0.2.5
+
+- Added function `parseProfiling`
+
 ## RAnEnExtra 0.2.4
 
 - Added more arguments to `plotAnalogTimeSeries`
