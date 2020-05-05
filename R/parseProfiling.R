@@ -62,6 +62,10 @@ parseProfiling <- function(file, first_up = T) {
 	wall_time_ratio <- stringr::str_match(pattern = '.*wall time \\(.*?, +(.*?)%\\).*', string = lines)
 	peak_heap <- stringr::str_match(pattern = '.*peak memory \\((.*?) bytes.*', string = lines)
 	
+	if (first_up) {
+		name <- stringr::str_to_title(name)
+	}
+	
 	df <- data.frame(
 		name = factor(1:nrow(names), labels = names[, 2]),
 		cpu_time = chron::chron(times. = cpu_time[, 2]),
@@ -69,10 +73,6 @@ parseProfiling <- function(file, first_up = T) {
 		wall_time = chron::chron(times. = wall_time[, 2]),
 		wall_time_ratio = as.numeric(wall_time_ratio[, 2]),
 		peak_heap = as.numeric(peak_heap[, 2]))
-	
-	if (first_up) {
-		df$name <- stringr::str_to_title(df$name)
-	}
 	
 	return(df)
 }
