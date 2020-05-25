@@ -1,3 +1,7 @@
+## RAnEnExtra 0.2.6
+
+- Added `pre_sort` for `RAnEnExtra::verifyRankHist` to achieve better performance
+
 ## RAnEnExtra 0.2.5
 
 - Added function `parseProfiling`

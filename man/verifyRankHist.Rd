@@ -4,7 +4,7 @@
 \alias{verifyRankHist}
 \title{RAnEnExtra::verifyRankHist}
 \usage{
-verifyRankHist(anen.ver, obs.ver, show.progress = F)
+verifyRankHist(anen.ver, obs.ver, show.progress = F, pre.sort = F)
 }
 \arguments{
 \item{anen.ver}{A 4-dimensional array. This array is usually created from the \code{value} column of
@@ -15,6 +15,10 @@ the \code{analogs} member in the results of \code{RAnEn::generateAnalogs}. The d
 You can generate the array using \code{RAnEn::alignObservations}.}
 
 \item{show.progress}{Whether to plot a progress bar.}
+
+\item{pre.sort}{If your anen.ver members are already sorted, you can save ~ 80\% of execution time.
+To pre-sort your members, use this line
+\code{anen.ver = aperm(apply(anen.ver, 1:3, sort, na.last = T), c(2, 3, 4, 1))}.}
 }
 \description{
 RAnEnExtra::verifyRankHist calculates the rank histogram.

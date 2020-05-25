@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RAnEnExtra</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
       </span>
     </div>
 
@@ -120,7 +120,7 @@
     <p>RAnEnExtra::verifyRankHist calculates the rank histogram.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>verifyRankHist</span>(<span class='no'>anen.ver</span>, <span class='no'>obs.ver</span>, <span class='kw'>show.progress</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
+    <pre class="usage"><span class='fu'>verifyRankHist</span>(<span class='no'>anen.ver</span>, <span class='no'>obs.ver</span>, <span class='kw'>show.progress</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>pre.sort</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -139,6 +139,12 @@ You can generate the array using <code><a href='https://rdrr.io/pkg/RAnEn/man/al
     <tr>
       <th>show.progress</th>
       <td><p>Whether to plot a progress bar.</p></td>
+    </tr>
+    <tr>
+      <th>pre.sort</th>
+      <td><p>If your anen.ver members are already sorted, you can save ~ 80% of execution time.
+To pre-sort your members, use this line
+<code>anen.ver = aperm(apply(anen.ver, 1:3, sort, na.last = T), c(2, 3, 4, 1))</code>.</p></td>
     </tr>
     </table>
 
