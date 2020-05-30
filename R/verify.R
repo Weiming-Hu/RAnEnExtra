@@ -32,7 +32,8 @@ verify <- function(metrics, verbose = T, ...) {
   # Currently supported metrics are the followings
   supported.metrics <- c('ThreatScore', 'Brier', 'MAE', 'RMSE', 'CRMSE',
                          'Correlation', 'Bias', 'RankHist', 'Spread',
-                         'SpreadSkill', 'Dispersion', 'CRPS')
+                         'SpreadSkill', 'Dispersion', 'CRPS',
+                         'BinnedSpreadSkill')
   
   # List the required options for each verification metric
   args.required <- list(
@@ -46,6 +47,7 @@ verify <- function(metrics, verbose = T, ...) {
     RankHist = c('anen.ver', 'obs.ver'),
     Spread = c('anen.ver'),
     SpreadSkill = c('anen.ver', 'obs.ver'),
+    BinnedSpreadSkill = = c('anen.ver', 'obs.ver'),
     Dispersion = c('anen.ver', 'obs.ver'),
     CRPS = c('anen.ver', 'obs.ver'))
   
@@ -61,6 +63,7 @@ verify <- function(metrics, verbose = T, ...) {
     RankHist = c('show.progress', 'pre.sort'),
     Spread = c('na.rm', 'parallel'),
     SpreadSkill = c('boot', 'R', 'na.rm', 'intervals'),
+    BinnedSpreadSkill = c('boot', 'R', 'na.rm', 'intervals'),
     Dispersion = c('boot', 'R', 'na.rm'),
     CRPS = c('boot', 'R', 'na.rm', 'int.step'))
   
