@@ -47,7 +47,7 @@ verify <- function(metrics, verbose = T, ...) {
     RankHist = c('anen.ver', 'obs.ver'),
     Spread = c('anen.ver'),
     SpreadSkill = c('anen.ver', 'obs.ver'),
-    BinnedSpreadSkill = = c('anen.ver', 'obs.ver'),
+    BinnedSpreadSkill = c('anen.ver', 'obs.ver'),
     Dispersion = c('anen.ver', 'obs.ver'),
     CRPS = c('anen.ver', 'obs.ver'))
   
