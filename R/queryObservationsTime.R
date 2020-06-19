@@ -67,19 +67,14 @@ queryObservationsTime <- function(
 		cat('Temporally downscaling ...\n')
 	}
 	
-	# Calculate how many flts after the temporal downscaling
-	num.downscaled.flts <- radius * 2 / res * length(analogs.flt)
-	
-	if (num.downscaled.flts %% 1 != 0) {
-		stop('Radius should be an multiple of res.')
-	}
-	
-	time.mask <- seq(from = -radius, to = radius, by = res)
+	# Create a time mask for each original forecast lead time
+	time.mask <- seq(from = -left_offset, to = right_offset, by = 1) * res
 	
 	# Remove the last time mask to avoid overlapping
 	time.mask <- time.mask[-length(time.mask)]
 	
 	analogs.flt.downscaled <- time.mask + rep(analogs.flt, each = length(time.mask))
+	num.downscaled.flts <- length(analogs.flt.downscaled)
 	
 	analogs.downscaled.values <- array(NA, dim = c(dim(analogs.index)[1:2], num.downscaled.flts, dim(analogs.index)[4]))
 	analogs.downscaled.time.index <- array(NA, dim = c(dim(analogs.index)[1:2], num.downscaled.flts, dim(analogs.index)[4]))
