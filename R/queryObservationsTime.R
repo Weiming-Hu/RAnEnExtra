@@ -59,8 +59,8 @@ queryObservationsTime <- function(
 	# Convert radius and resolution to an integer. This integer sets where we starts
 	# assigning values into our downscaled array.
 	# 
-	offset <- radius / res
-	stopifnot(offset %% 1 == 0)
+	left_offset <- floor(radius / res)
+	right_offset <- ceiling(radius / res) - 1
 	
 	# Initialize analogs for downscaling
 	if (verbose >= 3) {
@@ -113,7 +113,7 @@ queryObservationsTime <- function(
 						# The positions in the downscaled time searies that will
 						# be assigned with downscaled observations
 						# 
-						downscaled.pos <- (i.flt.downscaled - offset) : (i.flt.downscaled + offset - 1)
+						downscaled.pos <- (i.flt.downscaled - left_offset) : (i.flt.downscaled + right_offset)
 						
 						analogs.downscaled.values[i.station, i.test, downscaled.pos, i.member] <- obs[obs.id, i.station, downscaled.times.index]
 						analogs.downscaled.time.index[i.station, i.test, downscaled.pos, i.member] <- downscaled.times.index
