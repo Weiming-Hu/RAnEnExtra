@@ -70,9 +70,7 @@ queryObservationsTime <- function(
 	# Create a time mask for each original forecast lead time
 	time.mask <- seq(from = -left_offset, to = right_offset, by = 1) * res
 	
-	# Remove the last time mask to avoid overlapping
-	time.mask <- time.mask[-length(time.mask)]
-	
+	# Create the downscaled lead time sequence
 	analogs.flt.downscaled <- time.mask + rep(analogs.flt, each = length(time.mask))
 	num.downscaled.flts <- length(analogs.flt.downscaled)
 	
