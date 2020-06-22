@@ -26,10 +26,14 @@
 #' @param obs.ver A 3-dimensional array. The dimensions should be `[stations, times, lead times]`.
 #' You can generate the array using `RAnEn::alignObservations`.
 #' @param show.progress Whether to plot a progress bar.
+#' @param pre.sort If your anen.ver members are already sorted, you can save ~ 80% of execution time.
+#' To pre-sort your members, use this line 
+#' `anen.ver = aperm(apply(anen.ver, 1:3, sort, na.last = T), c(2, 3, 4, 1))`.
 #' 
 #' @md
 #' @export
-verifyRankHist <- function(anen.ver, obs.ver, show.progress = F) {
+verifyRankHist <- function(anen.ver, obs.ver,
+                           show.progress = F, pre.sort = F) {
   
   stopifnot(length(dim(anen.ver)) == 4)
   stopifnot(length(dim(obs.ver)) == 3)
@@ -56,7 +60,8 @@ verifyRankHist <- function(anen.ver, obs.ver, show.progress = F) {
   }
   
   for (i in 1:n ) {
-    v   <- sort(anen[i,])
+    if (pre.sort) v <- anen[i,]
+    else v <- sort(anen[i,])
     
     if( obs[i] == 0 ){
       
