@@ -18,17 +18,17 @@ LazyData: true
 Depends:
     R (>= 3.1.0),
 Suggests:
-    RAnEn,
-    parallel,
     verification,
+    magrittr,
+    parallel,
+    ggplot2,
     plotly,
     ggplot,
-    magrittr,
-    boot,
-    ggplot2,
+    RAnEn,
     dplyr,
     ncdf4,
     abind,
     dplyr,
+    boot,
 RoxygenNote: 7.1.0
 Encoding: UTF-8
