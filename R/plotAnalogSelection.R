@@ -57,7 +57,7 @@
 #' only effective when plotly is used.
 #' @param spikecolor The spike color for visualization. This is only effective when
 #' plotly is used.
-#' @param prevent_search_future The `prevent_search_future` member from `Config`. This controls
+#' @param prevent.search.future The `prevent_search_future` member from `Config`. This controls
 #' whether the reference line will be extended both way.
 #'
 #' @author Weiming Hu \email{cervone@@psu.edu}
@@ -101,7 +101,7 @@ plotAnalogSelection <- function(
   spikethickness = 1,
   spikedash = 'solid',
   spikecolor = 'grey',
-  prevent_search_future = TRUE) {
+  prevent.search.future = TRUE) {
 
   # Check input parameters
   if (length(parameter.names) != dim(forecasts)[1]) {
@@ -192,7 +192,7 @@ plotAnalogSelection <- function(
         plotly::add_markers(x = x.days[days.index[1:num.analogs]],
                             y = forecast.values[days.index[1:num.analogs]], name = 'Selected',
                             marker = list(color = col.selected, symbol= pch.selected)) %>%
-        plotly::add_segments(x = x.days[1], xend = ifelse(prevent_search_future, current.forecast.x, max(x.days)),
+        plotly::add_segments(x = x.days[1], xend = ifelse(prevent.search.future, current.forecast.x, max(x.days)),
                              y = current.forecast.value, yend = current.forecast.value,
                              name = 'Current forecast', line = list(
                                color = col.reference, width = lwd.reference, dash = lty.reference)) %>%
@@ -251,7 +251,7 @@ plotAnalogSelection <- function(
              pch = pch.selected, col = col.selected)
 
       segments(x0 = x.days[1], y0 = current.forecast.value,
-               x1 = ifelse(prevent_search_future, current.forecast.x, max(x.days)), y1 = current.forecast.value,
+               x1 = ifelse(prevent.search.future, current.forecast.x, max(x.days)), y1 = current.forecast.value,
                col = col.reference, lty = lty.reference, lwd = lwd.reference)
       points(current.forecast.x, current.forecast.value, col = col.current, pch = pch.current)
     }

@@ -39,7 +39,7 @@ plotAnalogSelection(
   spikethickness = 1,
   spikedash = "solid",
   spikecolor = "grey",
-  prevent_search_future = TRUE
+  prevent.search.future = TRUE
 )
 }
 \arguments{
@@ -115,7 +115,7 @@ only effective when plotly is used.}
 \item{spikecolor}{The spike color for visualization. This is only effective when
 plotly is used.}
 
-\item{prevent_search_future}{The \code{prevent_search_future} member from \code{Config}. This controls
+\item{prevent.search.future}{The \code{prevent_search_future} member from \code{Config}. This controls
 whether the reference line will be extended both way.}
 }
 \description{

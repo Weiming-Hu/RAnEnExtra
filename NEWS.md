@@ -1,3 +1,7 @@
+## RAnEnExtra 0.2.8
+
+- Added argument for `RAnEnExtra::plotAnalogSelection` for double extension of reference line.
+
 ## RAnEnExtra 0.2.7
 
 - Added `RAnEnExtra::queryObservationsTime` and `RAnEnExtra::queryObservationsSpace`
