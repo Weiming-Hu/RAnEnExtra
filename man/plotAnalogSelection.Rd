@@ -38,7 +38,8 @@ plotAnalogSelection(
   spikemode = "across",
   spikethickness = 1,
   spikedash = "solid",
-  spikecolor = "grey"
+  spikecolor = "grey",
+  prevent_search_future = TRUE
 )
 }
 \arguments{
@@ -113,6 +114,9 @@ only effective when plotly is used.}
 
 \item{spikecolor}{The spike color for visualization. This is only effective when
 plotly is used.}
+
+\item{prevent_search_future}{The \code{prevent_search_future} member from \code{Config}. This controls
+whether the reference line will be extended both way.}
 }
 \description{
 RAnEnExtra::plotAnalogSelection visualize the selection of analog ensemble members.
