@@ -36,9 +36,10 @@ reference:
       contents:
           - starts_with("subset")
           - starts_with("pixels")
-    
+
     - title: Other functions
       desc: Other functions that do not belong to any of the above categories
       contents:
           - parseProfiling
+          - organizeFLTs
 
