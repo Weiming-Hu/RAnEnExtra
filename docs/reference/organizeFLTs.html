@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • RAnEnExtra</title>
+<title>RAnEnExtra::organizeFLTs — organizeFLTs • RAnEnExtra</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,11 @@
 
 
 
-<meta property="og:title" content="Changelog" />
+<meta property="og:title" content="RAnEnExtra::organizeFLTs — organizeFLTs" />
+<meta property="og:description" content="RAnEnExtra::organizeFLTs organize the verification results into a flat table format so that
+it is easy to plot with ggplot. Currently, this function only knows how to organize a portion
+of the verification metrics." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -54,7 +58,7 @@
   </head>
 
   <body>
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -106,118 +110,51 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/Weiming-Hu/RAnEnExtra/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+    <h1>RAnEnExtra::organizeFLTs</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Weiming-Hu/RAnEnExtra/blob/master/R/organizeFLTs.R'><code>R/organizeFLTs.R</code></a></small>
+    <div class="hidden name"><code>organizeFLTs.Rd</code></div>
     </div>
 
-    <div id="ranenextra-0-2-9" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ranenextra-0-2-9" class="anchor"></a>RAnEnExtra 0.2.9</h2>
-<ul>
-<li>Added new function <code><a href="../reference/organizeFLTs.html">RAnEnExtra::organizeFLTs</a></code>
-</li>
-</ul>
-</div>
-    <div id="ranenextra-0-2-8" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ranenextra-0-2-8" class="anchor"></a>RAnEnExtra 0.2.8</h2>
-<ul>
-<li>Added argument for <code><a href="../reference/plotAnalogSelection.html">RAnEnExtra::plotAnalogSelection</a></code> for double extension of reference line.</li>
-</ul>
-</div>
-    <div id="ranenextra-0-2-7" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ranenextra-0-2-7" class="anchor"></a>RAnEnExtra 0.2.7</h2>
-<ul>
-<li>Added <code><a href="../reference/queryObservationsTime.html">RAnEnExtra::queryObservationsTime</a></code> and <code><a href="../reference/queryObservationsSpace.html">RAnEnExtra::queryObservationsSpace</a></code>
-</li>
-</ul>
-</div>
-    <div id="ranenextra-0-2-6" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ranenextra-0-2-6" class="anchor"></a>RAnEnExtra 0.2.6</h2>
-<ul>
-<li>Added <code>pre_sort</code> for <code><a href="../reference/verifyRankHist.html">RAnEnExtra::verifyRankHist</a></code> to achieve better performance</li>
-</ul>
-</div>
-    <div id="ranenextra-0-2-5" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ranenextra-0-2-5" class="anchor"></a>RAnEnExtra 0.2.5</h2>
-<ul>
-<li>Added function <code>parseProfiling</code>
-</li>
-</ul>
-</div>
-    <div id="ranenextra-0-2-4" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ranenextra-0-2-4" class="anchor"></a>RAnEnExtra 0.2.4</h2>
-<ul>
-<li>Added more arguments to <code>plotAnalogTimeSeries</code>
-</li>
-</ul>
-</div>
-    <div id="ranenextra-0-2-3" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ranenextra-0-2-3" class="anchor"></a>RAnEnExtra 0.2.3</h2>
-<ul>
-<li>Added <code>verifyBinnedSpreadSkill</code>
-</li>
-<li>Added chunks to <code>subsetCoordinates</code>
-</li>
-</ul>
-</div>
-    <div id="ranenextra-0-2-2" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ranenextra-0-2-2" class="anchor"></a>RAnEnExtra 0.2.2</h2>
-<ul>
-<li>Fixed an issue with the missing function in <code>plotAnalogTimeSeries</code>
-</li>
-</ul>
-</div>
-    <div id="ranenextra-0-2-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ranenextra-0-2-1" class="anchor"></a>RAnEnExtra 0.2.1</h2>
-<ul>
-<li>Updated document links</li>
-<li>Added the data fram POI support to ‘subsetCoordinates’</li>
-</ul>
-</div>
-    <div id="ranenextra-0-2-0" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ranenextra-0-2-0" class="anchor"></a>RAnEnExtra 0.2.0</h2>
-<ul>
-<li>Migrated functions from <a href="https://weiming-hu.github.io/AnalogsEnsemble/">PAnEn</a>
-</li>
-</ul>
-</div>
-    <div id="ranenextra-0-1-0" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ranenextra-0-1-0" class="anchor"></a>RAnEnExtra 0.1.0</h2>
-<ul>
-<li>Initial package</li>
-</ul>
-</div>
-  </div>
+    <div class="ref-description">
+    <p>RAnEnExtra::organizeFLTs organize the verification results into a flat table format so that
+it is easy to plot with ggplot. Currently, this function only knows how to organize a portion
+of the verification metrics.</p>
+    </div>
 
+    <pre class="usage"><span class='fu'>organizeFLTs</span>(<span class='no'>results</span>, <span class='no'>flts</span>, <span class='kw'>boot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>results</th>
+      <td><p>The results from RAnEnExtra::verify. It should be a list.</p></td>
+    </tr>
+    <tr>
+      <th>flts</th>
+      <td><p>The forecast lead times.</p></td>
+    </tr>
+    <tr>
+      <th>boot</th>
+      <td><p>Whether <code>boot</code> is used during the verification process</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a data frame or a data table</p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#ranenextra-0-2-9">0.2.9</a></li>
-        <li><a href="#ranenextra-0-2-8">0.2.8</a></li>
-        <li><a href="#ranenextra-0-2-7">0.2.7</a></li>
-        <li><a href="#ranenextra-0-2-6">0.2.6</a></li>
-        <li><a href="#ranenextra-0-2-5">0.2.5</a></li>
-        <li><a href="#ranenextra-0-2-4">0.2.4</a></li>
-        <li><a href="#ranenextra-0-2-3">0.2.3</a></li>
-        <li><a href="#ranenextra-0-2-2">0.2.2</a></li>
-        <li><a href="#ranenextra-0-2-1">0.2.1</a></li>
-        <li><a href="#ranenextra-0-2-0">0.2.0</a></li>
-        <li><a href="#ranenextra-0-1-0">0.1.0</a></li>
-      </ul>
-    </div>
-  </div>
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+    </ul>
 
+    <h2>Author</h2>
+    <p>Weiming Hu <a href='mailto:weiming@psu.edu'>weiming@psu.edu</a></p>
+  </div>
 </div>
 
 

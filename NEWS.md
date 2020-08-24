@@ -1,3 +1,7 @@
+## RAnEnExtra 0.2.9
+
+- Added new function `RAnEnExtra::organizeFLTs`
+
 ## RAnEnExtra 0.2.8
 
 - Added argument for `RAnEnExtra::plotAnalogSelection` for double extension of reference line.
