@@ -25,7 +25,7 @@
 #' @param i.test.day The test day index from analogs.
 #' @param i.flt The FLT index from analogs.
 #' @param parameter.names The parameter names that are associated with forecasts.
-#' @param num.analogs Number of analogs 
+#' @param num.analogs Number of analogs
 #' @param weights The weights used for AnEn
 #' @param cex.lab The font size of labels.
 #' @param pch.selected The point type for selected points.
@@ -59,6 +59,8 @@
 #' plotly is used.
 #' @param prevent.search.future The `prevent_search_future` member from `Config`. This controls
 #' whether the reference line will be extended both way.
+#' @param sim.ylim The limit for the similairty panel
+#' @param add.sim Whether to add the similarity panel at the top
 #'
 #' @author Weiming Hu \email{cervone@@psu.edu}
 #' @author Laura CLemente-Harding \email{lec170@@psu.edu}
@@ -73,6 +75,9 @@ plotAnalogSelection <- function(
   test.times, search.times,
   i.station, i.test.day, i.flt,
   parameter.names, num.analogs, weights,
+
+  sim.ylim = NULL,
+  add.sim = TRUE,
 
   cex.lab = 1.5,
   pch.selected = 16,
@@ -226,11 +231,17 @@ plotAnalogSelection <- function(
     }
 
     # Plot the similairty and the selected ones
-    plot(c(x.days[days.index], current.forecast.x),
-         c(sims, NA), xlab = '', ylab = 'Similarity', xlim = range(x.days),
-         pch = pch.unselected, col = col.unselected, cex.lab = cex.lab)
-    points(x.days[days.index[1:num.analogs]],
-           sims[1:num.analogs], pch = pch.selected, col = col.selected)
+    if (add.sim) {
+      if (is.null(sim.ylim)) {
+        sim.ylim <- range(sims, na.rm = T)
+      }
+
+      plot(c(x.days[days.index], current.forecast.x),
+           c(sims, NA), xlab = '', ylab = 'Similarity', xlim = range(x.days),
+           ylim = sim.ylim, pch = pch.unselected, col = col.unselected, cex.lab = cex.lab)
+      points(x.days[days.index[1:num.analogs]],
+             sims[1:num.analogs], pch = pch.selected, col = col.selected)
+    }
 
     for (index in 1:length(parameter.names.used)) {
       i.parameter <- which(parameter.names.used[index] == parameter.names)
@@ -244,7 +255,8 @@ plotAnalogSelection <- function(
       # A sanity check
       stopifnot(length(x.days) == length(forecast.values))
 
-      plot(x.days, forecast.values, pch = pch.unselected, col = col.unselected,
+      plot(c(x.days, current.forecast.x),
+           c(forecast.values, current.forecast.value), pch = pch.unselected, col = col.unselected,
            xlab = '', ylab = parameter.names[i.parameter], cex.lab = cex.lab)
       points(x.days[days.index[1:num.analogs]],
              forecast.values[days.index[1:num.analogs]],

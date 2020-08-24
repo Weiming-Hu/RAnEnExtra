@@ -17,6 +17,8 @@ plotAnalogSelection(
   parameter.names,
   num.analogs,
   weights,
+  sim.ylim = NULL,
+  add.sim = TRUE,
   cex.lab = 1.5,
   pch.selected = 16,
   pch.unselected = 16,
@@ -62,6 +64,10 @@ plotAnalogSelection(
 \item{num.analogs}{Number of analogs}
 
 \item{weights}{The weights used for AnEn}
+
+\item{sim.ylim}{The limit for the similairty panel}
+
+\item{add.sim}{Whether to add the similarity panel at the top}
 
 \item{cex.lab}{The font size of labels.}
 

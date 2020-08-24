@@ -1,6 +1,7 @@
 ## RAnEnExtra 0.2.9
 
 - Added new function `RAnEnExtra::organizeFLTs`
+- Added new arguments to `RAnEnExtra::plotAnalogSelection`
 
 ## RAnEnExtra 0.2.8
 
