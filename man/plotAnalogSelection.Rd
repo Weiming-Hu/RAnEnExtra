@@ -53,6 +53,10 @@ plotAnalogSelection(
 
 \item{sims.index}{The similarity index member from analogs.}
 
+\item{test.times}{The test times for analogs.}
+
+\item{search.times}{The search times of analogs.}
+
 \item{i.station}{The station index from analogs.}
 
 \item{i.test.day}{The test day index from analogs.}

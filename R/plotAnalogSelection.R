@@ -21,6 +21,8 @@
 #' @param fcst.times Forecast times
 #' @param sims The similarity member from analogs.
 #' @param sims.index The similarity index member from analogs.
+#' @param test.times The test times for analogs.
+#' @param search.times The search times of analogs.
 #' @param i.station The station index from analogs.
 #' @param i.test.day The test day index from analogs.
 #' @param i.flt The FLT index from analogs.
@@ -118,6 +120,11 @@ plotAnalogSelection <- function(
     `%>%` <- magrittr::`%>%`
   }
 
+  stopifnot(length(test.times) == length(unique(test.times)))
+  stopifnot(!is.unsorted(test.times))
+  stopifnot(length(search.times) == length(unique(search.times)))
+  stopifnot(!is.unsorted(search.times))
+
   # Remove the parameters with weight equals to 0
   if (length(weights) == 0) {
     parameter.names.used <- parameter.names
@@ -136,18 +143,19 @@ plotAnalogSelection <- function(
 
   # Get the start and end index for searching in the forecasts
   test.start <- which(fcst.times == test.times[1])
-  test.end <- which(fcst.times == test.times[length(test.times)])
-
   search.start <- which(fcst.times == search.times[1])
   search.end <- which(fcst.times == search.times[length(search.times)])
+
+  current.i <- which(fcst.times == test.times[i.test.day])
+  stopifnot(length(current.i) == 1)
 
   # Generate the x axis. The x axis will be the search days
   if (as.POSIXct) {
     x.days <- as.POSIXct(fcst.times[search.start:search.end], origin = origin, tz = tz)
-    current.forecast.x <- as.POSIXct(fcst.times[test.start+i.test.day-1], origin = origin, tz = tz)
+    current.forecast.x <- as.POSIXct(fcst.times[current.i], origin = origin, tz = tz)
   } else {
     x.days <- fcst.times[search.start:search.end]
-    current.forecast.x <- fcst.times[test.start+i.test.day-1]
+    current.forecast.x <- fcst.times[current.i]
   }
 
   # This is the day index associated with each row in the similarity matrix.
@@ -182,8 +190,7 @@ plotAnalogSelection <- function(
     for (index in 1:length(parameter.names.used)) {
       i.parameter <- which(parameter.names.used[index] == parameter.names)
 
-      current.forecast.value <- forecasts[
-        i.parameter, i.station, (i.test.day+test.start-1), i.flt]
+      current.forecast.value <- forecasts[i.parameter, i.station, current.i, i.flt]
 
       # Extract the values for the forecasts for this particular parameter
       forecast.values <- forecasts[i.parameter, i.station, search.start:search.end, i.flt]
@@ -246,8 +253,7 @@ plotAnalogSelection <- function(
     for (index in 1:length(parameter.names.used)) {
       i.parameter <- which(parameter.names.used[index] == parameter.names)
 
-      current.forecast.value <- forecasts[
-        i.parameter, i.station, (i.test.day+test.start-1), i.flt]
+      current.forecast.value <- forecasts[i.parameter, i.station, current.i, i.flt]
 
       # Extract the values for the forecasts for this particular parameter
       forecast.values <- forecasts[i.parameter, i.station, search.start:search.end, i.flt]
