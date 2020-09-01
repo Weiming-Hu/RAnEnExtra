@@ -32,9 +32,9 @@
 approxLeadTimes <- function(forecasts, flt_dimension, old_flts, new_flts,
 														 method = 'linear', progress = FALSE) {
 	
-	check.package(R.utils)
-	check.package(abind)
-	check.package(progress)
+	check.package("R.utils")
+	check.package("abind")
+	check.package("progress")
 	
 	# Sanity check
 	stopifnot(length(dim(forecasts)) == 4)
