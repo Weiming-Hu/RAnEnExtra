@@ -3,6 +3,7 @@
 - Added new function `RAnEnExtra::organizeFLTs`
 - Added new arguments to `RAnEnExtra::plotAnalogSelection`
 - Fix bugs in `RAnEnExtra::plotAnalogSelection` when there are holes in test times
+- Added new function `RAnEnExtra::approxLeadTimes`
 
 ## RAnEnExtra 0.2.8
 

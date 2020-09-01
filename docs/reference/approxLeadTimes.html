@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>RAnEnExtra::pixelsToY — pixelsToY • RAnEnExtra</title>
+<title>RAnEnExtra::approxLeadTimes — approxLeadTimes • RAnEnExtra</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,8 @@
 
 
 
-<meta property="og:title" content="RAnEnExtra::pixelsToY — pixelsToY" />
-<meta property="og:description" content="RAnEnExtra::pixelsToY convert the pixel index
-to its y coordinate counting row-wise. The start matters
-because it sets the offset. The returned numbers are
-counted from 1." />
+<meta property="og:title" content="RAnEnExtra::approxLeadTimes — approxLeadTimes" />
+<meta property="og:description" content="RAnEnExtra::approxLeadTimes interpolate forecasts across the lead time dimension." />
 
 
 
@@ -114,41 +111,53 @@ counted from 1." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>RAnEnExtra::pixelsToY</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Weiming-Hu/RAnEnExtra/blob/master/R/pixelsToY.R'><code>R/pixelsToY.R</code></a></small>
-    <div class="hidden name"><code>pixelsToY.Rd</code></div>
+    <h1>RAnEnExtra::approxLeadTimes</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Weiming-Hu/RAnEnExtra/blob/master/R/approxLeadTimes.R'><code>R/approxLeadTimes.R</code></a></small>
+    <div class="hidden name"><code>approxLeadTimes.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>RAnEnExtra::pixelsToY convert the pixel index
-to its y coordinate counting row-wise. The start matters
-because it sets the offset. The returned numbers are
-counted from 1.</p>
+    <p>RAnEnExtra::approxLeadTimes interpolate forecasts across the lead time dimension.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pixelsToY</span>(<span class='no'>pixels</span>, <span class='no'>xgrids.total</span>, <span class='no'>start</span>)</pre>
+    <pre class="usage"><span class='fu'>approxLeadTimes</span>(
+  <span class='no'>forecasts</span>,
+  <span class='no'>flt_dimension</span>,
+  <span class='no'>old_flts</span>,
+  <span class='no'>new_flts</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"linear"</span>,
+  <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pixels</th>
-      <td><p>a vector of indices of pixels that
-will get divided</p></td>
+      <th>forecasts</th>
+      <td><p>A 4-dimensional array</p></td>
     </tr>
     <tr>
-      <th>xgrids.total</th>
-      <td><p>total number of x.</p></td>
+      <th>flt_dimension</th>
+      <td><p>Which dimension is the lead time dimension.</p></td>
     </tr>
     <tr>
-      <th>start</th>
-      <td><p>the counting start of pixels.</p></td>
+      <th>old_flts</th>
+      <td><p>Original forecast lead times in seconds</p></td>
+    </tr>
+    <tr>
+      <th>new_flts</th>
+      <td><p>New forecast lead times in seconds</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>The <code>method</code> argument passed to <code>approx</code>.</p></td>
+    </tr>
+    <tr>
+      <th>progress</th>
+      <td><p>Whether to plot a progress bar.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>y coordinate(s)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
