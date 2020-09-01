@@ -57,11 +57,11 @@ organizeFLTs <- function(results, flts, boot = FALSE) {
       if (metric %in% get_flts) {
         if (use_data_table) {
           df_single <- data.table::data.table(x = flts, Method = method, Metric = metric,
-                                              y = verification[[method]][[metric]]$flt)
+                                              y = results[[method]][[metric]]$flt)
 
         } else {
           df_single <- data.frame(x = flts, Method = method, Metric = metric,
-                                  y = verification[[method]][[metric]]$flt)
+                                  y = results[[method]][[metric]]$flt)
 
         }
 
