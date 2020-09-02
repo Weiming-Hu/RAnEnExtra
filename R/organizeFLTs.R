@@ -23,19 +23,29 @@
 #' @param results The results from RAnEnExtra::verify. It should be a list.
 #' @param flts The forecast lead times.
 #' @param boot Whether `boot` is used during the verification process
+#' @param parse_metrics The metrics to organize into a data frame. Default to all supported metrics.
 #'
 #' @return a data frame or a data table
 #'
 #' @md
 #' @export
-organizeFLTs <- function(results, flts, boot = FALSE) {
+organizeFLTs <- function(results, flts, boot = FALSE, parse_metrics = NULL) {
 
   if (boot) {
     stop('Organizing results generated with bootstrap is currently not implemented.')
   }
 
   # I know how to organize the following verification metrics
-  get_flts <- c('Bias', 'Correlation', 'Dispersion', 'MAE', 'RMSE', 'Spread', 'SpreadSkill', 'CRMSE')
+  known_metrics <- c('Bias', 'Correlation', 'Dispersion', 'MAE', 'RMSE', 'Spread', 'SpreadSkill', 'CRMSE')
+
+  if (is.null(parse_metrics)) {
+    parse_metrics <- known_metrics
+  } else {
+    if (!all(parse_metrics %in% known_metrics)) {
+      msg <- paste0('Unknown metrics specified! I only know how to parse these metrics:\n', paste(known_metrics, collapse = ', '))
+      stop(msg)
+    }
+  }
 
   if (requireNamespace('data.table', quietly = T)) {
     use_data_table <- TRUE
@@ -53,23 +63,24 @@ organizeFLTs <- function(results, flts, boot = FALSE) {
 
   for (method in names(results)) {
     for (metric in names(results[[method]])) {
+      if (metric %in% parse_metrics) {
+        if (metric %in% known_metrics) {
 
-      if (metric %in% get_flts) {
-        if (use_data_table) {
-          df_single <- data.table::data.table(x = flts, Method = method, Metric = metric,
-                                              y = results[[method]][[metric]]$flt)
+          if (use_data_table) {
+            df_single <- data.table::data.table(x = flts, Method = method, Metric = metric,
+                                                y = results[[method]][[metric]]$flt)
+
+          } else {
+            df_single <- data.frame(x = flts, Method = method, Metric = metric,
+                                    y = results[[method]][[metric]]$flt)
+          }
+
+          df <- rbind(df, df_single)
 
         } else {
-          df_single <- data.frame(x = flts, Method = method, Metric = metric,
-                                  y = results[[method]][[metric]]$flt)
-
+          unknown_metrics <- c(unknown_metrics, metric)
         }
-
-        df <- rbind(df, df_single)
-      } else {
-        unknown_metrics <- c(unknown_metrics, metric)
       }
-
     }
   }
 

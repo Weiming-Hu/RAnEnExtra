@@ -10,7 +10,7 @@ approxLeadTimes(
   old_flts,
   new_flts,
   method = "linear",
-  progress = FALSE
+  parallel = FALSE
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ approxLeadTimes(
 
 \item{method}{The \code{method} argument passed to \code{approx}.}
 
-\item{progress}{Whether to plot a progress bar.}
+\item{parallel}{Whether to use \code{future_apply} for parallelization}
 }
 \description{
 RAnEnExtra::approxLeadTimes interpolate forecasts across the lead time dimension.

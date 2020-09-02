@@ -14,68 +14,54 @@
 #
 
 #' RAnEnExtra::approxLeadTimes
-#' 
+#'
 #' RAnEnExtra::approxLeadTimes interpolate forecasts across the lead time dimension.
-#' 
+#'
 #' @author Weiming Hu \email{weiming@@psu.edu}
 #' @author Martina Calovi \email{mxc895@@psu.edu}
-#' 
+#'
 #' @param forecasts A 4-dimensional array
 #' @param flt_dimension Which dimension is the lead time dimension.
 #' @param old_flts Original forecast lead times in seconds
 #' @param new_flts New forecast lead times in seconds
 #' @param method The `method` argument passed to `approx`.
-#' @param progress Whether to plot a progress bar.
-#' 
+#' @param parallel Whether to use `future_apply` for parallelization
+#'
 #' @md
 #' @export
-approxLeadTimes <- function(forecasts, flt_dimension, old_flts, new_flts,
-														 method = 'linear', progress = FALSE) {
-	
+approxLeadTimes <- function(forecasts, flt_dimension, old_flts, new_flts, method = 'linear', parallel = FALSE) {
+
 	check.package("R.utils")
 	check.package("abind")
 	check.package("progress")
-	
+
+	if (parallel) {
+	  check.package('future.apply')
+	}
+
 	# Sanity check
-	stopifnot(length(dim(forecasts)) == 4)
-	
+	stopifnot(!is.null(dim(forecasts)))
+
 	# Figure out the dimensions that I need to loop through
 	apply_dimensions <- 1:length(dim(forecasts))
 	apply_dimensions <- apply_dimensions[apply_dimensions != flt_dimension]
-	
-	# Define new dimensions
-	new_dims <- c(dim(forecasts)[apply_dimensions], length(new_flts))
-	
-	# Allocation
-	forecasts_ds <- array(NA, new_dims)
-	
-	if (progress) {
-		pb <- progress::progress_bar$new(total = prod(dim(forecasts_ds)[1:3]))
+
+	# Define a function to downscale along a slice of forecast lead times
+	func <- function(y, x, xout, method) {
+	  approx(x = x, y = y, xout = xout, method = method)$y
 	}
-	
-	for (i1 in seq_len(new_dims[1])) {
-		for (i2 in seq_len(new_dims[2])) {
-			for (i3 in seq_len(new_dims[3])) {
-				
-				y <- abind::asub(forecasts, list(i1, i2, i3), apply_dimensions, drop = T)
-				y_ds <- approx(x = old_flts, y = y, xout = new_flts, method = method)
-				forecasts_ds[i1, i2, i3, ] <- y_ds$y
-				
-				if (progress) {
-					pb$tick()
-				}
-			}
-		}
+
+	# Carry out downscaling along the dimensions
+	if (parallel) {
+	  forecasts_ds <- future.apply::future_apply(forecasts, apply_dimensions, func, x = old_flts, xout = new_flts, method = method)
+	} else {
+	  forecasts_ds <- apply(forecasts, apply_dimensions, func, x = old_flts, xout = new_flts, method = method)
 	}
-	
-	if (progress) {
-		pb$terminate()
-	}
-	
+
 	# Fix the dimensions of downscaled forecasts
-	perm <- seq_len(length(apply_dimensions))
-	perm <- R.utils::insert(perm, flt_dimension, length(apply_dimensions) + 1)
+	perm <- seq_len(length(apply_dimensions)) + 1
+	perm <- R.utils::insert(perm, flt_dimension, 1)
 	forecasts_ds <- aperm(forecasts_ds, perm)
-	
+
 	return(forecasts_ds)
 }
