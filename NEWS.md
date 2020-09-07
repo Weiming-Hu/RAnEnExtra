@@ -1,3 +1,7 @@
+## RAnEnExtra 0.2.10
+
+- Added new functio `RAnEnExtra::subsetParameters`
+
 ## RAnEnExtra 0.2.9
 
 - Added new function `RAnEnExtra::organizeFLTs`
