@@ -162,6 +162,6 @@ verify <- function(metrics, verbose = T, ...) {
   
   rm(args.all, args.required, args.optional, args.current)
   garbage <- gc(reset = T)
-  cat('Done (verify)\n')
+  if (verbose) cat('Done (verify)\n')
   return(ret)
 }
