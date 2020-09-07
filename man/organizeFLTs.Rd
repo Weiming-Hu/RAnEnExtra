@@ -4,14 +4,12 @@
 \alias{organizeFLTs}
 \title{RAnEnExtra::organizeFLTs}
 \usage{
-organizeFLTs(results, flts, boot = FALSE, parse_metrics = NULL)
+organizeFLTs(results, flts, parse_metrics = NULL)
 }
 \arguments{
 \item{results}{The results from RAnEnExtra::verify. It should be a list.}
 
-\item{flts}{The forecast lead times.}
-
-\item{boot}{Whether \code{boot} is used during the verification process}
+\item{flts}{The forecast lead times to be copied to the data frame.}
 
 \item{parse_metrics}{The metrics to organize into a data frame. Default to all supported metrics.}
 }

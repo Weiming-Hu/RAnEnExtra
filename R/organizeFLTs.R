@@ -21,19 +21,14 @@
 #'
 #'
 #' @param results The results from RAnEnExtra::verify. It should be a list.
-#' @param flts The forecast lead times.
-#' @param boot Whether `boot` is used during the verification process
+#' @param flts The forecast lead times to be copied to the data frame.
 #' @param parse_metrics The metrics to organize into a data frame. Default to all supported metrics.
 #'
 #' @return a data frame or a data table
 #'
 #' @md
 #' @export
-organizeFLTs <- function(results, flts, boot = FALSE, parse_metrics = NULL) {
-
-  if (boot) {
-    stop('Organizing results generated with bootstrap is currently not implemented.')
-  }
+organizeFLTs <- function(results, flts, parse_metrics = NULL) {
 
   # I know how to organize the following verification metrics
   known_metrics <- c('Bias', 'Correlation', 'Dispersion', 'MAE', 'RMSE', 'Spread', 'SpreadSkill', 'CRMSE')
@@ -66,6 +61,13 @@ organizeFLTs <- function(results, flts, boot = FALSE, parse_metrics = NULL) {
       if (metric %in% parse_metrics) {
         if (metric %in% known_metrics) {
 
+          if (nrow(results[[method]][[metric]]$mat) == 3 &&
+              ncol(results[[method]][[metric]]$mat) == length(results[[method]][[metric]]$flt)) {
+            variable_has_boot <- T
+          } else {
+            variable_has_boot <- F
+          }
+
           if (use_data_table) {
             df_single <- data.table::data.table(x = flts, Method = method, Metric = metric,
                                                 y = results[[method]][[metric]]$flt)
@@ -73,6 +75,14 @@ organizeFLTs <- function(results, flts, boot = FALSE, parse_metrics = NULL) {
           } else {
             df_single <- data.frame(x = flts, Method = method, Metric = metric,
                                     y = results[[method]][[metric]]$flt)
+          }
+
+          if (variable_has_boot) {
+            df_single$floor <- results[[method]][[metric]]$mat[2, ]
+            df_single$ceiling <- results[[method]][[metric]]$mat[3, ]
+          } else {
+            df_single$floor <- rep(NA, length(results[[method]][[metric]]$flt))
+            df_single$ceiling <- rep(NA, length(results[[method]][[metric]]$flt))
           }
 
           df <- rbind(df, df_single)
@@ -83,6 +93,10 @@ organizeFLTs <- function(results, flts, boot = FALSE, parse_metrics = NULL) {
       }
     }
   }
+
+  # Remove columns that only contain NA values
+  if (all(is.na(df$ceiling))) df$ceiling <- NULL
+  if (all(is.na(df$floor))) df$floor <- NULL
 
   if (length(unknown_metrics) > 0) {
     msg <- paste("These metrics are ignored:", paste(unknown_metrics, collapse = ', '))
