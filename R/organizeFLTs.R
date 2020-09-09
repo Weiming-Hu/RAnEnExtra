@@ -31,7 +31,9 @@
 organizeFLTs <- function(results, flts, parse_metrics = NULL) {
 
   # I know how to organize the following verification metrics
-  known_metrics <- c('Bias', 'Correlation', 'Dispersion', 'MAE', 'RMSE', 'Spread', 'SpreadSkill', 'CRMSE')
+  known_metrics <- c('Bias', 'Correlation', 'Dispersion', 'MAE',
+                     'RMSE', 'Spread', 'SpreadSkill', 'CRMSE',
+                     'CRPS')
 
   if (is.null(parse_metrics)) {
     parse_metrics <- known_metrics
@@ -61,28 +63,73 @@ organizeFLTs <- function(results, flts, parse_metrics = NULL) {
       if (metric %in% parse_metrics) {
         if (metric %in% known_metrics) {
 
-          if (nrow(results[[method]][[metric]]$mat) == 3 &&
-              ncol(results[[method]][[metric]]$mat) == length(results[[method]][[metric]]$flt)) {
-            variable_has_boot <- T
-          } else {
-            variable_has_boot <- F
-          }
+          if (metric == 'CRPS') {
 
-          if (use_data_table) {
-            df_single <- data.table::data.table(x = flts, Method = method, Metric = metric,
-                                                y = results[[method]][[metric]]$flt)
+            ##############
+            # Parse CRPS #
+            ##############
+            #
+            # CRPS has different member names
+
+            if ('crps.flt' %in% names(results[[method]][[metric]])) {
+              variable_has_boot <- F
+              crps_name <- 'crps.flt'
+            } else if ('crps.boot.flt' %in% names(results[[method]][[metric]])) {
+              variable_has_boot <- T
+              crps_name <- 'crps.boot.flt'
+            } else {
+              stop('Required names in CRPS results are not found. This is fatal!')
+            }
+
+            if (use_data_table) {
+              df_single <- data.table::data.table(x = flts, Method = method, Metric = metric,
+                                                  y = results[[method]][[metric]][[crps_name]][1, ])
+
+            } else {
+              df_single <- data.frame(x = flts, Method = method, Metric = metric,
+                                      y = results[[method]][[metric]][[crps_name]][1, ])
+            }
+
+            if (variable_has_boot) {
+              df_single$floor <- results[[method]][[metric]][[crps_name]][2, ]
+              df_single$ceiling <- results[[method]][[metric]][[crps_name]][3, ]
+            } else {
+              df_single$floor <- rep(NA, ncol(results[[method]][[metric]][[crps_name]]))
+              df_single$ceiling <- rep(NA, ncol(results[[method]][[metric]][[crps_name]]))
+            }
 
           } else {
-            df_single <- data.frame(x = flts, Method = method, Metric = metric,
-                                    y = results[[method]][[metric]]$flt)
-          }
 
-          if (variable_has_boot) {
-            df_single$floor <- results[[method]][[metric]]$mat[2, ]
-            df_single$ceiling <- results[[method]][[metric]]$mat[3, ]
-          } else {
-            df_single$floor <- rep(NA, length(results[[method]][[metric]]$flt))
-            df_single$ceiling <- rep(NA, length(results[[method]][[metric]]$flt))
+            #########################
+            # Parse other variables #
+            #########################
+            #
+            # All other variables share the same member names
+            #
+
+            if (nrow(results[[method]][[metric]]$mat) == 3 &&
+                ncol(results[[method]][[metric]]$mat) == length(results[[method]][[metric]]$flt)) {
+              variable_has_boot <- T
+            } else {
+              variable_has_boot <- F
+            }
+
+            if (use_data_table) {
+              df_single <- data.table::data.table(x = flts, Method = method, Metric = metric,
+                                                  y = results[[method]][[metric]]$flt)
+
+            } else {
+              df_single <- data.frame(x = flts, Method = method, Metric = metric,
+                                      y = results[[method]][[metric]]$flt)
+            }
+
+            if (variable_has_boot) {
+              df_single$floor <- results[[method]][[metric]]$mat[2, ]
+              df_single$ceiling <- results[[method]][[metric]]$mat[3, ]
+            } else {
+              df_single$floor <- rep(NA, length(results[[method]][[metric]]$flt))
+              df_single$ceiling <- rep(NA, length(results[[method]][[metric]]$flt))
+            }
           }
 
           df <- rbind(df, df_single)
