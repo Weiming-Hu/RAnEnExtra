@@ -91,7 +91,8 @@ verify <- function(metrics, verbose = T, ...) {
   for (metric in metrics) {
     for (arg.required in args.required[[metric]]) {
       if (!arg.required %in% named.args) {
-        cat('Required argument', arg.required, 'is missing for the metric', metric, '.\n')
+        cat('Required argument', arg.required,
+            'is missing for the metric', metric, '.\n')
         error <- T
       }
     }
@@ -105,7 +106,7 @@ verify <- function(metrics, verbose = T, ...) {
     unlist(args.optional, use.names = F)))
 
   if ('ensemble.func' %in% named.args) {
-    arguments.func <- names(as.list(args(as.character(args.all$ensemble.func)))))
+    arguments.func <- names(as.list(args(as.character(args.all$ensemble.func))))
     arguments.func <- arguments.func[-which(arguments.func == '')]
     accepted.arguments <- c(accepted.arguments, arguments.func)
 
