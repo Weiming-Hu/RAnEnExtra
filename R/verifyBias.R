@@ -12,18 +12,21 @@
 #
 
 #' RAnEnExtra::verifyBias
-#' 
+#'
 #' RAnEnExtra::verifyBias calculates bias.
-#' 
+#'
 #' RMSE ^ 2 = CRMSE ^ 2 + Bias ^ 2
-#' 
+#'
 #' To set the number of cores to use when parallel is used,
 #' `options(mc.cores = 8)`.
-#' 
+#'
+#' @details Bootstrap confidence interval is defaulted to 0.95.
+#' To change this, use `options(RAnEnExtra_boot_conf = 0.9)`.
+#'
 #' @author Guido Cervone \email{cervone@@psu.edu}
 #' @author Martina Calovi \email{mxc895@@psu.edu}
 #' @author Laura Clemente-Harding \email{laura@@psu.edu}
-#' 
+#'
 #' @param anen.ver A 4-dimensional array. This array is usually created from the `value` column of
 #' the `analogs` member in the results of `RAnEn::generateAnalogs`. The dimensions should be
 #' `[stations, times, lead times, members]`.
@@ -33,36 +36,36 @@
 #' @param R The number of bootstrap replicates. Used by the function `boot::boot`.
 #' @param na.rm Whether to remove NA values.
 #' @param parallel Whether to turn on parallel processing.
-#' 
+#'
 #' @md
 #' @export
 verifyBias <- function(anen.ver, obs.ver, boot=F, R=1000, na.rm=T, parallel = F) {
-  
+
   stopifnot(length(dim(anen.ver)) == 4)
   stopifnot(length(dim(obs.ver)) == 3)
-  
+
   if ( !identical(dim(anen.ver)[1:3], dim(obs.ver)[1:3]) ) {
     cat("Error: Observations and Forecasts have incompatible dimensions.\n")
     return(NULL)
   }
-  
+
   obs  <-  matrix(obs.ver, ncol=dim(obs.ver)[3])     # [stations*days, FLT]
-  anen <-  anen.mean(anen.ver, na.rm, parallel = parallel) 
-  
-  # Compute the difference as a function of FLT between the average ensemble mean and the 
+  anen <-  anen.mean(anen.ver, na.rm, parallel = parallel)
+
+  # Compute the difference as a function of FLT between the average ensemble mean and the
   # corresponding observation for each station and day
   bias <- anen - obs
-  
-  if ( boot == F) {  
+
+  if ( boot == F) {
     # The average total bias... perhaps we need it?
     bias.tot <- mean(bias, na.rm=na.rm)
-    
-    # Compute the mean 
+
+    # Compute the mean
     bias.mean <- colMeans(bias, na.rm = na.rm)
-    
+
     return(list(mean=bias.tot, flt=bias.mean, mat=bias))
   } else {
     boot <- apply( bias, 2, boot.fun.ver, R)
-    return( list(mean=mean(boot[1,],na.rm=na.rm), flt=boot[1,], mat=boot) )  
+    return( list(mean=mean(boot[1,],na.rm=na.rm), flt=boot[1,], mat=boot) )
   }
 }

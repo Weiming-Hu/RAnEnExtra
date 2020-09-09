@@ -1,7 +1,8 @@
 ## RAnEnExtra 0.2.10
 
 - Added new functio `RAnEnExtra::subsetParameters`
-- Added functionality to parse verification with bootstrap
+- Added functionality to parse verification with bootstrap and other variables
+- Parameterize confidence interval in bootstrap
 
 ## RAnEnExtra 0.2.9
 
