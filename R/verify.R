@@ -12,29 +12,29 @@
 #
 
 #' RAnEnExtra::verify
-#' 
-#' RAnEnExtra::verify is the caller function to call various verification metrics. 
+#'
+#' RAnEnExtra::verify is the caller function to call various verification metrics.
 #' This is convenient when you want to carry out multiple verification at
 #' once.
-#' 
+#'
 #' @author Weiming Hu \email{weiming@@psu.edu}
-#' 
+#'
 #' @param metrics A vector of verification metrics that should be carried out. Please
-#' use \code{\link{showVerificationMetrics}} to check the supported metrics. 
+#' use \code{\link{showVerificationMetrics}} to check the supported metrics.
 #' @param verbose Whether to print detail information.
-#' 
+#'
 #' @return A list of verification results.
-#' 
+#'
 #' @md
 #' @export
 verify <- function(metrics, verbose = T, ...) {
-  
+
   # Currently supported metrics are the followings
   supported.metrics <- c('ThreatScore', 'Brier', 'MAE', 'RMSE', 'CRMSE',
                          'Correlation', 'Bias', 'RankHist', 'Spread',
                          'SpreadSkill', 'Dispersion', 'CRPS',
                          'BinnedSpreadSkill')
-  
+
   # List the required options for each verification metric
   args.required <- list(
     ThreatScore = c('anen.ver', 'obs.ver', 'threshold', 'ensemble.func'),
@@ -50,7 +50,7 @@ verify <- function(metrics, verbose = T, ...) {
     BinnedSpreadSkill = c('anen.ver', 'obs.ver'),
     Dispersion = c('anen.ver', 'obs.ver'),
     CRPS = c('anen.ver', 'obs.ver'))
-  
+
   # List the optional options for each verification metric
   args.optional <- list(
     ThreatScore = c(),
@@ -66,18 +66,18 @@ verify <- function(metrics, verbose = T, ...) {
     BinnedSpreadSkill = c('boot', 'R', 'na.rm', 'intervals'),
     Dispersion = c('boot', 'R', 'na.rm'),
     CRPS = c('boot', 'R', 'na.rm', 'int.step'))
-  
+
   # Expand the input arguments
   args.all <- match.call(expand.dots = T)
-  
+
   # Get the names of arguments
   named.args <- names(args.all)[-1]
-  
+
   # Sanity checks
   if ("" %in% named.args) {
     stop('Please give a name to each variable. Positional argument is forbidden!')
   }
-  
+
   # Check whether all desired metrics are supported
   supported <- sapply(metrics, function(x) {x %in% supported.metrics})
   if (!all(supported)) {
@@ -85,7 +85,7 @@ verify <- function(metrics, verbose = T, ...) {
     stop('Unsupported metrics are found.')
   }
   rm(supported)
-  
+
   # Check whether required arguments are specified
   error <- F
   for (metric in metrics) {
@@ -97,23 +97,23 @@ verify <- function(metrics, verbose = T, ...) {
     }
   }
   rm(metric, arg.required)
-  
+
   # Check whether there are unused arguments
   accepted.arguments <- unique(c(
-    'metrics', 'verbose', 
+    'metrics', 'verbose',
     unlist(args.required, use.names = F),
     unlist(args.optional, use.names = F)))
-  
+
   if ('ensemble.func' %in% named.args) {
-    arguments.func <- names(as.list(args('ensemble.func')))
+    arguments.func <- names(as.list(args(as.character(args.all$ensemble.func)))))
     arguments.func <- arguments.func[-which(arguments.func == '')]
     accepted.arguments <- c(accepted.arguments, arguments.func)
-    
+
     if (any(duplicated(accepted.arguments))) {
       stop('Arguments for the ensemble function are duplicated with verification functions.')
     }
   }
-  
+
   for (arg.name in named.args) {
     if (!arg.name %in% accepted.arguments) {
       cat('Unused argument:', arg.name, '\n')
@@ -121,37 +121,37 @@ verify <- function(metrics, verbose = T, ...) {
     }
   }
   rm(arg.name)
-  
+
   # Housekeeping
   if (error) {
     stop('Requirement is not fulfilled.')
   }
-  
+
   rm(error)
-  
+
   if (verbose) {
     cat('The following verification will be carried out:',
         paste(metrics, collapse = ', '), '\n')
   }
-  
+
   ret <- list()
   for (metric in metrics) {
-    
+
     args.current <- list()
     for (arg in args.required[[metric]]) {
       args.current[[arg]] <- args.all[[arg]]
     }
-    
+
     for (arg in args.optional[[metric]]) {
       args.current[[arg]] <- args.all[[arg]]
     }
-    
+
     if ('ensemble.func' %in% names(args.current)) {
       for (arg in arguments.func) {
         args.current[[arg]] <- args.all[[arg]]
       }
     }
-    
+
     if (verbose) cat('Verifying', metric, '[',
                      paste(names(args.current), collapse = ',')
                      ,']...\n')
@@ -159,7 +159,7 @@ verify <- function(metrics, verbose = T, ...) {
       what = paste('verify', metric, sep = ''),
       args = args.current, envir = parent.frame())
   }
-  
+
   rm(args.all, args.required, args.optional, args.current)
   garbage <- gc(reset = T)
   if (verbose) cat('Done (verify)\n')
