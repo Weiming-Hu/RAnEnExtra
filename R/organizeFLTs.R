@@ -33,7 +33,7 @@ organizeFLTs <- function(results, flts, parse_metrics = NULL) {
   # I know how to organize the following verification metrics
   known_metrics <- c('Bias', 'Correlation', 'Dispersion', 'MAE',
                      'RMSE', 'Spread', 'SpreadSkill', 'CRMSE',
-                     'CRPS')
+                     'CRPS', 'Brier')
 
   if (is.null(parse_metrics)) {
     parse_metrics <- known_metrics
@@ -63,13 +63,40 @@ organizeFLTs <- function(results, flts, parse_metrics = NULL) {
       if (metric %in% parse_metrics) {
         if (metric %in% known_metrics) {
 
-          if (metric == 'CRPS') {
+          if (metric == 'Brier') {
+
+            ##############
+            # Parse Brier #
+            ##############
+            #
+            # Brier has different member names.
+            # It does not have an option for bootstrap.
+            #
+
+            values <- results[[method]][[metric]]$bs[1, ]
+
+            # Remove the last row because that is the brier score for all lead times
+            values <- values[-length(values)]
+            stopifnot(length(values) == length(flts))
+
+            if (use_data_table) {
+              df_single <- data.table::data.table(x = flts, Method = method,
+                                                  Metric = metric, y = values,
+                                                  floor = NA, ceiling = NA)
+            } else {
+              df_single <- data.frame(x = flts, Method = method,
+                                      Metric = metric, y = values,
+                                      floor = NA, ceiling = NA)
+            }
+
+          } else if (metric == 'CRPS') {
 
             ##############
             # Parse CRPS #
             ##############
             #
             # CRPS has different member names
+            #
 
             if ('crps.flt' %in% names(results[[method]][[metric]])) {
               variable_has_boot <- F
