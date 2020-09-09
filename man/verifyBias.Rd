@@ -30,6 +30,9 @@ RMSE ^ 2 = CRMSE ^ 2 + Bias ^ 2
 
 To set the number of cores to use when parallel is used,
 \code{options(mc.cores = 8)}.
+
+Bootstrap confidence interval is defaulted to 0.95.
+To change this, use \code{options(RAnEnExtra_boot_conf = 0.9)}.
 }
 \author{
 Guido Cervone \email{cervone@psu.edu}

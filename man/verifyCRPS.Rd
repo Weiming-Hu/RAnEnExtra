@@ -25,6 +25,10 @@ You can generate the array using `RAnEn::alignObservations`.}
 \description{
 RAnEnExtra::verifyCRPS calculates CRPS.
 }
+\details{
+Bootstrap confidence interval is defaulted to 0.95.
+To change this, use `options(RAnEnExtra_boot_conf = 0.9)`.
+}
 \author{
 Guido Cervone \email{cervone@psu.edu}
 

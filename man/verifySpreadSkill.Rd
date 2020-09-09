@@ -38,6 +38,9 @@ Spread skill correlation without normalization or binning has several caveats du
 its interpretation. Please make sure you have read through \href{https://www.ecmwf.int/sites/default/files/elibrary/2007/15443-verifying-relationship-between-ensemble-forecast-spread-and-skill.pdf}{several materials} before
 applying this verification technique. Alternatively, \code{RAnEn::verifyBinnedSpreadSkill} is
 an improved version of this function.
+
+Bootstrap confidence interval is defaulted to 0.95.
+To change this, use \code{options(RAnEnExtra_boot_conf = 0.9)}.
 }
 \author{
 Weiming Hu \email{weiming@psu.edu}

@@ -166,6 +166,8 @@ You can generate the array using <code><a href='https://rdrr.io/pkg/RAnEn/man/al
 its interpretation. Please make sure you have read through <a href='https://www.ecmwf.int/sites/default/files/elibrary/2007/15443-verifying-relationship-between-ensemble-forecast-spread-and-skill.pdf'>several materials</a> before
 applying this verification technique. Alternatively, <code>RAnEn::verifyBinnedSpreadSkill</code> is
 an improved version of this function.</p>
+<p>Bootstrap confidence interval is defaulted to 0.95.
+To change this, use <code><a href='https://rdrr.io/r/base/options.html'>options(RAnEnExtra_boot_conf = 0.9)</a></code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

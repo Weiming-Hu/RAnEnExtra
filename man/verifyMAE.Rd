@@ -25,13 +25,17 @@ You can generate the array using \code{RAnEn::alignObservations}.}
 \description{
 RAnEnExtra::verifyMAE calculates mean absolute errors.
 }
+\details{
+To set the number of cores to use when parallel is used,
+\code{options(mc.cores = 8)}.
+
+Bootstrap confidence interval is defaulted to 0.95.
+To change this, use \code{options(RAnEnExtra_boot_conf = 0.9)}.
+}
 \author{
 Guido Cervone \email{cervone@psu.edu}
 
 Martina Calovi \email{mxc895@psu.edu}
 
 Laura Clemente-Harding \email{laura@psu.edu}
-
-To set the number of cores to use when parallel is used,
-\code{options(mc.cores = 8)}.
 }
