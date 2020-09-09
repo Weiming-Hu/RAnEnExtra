@@ -73,7 +73,7 @@ organizeFLTs <- function(results, flts, parse_metrics = NULL) {
             # It does not have an option for bootstrap.
             #
 
-            values <- results[[method]][[metric]]$bs[1, ]
+            values <- results[[method]][[metric]][, 'bs']
 
             # Remove the last row because that is the brier score for all lead times
             values <- values[-length(values)]
