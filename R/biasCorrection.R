@@ -19,12 +19,17 @@
 #' @author Weiming Hu \email{weiming@@psu.edu}
 #' @author Martina Calovi \email{mxc895@@psu.edu}
 #'
-#' @param analogs A four-dimensional array for analog values with the dimensions `[stations, test times, lead times, members]`
+#' @param analogs A four-dimensional array for analog values with the dimensions `[stations, test times, lead times, members]`.
+#' This is usually generated from the `RAnEn::generateAnalogs`.
 #' @param target.forecasts A three- or four- dimensional array for test forecasts that analogs are generated for. The dimensions
-#' can either be `[stations, test times, lead times]` or `[stations, test times, lead times, 1]`.
+#' can either be `[stations, test times, lead times]` or `[stations, test times, lead times, 1]`. The forecasts should be aligned
+#' with the anlaogs for the first three dimensions.
 #' @param historical.forecasts The historical forecast search repository with the dimensions `[parameters, stations, times, lead times]`.
-#' @param similarity.time.index Similarity time index for each analog members
-#' @param similarity.station.index Similarity station index for each analog members
+#' This is usually the `Forecasts` used in `RAnEn::generateAnalogs`.
+#' @param similarity.time.index Similarity time index for each analog members. To have this for your analogs, you need to
+#' set `config$save_similarity_time_index = T` before you run `RAnEn::generateAnalogs`.
+#' @param similarity.station.index Similarity station index for each analog members. To have this for your analogs, you need to
+#' set `config$save_similarity_station_index = T` and use `SSE` for analog generation.
 #' @param regression.forecasts The forecast values used to calculate the slope of a linear regression line. These forecasts must
 #' correspond to observations for regression.
 #' @param regression.observations The observation values used to calculate the slope of a linear regression line These

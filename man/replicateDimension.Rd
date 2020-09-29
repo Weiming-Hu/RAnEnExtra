@@ -6,6 +6,13 @@
 \usage{
 replicateDimension(arr, times, dimension)
 }
+\arguments{
+\item{arr}{An array}
+
+\item{times}{How many times to duplicate the dimension}
+
+\item{dimension}{Which dimension to duplicate}
+}
 \description{
 RAnEnExtra::replicateDimension replicates a particular dimensions of the arrray.
 }

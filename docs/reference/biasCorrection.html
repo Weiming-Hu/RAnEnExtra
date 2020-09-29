@@ -140,24 +140,29 @@ using a linear regression method. This correction method is useful for predictin
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>analogs</th>
-      <td><p>A four-dimensional array for analog values with the dimensions <code>[stations, test times, lead times, members]</code></p></td>
+      <td><p>A four-dimensional array for analog values with the dimensions <code>[stations, test times, lead times, members]</code>.
+This is usually generated from the <code>RAnEn::generateAnalogs</code>.</p></td>
     </tr>
     <tr>
       <th>target.forecasts</th>
       <td><p>A three- or four- dimensional array for test forecasts that analogs are generated for. The dimensions
-can either be <code>[stations, test times, lead times]</code> or <code>[stations, test times, lead times, 1]</code>.</p></td>
+can either be <code>[stations, test times, lead times]</code> or <code>[stations, test times, lead times, 1]</code>. The forecasts should be aligned
+with the anlaogs for the first three dimensions.</p></td>
     </tr>
     <tr>
       <th>historical.forecasts</th>
-      <td><p>The historical forecast search repository with the dimensions <code>[parameters, stations, times, lead times]</code>.</p></td>
+      <td><p>The historical forecast search repository with the dimensions <code>[parameters, stations, times, lead times]</code>.
+This is usually the <code>Forecasts</code> used in <code>RAnEn::generateAnalogs</code>.</p></td>
     </tr>
     <tr>
       <th>similarity.time.index</th>
-      <td><p>Similarity time index for each analog members</p></td>
+      <td><p>Similarity time index for each analog members. To have this for your analogs, you need to
+set <code>config$save_similarity_time_index = T</code> before you run <code>RAnEn::generateAnalogs</code>.</p></td>
     </tr>
     <tr>
       <th>similarity.station.index</th>
-      <td><p>Similarity station index for each analog members</p></td>
+      <td><p>Similarity station index for each analog members. To have this for your analogs, you need to
+set <code>config$save_similarity_station_index = T</code> and use <code>SSE</code> for analog generation.</p></td>
     </tr>
     <tr>
       <th>regression.forecasts</th>

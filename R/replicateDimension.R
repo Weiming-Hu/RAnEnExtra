@@ -19,6 +19,10 @@
 #' @author Weiming Hu \email{weiming@@psu.edu}
 #' @author Martina Calovi \email{mxc895@@psu.edu}
 #'
+#' @param arr An array
+#' @param times How many times to duplicate the dimension
+#' @param dimension Which dimension to duplicate
+#'
 #' @md
 #' @export
 replicateDimension <- function(arr, times, dimension) {
