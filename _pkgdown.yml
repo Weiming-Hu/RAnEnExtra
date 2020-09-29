@@ -43,4 +43,6 @@ reference:
       contents:
           - parseProfiling
           - organizeFLTs
+          - replicateDimension
+          - biasCorrection
 

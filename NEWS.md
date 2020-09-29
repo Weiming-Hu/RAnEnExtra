@@ -1,6 +1,10 @@
+## RAnEnExtra 0.2.11
+
+- Added new functions `RANEnExtra::biasCorrection` and `RAnEnExtra::replicateDimension`
+
 ## RAnEnExtra 0.2.10
 
-- Added new functio `RAnEnExtra::subsetParameters`
+- Added new function `RAnEnExtra::subsetParameters`
 - Added functionality to parse verification with bootstrap and other variables
 - Parameterize confidence interval in bootstrap
 

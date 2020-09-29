@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>RAnEnExtra::pixelsToY — pixelsToY • RAnEnExtra</title>
+<title>RAnEnExtra::biasCorrection — biasCorrection • RAnEnExtra</title>
 
 
 <!-- jquery -->
@@ -35,11 +35,9 @@
 
 
 
-<meta property="og:title" content="RAnEnExtra::pixelsToY — pixelsToY" />
-<meta property="og:description" content="RAnEnExtra::pixelsToY convert the pixel index
-to its y coordinate counting row-wise. The start matters
-because it sets the offset. The returned numbers are
-counted from 1." />
+<meta property="og:title" content="RAnEnExtra::biasCorrection — biasCorrection" />
+<meta property="og:description" content="RAnEnExtra::biasCorrection carries out a bias correction routine on the analog ensembles
+using a linear regression method. This correction method is useful for predicting extreme event." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -111,50 +109,112 @@ counted from 1." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>RAnEnExtra::pixelsToY</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Weiming-Hu/RAnEnExtra/blob/master/R/pixelsToY.R'><code>R/pixelsToY.R</code></a></small>
-    <div class="hidden name"><code>pixelsToY.Rd</code></div>
+    <h1>RAnEnExtra::biasCorrection</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Weiming-Hu/RAnEnExtra/blob/master/R/biasCorrection.R'><code>R/biasCorrection.R</code></a></small>
+    <div class="hidden name"><code>biasCorrection.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>RAnEnExtra::pixelsToY convert the pixel index
-to its y coordinate counting row-wise. The start matters
-because it sets the offset. The returned numbers are
-counted from 1.</p>
+    <p>RAnEnExtra::biasCorrection carries out a bias correction routine on the analog ensembles
+using a linear regression method. This correction method is useful for predicting extreme event.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pixelsToY</span>(<span class='no'>pixels</span>, <span class='no'>xgrids.total</span>, <span class='no'>start</span>)</pre>
+    <pre class="usage"><span class='fu'>biasCorrection</span>(
+  <span class='no'>analogs</span>,
+  <span class='no'>target.forecasts</span>,
+  <span class='no'>historical.forecasts</span>,
+  <span class='no'>similarity.time.index</span>,
+  <span class='kw'>similarity.station.index</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>regression.forecasts</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>regression.observations</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>forecast.id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>activation.func</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>show.progress</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>return.more</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>group.func</span> <span class='kw'>=</span> <span class='no'>mean</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pixels</th>
-      <td><p>a vector of indices of pixels that
-will get divided</p></td>
+      <th>analogs</th>
+      <td><p>A four-dimensional array for analog values with the dimensions <code>[stations, test times, lead times, members]</code></p></td>
     </tr>
     <tr>
-      <th>xgrids.total</th>
-      <td><p>total number of x.</p></td>
+      <th>target.forecasts</th>
+      <td><p>A three- or four- dimensional array for test forecasts that analogs are generated for. The dimensions
+can either be <code>[stations, test times, lead times]</code> or <code>[stations, test times, lead times, 1]</code>.</p></td>
     </tr>
     <tr>
-      <th>start</th>
-      <td><p>the counting start of pixels.</p></td>
+      <th>historical.forecasts</th>
+      <td><p>The historical forecast search repository with the dimensions <code>[parameters, stations, times, lead times]</code>.</p></td>
+    </tr>
+    <tr>
+      <th>similarity.time.index</th>
+      <td><p>Similarity time index for each analog members</p></td>
+    </tr>
+    <tr>
+      <th>similarity.station.index</th>
+      <td><p>Similarity station index for each analog members</p></td>
+    </tr>
+    <tr>
+      <th>regression.forecasts</th>
+      <td><p>The forecast values used to calculate the slope of a linear regression line. These forecasts must
+correspond to observations for regression.</p></td>
+    </tr>
+    <tr>
+      <th>regression.observations</th>
+      <td><p>The observation values used to calculate the slope of a linear regression line These
+observations must correspond to forecasts for regression.</p></td>
+    </tr>
+    <tr>
+      <th>forecast.id</th>
+      <td><p>A forecasts parameter index used by the <code>historical.forecasts</code> to specify which forecast parameter to use.</p></td>
+    </tr>
+    <tr>
+      <th>activation.func</th>
+      <td><p>An activation function to signify whether a particular ensemble should be bias corrected. This function
+should takes a single argument and return a TRUE or FALSE. The single argument of the function will be an analog ensemble,
+or a numeric vector. For example, <code>activation.func = function(members) {if (mean(members) &gt; 15) {return(T)} else {return(F)}}</code>
+will only correct ensembles that have an average over 15.</p></td>
+    </tr>
+    <tr>
+      <th>show.progress</th>
+      <td><p>Whether to show a progress bar</p></td>
+    </tr>
+    <tr>
+      <th>return.more</th>
+      <td><p>Whether to return more information</p></td>
+    </tr>
+    <tr>
+      <th>group.func</th>
+      <td><p>How to collapse the analog ensemble to a single value to calculate the amount of correction. In the paper and
+by default, this is <code>mean</code>.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional variables passed to <code>group.func</code></p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>y coordinate(s)</p>
+    <p>Alessandrini, Stefano, Simone Sperati, and Luca Delle Monache. "Improving the analog ensemble
+wind speed forecasts for rare events." Monthly Weather Review 147.7 (2019): 2677-2692.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
+      <li><a href="#references">References</a></li>
     </ul>
 
+    <h2>Author</h2>
+    <p>Weiming Hu <a href='mailto:weiming@psu.edu'>weiming@psu.edu</a></p>
+<p>Martina Calovi <a href='mailto:mxc895@psu.edu'>mxc895@psu.edu</a></p>
   </div>
 </div>
 

@@ -1,7 +1,7 @@
 Package: RAnEnExtra
 Type: Package
 Title: Extra functions for RAnEn
-Version: 0.2.10
+Version: 0.2.11
 Author: Weiming Hu
 Authors@R: c(
     person("Weiming", "Hu", , "weiming@psu.edu", role = c("aut", "cre"),
@@ -21,6 +21,7 @@ Suggests:
     future.apply,
     verification,
     magrittr,
+    progress,
     parallel,
     ggplot2,
     plotly,
