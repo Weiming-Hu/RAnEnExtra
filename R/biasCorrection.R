@@ -119,11 +119,6 @@ biasCorrection <- function(analogs, target.forecasts, historical.forecasts,
     target.forecasts <- abind::adrop(target.forecasts, 4)
   }
 
-  # Threshold should be a single value
-  if (!is.null(threshold)) {
-    stopifnot(length(threshold) == 1)
-  }
-
   ################################################################
   # Step 1: Estimate the slope (beta_0) of the linear regression #
   ################################################################
