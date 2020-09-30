@@ -26,15 +26,15 @@
 #' the **observations** associated with the historical forecasts on July 22,
 #' 24, and 24 will be included in the persistent analogs.
 #'
-#' @param forecasts Forecast data array
+#' @param test.times Forecast times
 #' @param flts Forecast lead times
 #' @param observations Observation data array
 #' @param obs.id Observation vairable index
 #' @param obs.times Observation times
-#' @param test.times Test times of analog ensemble
 #' @param num.analogs The number of analogs
 #' @param forecast.time.interval The forecast time interval in seconds. This is
-#' usually `24 * 60 * 60` because the third dimension of forecasts is usually day.
+#' also the number of seconds between two forecast cycle time. It is usually
+#' `24 * 60 * 60` because the third dimension of forecasts is usually day.
 #' If it is half day, change the value accordingly.
 #' @param show.progress Whether to show a progress bar.
 #' @param silent Whether to be silent.
@@ -46,12 +46,11 @@
 #' @export
 generatePersistence <- function(
 
-  forecasts,
+  test.times,
   flts,
   observations,
   obs.id,
   obs.times,
-  test.times,
   num.analogs,
 
   forecast.time.interval = 86400, show.progress = F, silent = F) {
@@ -67,9 +66,9 @@ generatePersistence <- function(
   }
 
   # Read meta info
-  num.grids <- dim(forecasts)[2]
+  num.grids <- dim(observations)[2]
   num.test.times <- length(test.times)
-  num.flts <- dim(forecasts)[4]
+  num.flts <- length(flts)
 
   # Generate a historical time sequence for each test time. Observations for this historical
   # time sequence will be collected for persistence.

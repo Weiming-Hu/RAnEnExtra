@@ -129,12 +129,11 @@ ensemble members desired.</p>
     </div>
 
     <pre class="usage"><span class='fu'>generatePersistence</span>(
-  <span class='no'>forecasts</span>,
+  <span class='no'>test.times</span>,
   <span class='no'>flts</span>,
   <span class='no'>observations</span>,
   <span class='no'>obs.id</span>,
   <span class='no'>obs.times</span>,
-  <span class='no'>test.times</span>,
   <span class='no'>num.analogs</span>,
   <span class='kw'>forecast.time.interval</span> <span class='kw'>=</span> <span class='fl'>86400</span>,
   <span class='kw'>show.progress</span> <span class='kw'>=</span> <span class='no'>F</span>,
@@ -145,8 +144,8 @@ ensemble members desired.</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>forecasts</th>
-      <td><p>Forecast data array</p></td>
+      <th>test.times</th>
+      <td><p>Forecast times</p></td>
     </tr>
     <tr>
       <th>flts</th>
@@ -165,17 +164,14 @@ ensemble members desired.</p>
       <td><p>Observation times</p></td>
     </tr>
     <tr>
-      <th>test.times</th>
-      <td><p>Test times of analog ensemble</p></td>
-    </tr>
-    <tr>
       <th>num.analogs</th>
       <td><p>The number of analogs</p></td>
     </tr>
     <tr>
       <th>forecast.time.interval</th>
       <td><p>The forecast time interval in seconds. This is
-usually <code>24 * 60 * 60</code> because the third dimension of forecasts is usually day.
+also the number of seconds between two forecast cycle time. It is usually
+<code>24 * 60 * 60</code> because the third dimension of forecasts is usually day.
 If it is half day, change the value accordingly.</p></td>
     </tr>
     <tr>

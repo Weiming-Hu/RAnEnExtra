@@ -5,12 +5,11 @@
 \title{RAnEnExtra::generatePersistence}
 \usage{
 generatePersistence(
-  forecasts,
+  test.times,
   flts,
   observations,
   obs.id,
   obs.times,
-  test.times,
   num.analogs,
   forecast.time.interval = 86400,
   show.progress = F,
@@ -18,7 +17,7 @@ generatePersistence(
 )
 }
 \arguments{
-\item{forecasts}{Forecast data array}
+\item{test.times}{Forecast times}
 
 \item{flts}{Forecast lead times}
 
@@ -28,12 +27,11 @@ generatePersistence(
 
 \item{obs.times}{Observation times}
 
-\item{test.times}{Test times of analog ensemble}
-
 \item{num.analogs}{The number of analogs}
 
 \item{forecast.time.interval}{The forecast time interval in seconds. This is
-usually \code{24 * 60 * 60} because the third dimension of forecasts is usually day.
+also the number of seconds between two forecast cycle time. It is usually
+\code{24 * 60 * 60} because the third dimension of forecasts is usually day.
 If it is half day, change the value accordingly.}
 
 \item{show.progress}{Whether to show a progress bar.}
