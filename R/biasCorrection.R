@@ -98,8 +98,8 @@ biasCorrection <- function(analogs, target.forecasts, historical.forecasts,
   skip.regression <- is.null(regression.forecasts) | is.null(regression.observations)
 
   if (!skip.regression) {
-    stopifnot(is.null(regression.forecasts))
-    stopifnot(is.null(regression.observations))
+    stopifnot(!is.null(regression.forecasts))
+    stopifnot(!is.null(regression.observations))
 
     if (!is.null(dim(regression.forecasts))) {
       regression.forecasts <- as.numeric(regression.forecasts)
