@@ -10,7 +10,8 @@ subsetCoordinates(
   poi,
   file.output = NULL,
   arg.name = "stations-index",
-  num.chunks = NULL
+  num.chunks = NULL,
+  num.cores = 1
 )
 }
 \arguments{
@@ -29,6 +30,8 @@ from \code{anen_grib} and \code{grib_convert}.}
 
 \item{num.chunks}{How many chunks to break the stations into. Each chunk will
 be saved to a separate configuration file.}
+
+\item{num.cores}{Set this to the number of paralell cores to use. Default to 1.}
 }
 \value{
 A data frame with ID and coordinates for subset stations. The column \code{ID.C}

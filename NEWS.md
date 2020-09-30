@@ -1,6 +1,7 @@
 ## RAnEnExtra 0.2.11
 
-- Added new functions `RANEnExtra::biasCorrection` and `RAnEnExtra::replicateDimension`
+- Added new functions `RAnEnExtra::biasCorrection` and `RAnEnExtra::replicateDimension`
+- Added parallel functionality to `RAnEnExtra::subsetCoordinates`
 
 ## RAnEnExtra 0.2.10
 
