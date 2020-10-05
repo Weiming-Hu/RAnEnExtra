@@ -98,8 +98,8 @@ biasCorrection <- function(analogs, target.forecasts, historical.forecasts,
   skip.regression <- is.null(regression.forecasts) | is.null(regression.observations)
 
   if (!skip.regression) {
-    stopifnot(is.null(regression.forecasts))
-    stopifnot(is.null(regression.observations))
+    stopifnot(!is.null(regression.forecasts))
+    stopifnot(!is.null(regression.observations))
 
     if (!is.null(dim(regression.forecasts))) {
       regression.forecasts <- as.numeric(regression.forecasts)
@@ -117,11 +117,6 @@ biasCorrection <- function(analogs, target.forecasts, historical.forecasts,
     stopifnot(length(dim(target.forecasts)) == 4)
     stopifnot(dim(target.forecasts)[4] == 1)
     target.forecasts <- abind::adrop(target.forecasts, 4)
-  }
-
-  # Threshold should be a single value
-  if (!is.null(threshold)) {
-    stopifnot(length(threshold) == 1)
   }
 
   ################################################################

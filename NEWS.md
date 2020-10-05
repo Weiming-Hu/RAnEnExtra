@@ -1,8 +1,12 @@
 ## RAnEnExtra 0.2.11
 
 - Added new functions `RAnEnExtra::biasCorrection` and `RAnEnExtra::replicateDimension`
+<<<<<<< HEAD
 - Added new function `RAnEnExtra::organizeBinnedSpreadSkill`
 - Added new function `RAnEnExtra::schaakeShuffle`
+=======
+- Added parallel functionality to `RAnEnExtra::subsetCoordinates`
+>>>>>>> 635e94726c7f5bfc60d488e3e0b8351b44d37e26
 
 ## RAnEnExtra 0.2.10
 
