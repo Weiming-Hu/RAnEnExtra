@@ -33,15 +33,15 @@ organizeBinnedSpreadSkill <- function(results) {
   for (method in names(results)) {
     if ('BinnedSpreadSkill' %in% names(results[[method]])) {
       df_single <- data.frame(Spread = results[[method]]$BinnedSpreadSkill$spread.skill.res[, 1],
-                              MAE = results[[method]]$BinnedSpreadSkill$spread.skill.res[, 2],
+                              RMSE = results[[method]]$BinnedSpreadSkill$spread.skill.res[, 2],
                               Method = method,
                               Metirc = 'BinnedSpreadSkill')
 
       if (all(!is.na(results[[method]]$BinnedSpreadSkill$boot.res))) {
 
         # Boot has been working correctly
-        df_single$Error_floor <- results[[method]]$BinnedSpreadSkill$boot.res[2, ]
-        df_single$Error_ceiling <- results[[method]]$BinnedSpreadSkill$boot.res[3, ]
+        df_single$RMSE_floor <- results[[method]]$BinnedSpreadSkill$boot.res[2, ]
+        df_single$RMSE_ceiling <- results[[method]]$BinnedSpreadSkill$boot.res[3, ]
       } else {
 
         if (any(!is.na(results[[method]]$BinnedSpreadSkill$boot.res))) {
@@ -49,8 +49,8 @@ organizeBinnedSpreadSkill <- function(results) {
           warning(warn)
         }
 
-        df_single$Error_floor <- NA
-        df_single$Error_ceiling <- NA
+        df_single$RMSE_floor <- NA
+        df_single$RMSE_ceiling <- NA
       }
 
       df <- rbind(df, df_single)
@@ -58,8 +58,8 @@ organizeBinnedSpreadSkill <- function(results) {
   }
 
   # Remove columns that only contain NA values
-  if (all(is.na(df$Error_ceiling))) df$Error_ceiling <- NULL
-  if (all(is.na(df$Error_floor))) df$Error_floor <- NULL
+  if (all(is.na(df$RMSE_ceiling))) df$RMSE_ceiling <- NULL
+  if (all(is.na(df$RMSE_floor))) df$RMSE_floor <- NULL
 
   return(df)
 }
