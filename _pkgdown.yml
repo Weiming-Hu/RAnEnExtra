@@ -19,6 +19,7 @@ reference:
       contents:
           - generatePersistence
           - approxLeadTimes
+          - schaakeShuffle
           - starts_with("query")
 
     - title: Verification
@@ -42,7 +43,7 @@ reference:
       desc: Other functions that do not belong to any of the above categories
       contents:
           - parseProfiling
-          - organizeFLTs
+          - starts_with("organize")
           - replicateDimension
           - biasCorrection
 
