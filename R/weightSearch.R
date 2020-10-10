@@ -66,7 +66,7 @@ weightSearch <- function(weights, forecasts, observations, test.times, search.ti
   } else if (is.numeric(weights) && length(weights) == 1) {
 
     # Weights are randomly generated and only the number of iteration is generated.
-    random_weights <- matrix(runif(7 * weights), nrow = weights)
+    random_weights <- matrix(runif(length(forecasts$ParameterNames) * weights), nrow = weights)
     weights <- random_weights / rowSums(random_weights)
 
   } else {
