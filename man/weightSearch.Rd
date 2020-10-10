@@ -43,7 +43,7 @@ combinations of weights that have been searched and the last column is the verif
 RAnEnExtra::weightSearch is a grid search function for weight optimization.
 }
 \author{
-Alon Sidel \email{mxc895@psu.edu}
+Alon Sidel \email{ays10@psu.edu}
 
-Weiming Hu \email{cervone@psu.edu}
+Weiming Hu \email{weiming@psu.edu}
 }

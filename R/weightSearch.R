@@ -2,8 +2,8 @@
 #'
 #' RAnEnExtra::weightSearch is a grid search function for weight optimization.
 #'
-#' @author Alon Sidel \email{mxc895@@psu.edu}
-#' @author Weiming Hu \email{cervone@@psu.edu}
+#' @author Alon Sidel \email{ays10@@psu.edu}
+#' @author Weiming Hu \email{weiming@@psu.edu}
 #'
 #' @param weights Either a numeric matrix or a single numeral. If it is a matrix, each row is a certain weight combination and the number
 #' of rows equal to the number of iterations; if it is a single numeral, it is the number of iterations and the weights will be randomly generated.
