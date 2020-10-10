@@ -19,7 +19,6 @@ reference:
       contents:
           - generatePersistence
           - approxLeadTimes
-          - schaakeShuffle
           - starts_with("query")
 
     - title: Verification
@@ -39,11 +38,16 @@ reference:
           - starts_with("subset")
           - starts_with("pixels")
 
+    - title: Optimization
+      desc: Optimization functions for Analog Ensemble
+          - weightSearch
+          - biasCorrection
+          - schaakeShuffle
+
     - title: Other functions
       desc: Other functions that do not belong to any of the above categories
       contents:
           - parseProfiling
           - starts_with("organize")
           - replicateDimension
-          - biasCorrection
 

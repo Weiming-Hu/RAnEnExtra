@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>RAnEnExtra::schaakeShuffle — schaakeShuffle • RAnEnExtra</title>
+<title>RAnEnExtra::weightSearch — weightSearch • RAnEnExtra</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,8 @@
 
 
 
-<meta property="og:title" content="RAnEnExtra::schaakeShuffle — schaakeShuffle" />
-<meta property="og:description" content="RAnEnExtra::schaakeShuffle is a method to improve autocorrelation within ensemble
-members in the spatial and temporal constructions by reordering the memebers." />
+<meta property="og:title" content="RAnEnExtra::weightSearch — weightSearch" />
+<meta property="og:description" content="RAnEnExtra::weightSearch is a grid search function for weight optimization." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,85 +108,82 @@ members in the spatial and temporal constructions by reordering the memebers." /
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>RAnEnExtra::schaakeShuffle</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Weiming-Hu/RAnEnExtra/blob/master/R/schaakeShuffle.R'><code>R/schaakeShuffle.R</code></a></small>
-    <div class="hidden name"><code>schaakeShuffle.Rd</code></div>
+    <h1>RAnEnExtra::weightSearch</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Weiming-Hu/RAnEnExtra/blob/master/R/weightSearch.R'><code>R/weightSearch.R</code></a></small>
+    <div class="hidden name"><code>weightSearch.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>RAnEnExtra::schaakeShuffle is a method to improve autocorrelation within ensemble
-members in the spatial and temporal constructions by reordering the memebers.</p>
+    <p>RAnEnExtra::weightSearch is a grid search function for weight optimization.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>schaakeShuffle</span>(<span class='no'>anen</span>, <span class='no'>obs.search</span>, <span class='kw'>show.progress</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>allow.na</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>42</span>)</pre>
+    <pre class="usage"><span class='fu'>weightSearch</span>(
+  <span class='no'>weights</span>,
+  <span class='no'>forecasts</span>,
+  <span class='no'>observations</span>,
+  <span class='no'>test.times</span>,
+  <span class='no'>search.times</span>,
+  <span class='no'>config</span>,
+  <span class='kw'>metric</span> <span class='kw'>=</span> <span class='st'>"RMSE"</span>,
+  <span class='kw'>return.best.only</span> <span class='kw'>=</span> <span class='no'>F</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>anen</th>
-      <td><p>Analogs from <code>generateAnalogs.default</code>.
-The dimensions should be (stations, test times, FLTs, members).</p></td>
+      <th>weights</th>
+      <td><p>Either a numeric matrix or a single numeral. If it is a matrix, each row is a certain weight combination and the number
+of rows equal to the number of iterations; if it is a single numeral, it is the number of iterations and the weights will be randomly generated.</p></td>
     </tr>
     <tr>
-      <th>obs.search</th>
-      <td><p>The aligned observations with 4 dimensions (parameters, stations,
-search times, FLTs). However, please make sure there is only 1 parameter. Observations
-can be created from <code>alignObservations</code>.</p></td>
+      <th>forecasts</th>
+      <td><p>Forecasts for <code><a href='https://rdrr.io/pkg/RAnEn/man/generateAnalogs.Forecasts.html'>RAnEn::generateAnalogs.Forecasts</a></code></p></td>
     </tr>
     <tr>
-      <th>allow.na</th>
-      <td><p>Whether to allow NA values to exist in selected days. Since the the N
-search days are randomly chosen and there might be NA in the values. Typically, this
-function will try to find a station index and a lead time index that does not have NA
-values. But if it fails to do so, you have to consider what you need to do next: 1)
-You can check why you have so many NA values in the observations, or 2) you can simply
-allow sorting with NA, and then all the NA values be placed to the end.</p></td>
+      <th>observations</th>
+      <td><p>Observations for <code><a href='https://rdrr.io/pkg/RAnEn/man/generateAnalogs.Forecasts.html'>RAnEn::generateAnalogs.Forecasts</a></code></p></td>
     </tr>
     <tr>
-      <th>seed</th>
-      <td><p>A random seed for reproducibility.</p></td>
+      <th>test.times</th>
+      <td><p>Test times for <code><a href='https://rdrr.io/pkg/RAnEn/man/generateAnalogs.Forecasts.html'>RAnEn::generateAnalogs.Forecasts</a></code></p></td>
+    </tr>
+    <tr>
+      <th>search.times</th>
+      <td><p>Search times for <code><a href='https://rdrr.io/pkg/RAnEn/man/generateAnalogs.Forecasts.html'>RAnEn::generateAnalogs.Forecasts</a></code></p></td>
+    </tr>
+    <tr>
+      <th>config</th>
+      <td><p>Config for <code><a href='https://rdrr.io/pkg/RAnEn/man/generateAnalogs.Forecasts.html'>RAnEn::generateAnalogs.Forecasts</a></code></p></td>
+    </tr>
+    <tr>
+      <th>metric</th>
+      <td><p>The metric for <code><a href='verify.html'>RAnEnExtra::verify</a></code>. Please note two things: (1) please make sure the member <code>mean</code> exists in the verification
+results because it is used to evaluate different combinations of weights; (2) it is assumed that the metric is an error measurement so that
+the lowest metric is considered the best.</p></td>
+    </tr>
+    <tr>
+      <th>return.best.only</th>
+      <td><p>Whether to only return the best combination of weights</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Although the absolute verification statistics of a particular ensemble (e.g.
-RMSE, bias, and etc.) are not affected by reordering the members, the reordered
-ensemble members preserve a better autocorrelation structure when inspected
-one by one, for example, plotting the first member of all ensembles.</p>
-<p>The algorithm is as follows:</p><pre>
--- For each test day
-      Randomly choose N search days (N is the number of ensemble members)
-      Establish the linking function B
-      -- For each FLT
-         -- For each station
-            Reorder enmseble members using the linking function B
-         -- End of stations
-      -- End of FLTs
--- End of test days
-
-</pre>
-
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Sperati, Simone, Stefano Alessandrini, and Luca Delle Monache.
-"Gridded probabilistic weather forecasts with an analog ensemble."
-Quarterly Journal of the Royal Meteorological Society 143.708 (2017): 2874-2885.</p>
+    <p>Either a vector or a matrix. If a vector is returned, it is the best combination of weights; if a matrix is returned, it is the
+combinations of weights that have been searched and the last column is the verification metric.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#references">References</a></li>
+      <li><a href="#value">Value</a></li>
     </ul>
 
     <h2>Author</h2>
-    <p>Guido Cervone <a href='mailto:cervone@psu.edu'>cervone@psu.edu</a></p>
-<p>Martina Calovi <a href='mailto:mxc895@psu.edu'>mxc895@psu.edu</a></p>
-<p>Weiming Hu <a href='mailto:weiming@psu.edu'>weiming@psu.edu</a></p>
+    <p>Alon Sidel <a href='mailto:mxc895@psu.edu'>mxc895@psu.edu</a></p>
+<p>Weiming Hu <a href='mailto:cervone@psu.edu'>cervone@psu.edu</a></p>
   </div>
 </div>
 
