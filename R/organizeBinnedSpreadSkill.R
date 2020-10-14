@@ -35,7 +35,7 @@ organizeBinnedSpreadSkill <- function(results) {
       df_single <- data.frame(Spread = results[[method]]$BinnedSpreadSkill$spread.skill.res[, 1],
                               RMSE = results[[method]]$BinnedSpreadSkill$spread.skill.res[, 2],
                               Method = method,
-                              Metirc = 'BinnedSpreadSkill')
+                              Metric = 'BinnedSpreadSkill')
 
       if (all(!is.na(results[[method]]$BinnedSpreadSkill$boot.res))) {
 
