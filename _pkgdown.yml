@@ -50,5 +50,6 @@ reference:
       contents:
           - parseProfiling
           - starts_with("organize")
+          - mergeAnalogsByStations
           - replicateDimension
 

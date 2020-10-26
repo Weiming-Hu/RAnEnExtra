@@ -1,6 +1,7 @@
 ## RAnEnExtra 0.2.12
 
 - Added new functions `RAnEnExtra::weightSearch`
+- Added new functions `RAnEnExtra::mergeAnalogsByStations`
 
 ## RAnEnExtra 0.2.11
 

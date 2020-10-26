@@ -3,6 +3,7 @@
 export(approxLeadTimes)
 export(biasCorrection)
 export(generatePersistence)
+export(mergeAnalogsByStations)
 export(organizeBinnedSpreadSkill)
 export(organizeFLTs)
 export(parseProfiling)
