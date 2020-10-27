@@ -19,10 +19,14 @@
 #'
 #' @param files A vector of AnEn files
 #' @param verbose Whether to be verbose
+#' @param merge_forecasts Whether to merge `Forecasts/Data` if it exists
+#' @param cores The number of cores to use while reading files
+#' @param copy_vars The variable names to simply copy from the first file in the (sorted) list into the final AnEn list
 #' @return An AnEn.
 #' @md
 #' @export
-mergeAnalogsByStations <- function(files, verbose = T) {
+mergeAnalogsByStations <- function(files, verbose = T, merge_forecasts = T,
+                                   cores = 1, copy_vars = NULL) {
 
   # Sanity check
   file_exists <- file.exists(files)
@@ -35,20 +39,39 @@ mergeAnalogsByStations <- function(files, verbose = T) {
   #################################
 
   if (verbose) {
-    cat('Reading data from separate files ...\n')
+    cat('Reading analogs from separate files ...\n')
   }
 
-  analogs <- lapply(files, function(file) {
+  analogs <- parallel::mclapply(files, function(file) {
     RAnEn::readNc(file, var_names = 'analogs')$analogs
-  })
+  }, mc.cores = cores)
 
-  xs <- lapply(files, function(file) {
+  if (verbose) {
+    cat('Reading Xs from separate files ...\n')
+  }
+
+  xs <- parallel::mclapply(files, function(file) {
     RAnEn::readNc(file, var_names = 'Xs')$Xs
-  })
+  }, mc.cores = cores)
 
-  ys <- lapply(files, function(file) {
+  if (verbose) {
+    cat('Reading Ys from separate files ...\n')
+  }
+
+  ys <- parallel::mclapply(files, function(file) {
     RAnEn::readNc(file, var_names = 'Ys')$Ys
-  })
+  }, mc.cores = cores)
+
+  if (merge_forecasts) {
+
+    if (verbose) {
+      cat('Reading forecast data from separate files ...\n')
+    }
+
+    forecasts <- parallel::mclapply(files, function(file) {
+      RAnEn::readNc(file, var_names = 'Forecasts/Data')[['Forecasts/Data']]
+    }, mc.cores = cores)
+  }
 
   ################
   # Bind analogs #
@@ -64,7 +87,24 @@ mergeAnalogsByStations <- function(files, verbose = T) {
     Ys = as.numeric(abind::abind(ys, along = 1))
   )
 
+  if (merge_forecasts) {
+    AnEn[['Forecasts/Data']] <- abind::abind(forecasts, along = 2)
+  }
+
   class(AnEn) <- c('AnEn', class(AnEn))
+
+  ############################
+  # Variables to simply copy #
+  ############################
+
+  if (!is.null(copy_vars)) {
+    copy_vars <- RAnEn::readNc(files[1], root_group_only = F, var_names = copy_vars)
+
+    for (copy_var in names(copy_vars)) {
+      stopifnot(!copy_var %in% names(AnEn))
+      AnEn[[copy_var]] <- copy_vars[[copy_var]]
+    }
+  }
 
   return(AnEn)
 }

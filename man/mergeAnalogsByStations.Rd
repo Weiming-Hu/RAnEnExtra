@@ -4,12 +4,24 @@
 \alias{mergeAnalogsByStations}
 \title{RAnEnExtra::mergeAnalogsByStations}
 \usage{
-mergeAnalogsByStations(files, verbose = T)
+mergeAnalogsByStations(
+  files,
+  verbose = T,
+  merge_forecasts = T,
+  cores = 1,
+  copy_vars = NULL
+)
 }
 \arguments{
 \item{files}{A vector of AnEn files}
 
 \item{verbose}{Whether to be verbose}
+
+\item{merge_forecasts}{Whether to merge \code{Forecasts/Data} if it exists}
+
+\item{cores}{The number of cores to use while reading files}
+
+\item{copy_vars}{The variable names to simply copy from the first file in the (sorted) list into the final AnEn list}
 }
 \value{
 An AnEn.

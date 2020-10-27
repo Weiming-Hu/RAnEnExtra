@@ -119,7 +119,13 @@ and then combines analogs by stations. It is assumed that analogs, Xs, and Ys ex
 and then combines analogs by stations. It is assumed that <code>analogs</code>, <code>Xs</code>, and <code>Ys</code> exist in all files.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mergeAnalogsByStations</span>(<span class='no'>files</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='no'>T</span>)</pre>
+    <pre class="usage"><span class='fu'>mergeAnalogsByStations</span>(
+  <span class='no'>files</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>merge_forecasts</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>copy_vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -131,6 +137,18 @@ and then combines analogs by stations. It is assumed that <code>analogs</code>, 
     <tr>
       <th>verbose</th>
       <td><p>Whether to be verbose</p></td>
+    </tr>
+    <tr>
+      <th>merge_forecasts</th>
+      <td><p>Whether to merge <code>Forecasts/Data</code> if it exists</p></td>
+    </tr>
+    <tr>
+      <th>cores</th>
+      <td><p>The number of cores to use while reading files</p></td>
+    </tr>
+    <tr>
+      <th>copy_vars</th>
+      <td><p>The variable names to simply copy from the first file in the (sorted) list into the final AnEn list</p></td>
     </tr>
     </table>
 
