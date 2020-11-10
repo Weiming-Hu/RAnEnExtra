@@ -25,7 +25,7 @@
 #' @return An AnEn.
 #' @md
 #' @export
-mergeAnalogsByStations <- function(files, verbose = T, merge_forecasts = T,
+mergeAnalogsByStations <- function(files, verbose = T, merge_forecasts = F,
                                    cores = 1, copy_vars = NULL) {
 
   # Sanity check
