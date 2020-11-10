@@ -28,6 +28,14 @@ weightSearch <- function(weights, forecasts, observations, test.times, search.ti
   # Set up #
   ##########
 
+  if (!inherits(forecasts, 'Forecasts')) {
+    stop("Forecasts should have class'Forecasts'. You should use readForecasts. Or you can manually change the class `class(forecasts) <- 'Forecasts'`")
+  }
+
+  if (!inherits(observations, 'Observations')) {
+    stop("Observations should have class 'Observations'. You should use readObservations. Or you can manually change the class `class(observations) <- 'Observations'`")
+  }
+
   # By default, the observation ID is 0. Change this to 1.
   if (config$observation_id == 0) {
     config$observation_id = config$observation_id + 1
