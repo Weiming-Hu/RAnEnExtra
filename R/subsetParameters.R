@@ -92,6 +92,9 @@ subsetParameters <- function(index, l, verbose = T) {
       }
     }
   }
+  
+  # Clear memory
+  gc(reset = T)
 
   if (verbose) {
     cat('Done (subsetParameters)\n')
