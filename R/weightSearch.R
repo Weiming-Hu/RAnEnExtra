@@ -18,7 +18,7 @@
 #' `obs.aligned` and `AnEn$analogs`. `obs.aligned` is a 3-dimensional array of shape `[stations, times, lead times]`, and `AnEn$analogs`
 #' is a 4-dimensional array of shape `[stations, times, lead times, members]`. The return of this function is the error metric.
 #' @param return.best.only Whether to only return the best combination of weights
-#' @param combine_weights Whether to combine errors as an extra column to weight matrix. This does not work when `metric` is a function that returns multiple values.
+#' @param combine.weights Whether to combine errors as an extra column to weight matrix. This does not work when `metric` is a function that returns multiple values.
 #' @param ... Extra parameters for metric if it is a function
 #'
 #' @return Either a vector or a matrix. If a vector is returned, it is the best combination of weights; if a matrix is returned, it is the
@@ -26,7 +26,7 @@
 #'
 #' @md
 #' @export
-weightSearch <- function(weights, forecasts, observations, test.times, search.times, config, metric = 'RMSE', return.best.only = F, combine_weights = T, ...) {
+weightSearch <- function(weights, forecasts, observations, test.times, search.times, config, metric = 'RMSE', return.best.only = F, combine.weights = T, ...) {
 
   ##########
   # Set up #
@@ -97,6 +97,10 @@ weightSearch <- function(weights, forecasts, observations, test.times, search.ti
                                     test.times = test.times, search.times = search.times, config = config, metric = metric, obs.aligned = obs.aligned, ...)
 
   cat('Grid search complete!\n')
+
+  if (!combine.weights) {
+    return(verification)
+  }
 
   if (return.best.only) {
 
