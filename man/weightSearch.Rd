@@ -12,7 +12,9 @@ weightSearch(
   search.times,
   config,
   metric = "RMSE",
-  return.best.only = F
+  return.best.only = F,
+  combine_weights = T,
+  ...
 )
 }
 \arguments{
@@ -29,11 +31,17 @@ of rows equal to the number of iterations; if it is a single numeral, it is the 
 
 \item{config}{Config for \code{RAnEn::generateAnalogs.Forecasts}}
 
-\item{metric}{The metric for \code{RAnEnExtra::verify}. Please note two things: (1) please make sure the member \code{mean} exists in the verification
-results because it is used to evaluate different combinations of weights; (2) it is assumed that the metric is an error measurement so that
-the lowest metric is considered the best.}
+\item{metric}{This can either be a function or a metric for \code{RAnEnExtra::verify}. If it is a metric, please note two things: (1) the member
+\code{mean} exists in the verification results because it is used to evaluate different combinations of weights; (2) it is assumed that the
+metric is an error measurement so that the lowest metric is considered the best, when \code{return.best.only = T}. If it is a function, the first two arguments are
+\code{obs.aligned} and \code{AnEn$analogs}. \code{obs.aligned} is a 3-dimensional array of shape \verb{[stations, times, lead times]}, and \code{AnEn$analogs}
+is a 4-dimensional array of shape \verb{[stations, times, lead times, members]}. The return of this function is the error metric.}
 
 \item{return.best.only}{Whether to only return the best combination of weights}
+
+\item{combine_weights}{Whether to combine errors as an extra column to weight matrix. This does not work when \code{metric} is a function that returns multiple values.}
+
+\item{...}{Extra parameters for metric if it is a function}
 }
 \value{
 Either a vector or a matrix. If a vector is returned, it is the best combination of weights; if a matrix is returned, it is the

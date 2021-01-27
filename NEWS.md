@@ -1,3 +1,7 @@
+## RAnEnExtra 0.2.13
+
+- `RAnEnExtra::weightSearch` now accepts a function as the metric
+
 ## RAnEnExtra 0.2.12
 
 - Added new functions `RAnEnExtra::weightSearch`

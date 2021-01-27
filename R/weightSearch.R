@@ -12,17 +12,21 @@
 #' @param test.times Test times for `RAnEn::generateAnalogs.Forecasts`
 #' @param search.times Search times for `RAnEn::generateAnalogs.Forecasts`
 #' @param config Config for `RAnEn::generateAnalogs.Forecasts`
-#' @param metric The metric for `RAnEnExtra::verify`. Please note two things: (1) please make sure the member `mean` exists in the verification
-#' results because it is used to evaluate different combinations of weights; (2) it is assumed that the metric is an error measurement so that
-#' the lowest metric is considered the best.
+#' @param metric This can either be a function or a metric for `RAnEnExtra::verify`. If it is a metric, please note two things: (1) the member
+#' `mean` exists in the verification results because it is used to evaluate different combinations of weights; (2) it is assumed that the
+#' metric is an error measurement so that the lowest metric is considered the best, when `return.best.only = T`. If it is a function, the first two arguments are
+#' `obs.aligned` and `AnEn$analogs`. `obs.aligned` is a 3-dimensional array of shape `[stations, times, lead times]`, and `AnEn$analogs`
+#' is a 4-dimensional array of shape `[stations, times, lead times, members]`. The return of this function is the error metric.
 #' @param return.best.only Whether to only return the best combination of weights
+#' @param combine_weights Whether to combine errors as an extra column to weight matrix. This does not work when `metric` is a function that returns multiple values.
+#' @param ... Extra parameters for metric if it is a function
 #'
 #' @return Either a vector or a matrix. If a vector is returned, it is the best combination of weights; if a matrix is returned, it is the
 #' combinations of weights that have been searched and the last column is the verification metric.
 #'
 #' @md
 #' @export
-weightSearch <- function(weights, forecasts, observations, test.times, search.times, config, metric = 'RMSE', return.best.only = F) {
+weightSearch <- function(weights, forecasts, observations, test.times, search.times, config, metric = 'RMSE', return.best.only = F, combine_weights = T, ...) {
 
   ##########
   # Set up #
@@ -50,7 +54,7 @@ weightSearch <- function(weights, forecasts, observations, test.times, search.ti
   dim(obs.aligned) <- dim(obs.aligned)[-1]
 
   # Defien an iteration function
-  iteration <- function(weight.row, weights, forecasts, observations, test.times, search.times, config, metric, obs.aligned) {
+  iteration <- function(weight.row, weights, forecasts, observations, test.times, search.times, config, metric, obs.aligned, ...) {
 
     # Change weight
     config$weights <- weights[weight.row, ]
@@ -59,10 +63,12 @@ weightSearch <- function(weights, forecasts, observations, test.times, search.ti
     AnEn <- generateAnalogs(forecasts, observations, test.times, search.times, config)
 
     # Verification
-    results <- RAnEnExtra::verify(metric, obs.ver = obs.aligned, anen.ver = AnEn$analogs, verbose = F)
-
-    # The mean statistic is used to summarize the verification
-    return(results[[metric]]$mean)
+    if (is.function(metric)) {
+      return(metric(obs.aligned, AnEn$analogs, ...))
+    } else {
+      results <- RAnEnExtra::verify(metric, obs.ver = obs.aligned, anen.ver = AnEn$analogs, verbose = F)
+      return(results[[metric]]$mean)
+    }
   }
 
   # The argument, weights, can be either a matrix or a numeric number
@@ -88,7 +94,7 @@ weightSearch <- function(weights, forecasts, observations, test.times, search.ti
   # Calculate verification for each weight combination
   cat('Grid searching ...\n')
   verification <- pbapply::pbsapply(1:nrow(weights), iteration, weights = weights, forecasts = forecasts, observations = observations,
-                                    test.times = test.times, search.times = search.times, config = config, metric = metric, obs.aligned = obs.aligned)
+                                    test.times = test.times, search.times = search.times, config = config, metric = metric, obs.aligned = obs.aligned, ...)
 
   cat('Grid search complete!\n')
 

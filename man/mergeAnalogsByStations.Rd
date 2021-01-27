@@ -7,7 +7,7 @@
 mergeAnalogsByStations(
   files,
   verbose = T,
-  merge_forecasts = T,
+  merge_forecasts = F,
   cores = 1,
   copy_vars = NULL
 )
