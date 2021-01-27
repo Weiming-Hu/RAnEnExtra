@@ -113,6 +113,12 @@ weightSearch <- function(weights, forecasts, observations, test.times, search.ti
 
     # Add verification to weight matrix
     weights <- cbind(weights, verification)
+
+    if (is.function(metric)) {
+      # Rename the function with a generic name
+      metric <- 'metric'
+    }
+
     colnames(weights) <- c(forecasts$ParameterNames, metric)
 
     return(weights)
