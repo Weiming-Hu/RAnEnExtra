@@ -60,7 +60,7 @@ weightSearch <- function(weights, forecasts, observations, test.times, search.ti
     config$weights <- weights[weight.row, ]
 
     # Generate analog
-    AnEn <- generateAnalogs(forecasts, observations, test.times, search.times, config)
+    AnEn <- generateAnalogs.Forecasts(forecasts, observations, test.times, search.times, config)
 
     # Verification
     if (is.function(metric)) {
