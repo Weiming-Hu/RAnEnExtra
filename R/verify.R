@@ -28,8 +28,6 @@
 #' @md
 #' @export
 verify <- function(metrics, verbose = T, ...) {
-  
-  require(RAnEnExtra)
 
   # Currently supported metrics are the followings
   supported.metrics <- c('ThreatScore', 'Brier', 'MAE', 'RMSE', 'CRMSE',
@@ -136,6 +134,8 @@ verify <- function(metrics, verbose = T, ...) {
     cat('The following verification will be carried out:',
         paste(metrics, collapse = ', '), '\n')
   }
+  
+  real_func <- `::`('RAnExExtra', paste('verify', metric, sep = ''))
 
   ret <- list()
   for (metric in metrics) {
@@ -159,7 +159,7 @@ verify <- function(metrics, verbose = T, ...) {
                      paste(names(args.current), collapse = ',')
                      ,']...\n')
     ret[[metric]] <- do.call(
-      what = paste('verify', metric, sep = ''),
+      what = real_func,
       args = args.current, envir = parent.frame())
   }
 
