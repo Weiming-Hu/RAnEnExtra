@@ -135,7 +135,7 @@ verify <- function(metrics, verbose = T, ...) {
         paste(metrics, collapse = ', '), '\n')
   }
   
-  real_func <- `::`('RAnExExtra', paste('verify', metric, sep = ''))
+  real_func <- `::`('RAnEnExtra', paste('verify', metric, sep = ''))
 
   ret <- list()
   for (metric in metrics) {
