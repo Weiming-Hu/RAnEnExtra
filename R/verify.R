@@ -134,8 +134,6 @@ verify <- function(metrics, verbose = T, ...) {
     cat('The following verification will be carried out:',
         paste(metrics, collapse = ', '), '\n')
   }
-  
-  real_func <- `::`('RAnEnExtra', paste('verify', metric, sep = ''))
 
   ret <- list()
   for (metric in metrics) {
@@ -159,7 +157,7 @@ verify <- function(metrics, verbose = T, ...) {
                      paste(names(args.current), collapse = ',')
                      ,']...\n')
     ret[[metric]] <- do.call(
-      what = real_func,
+      what = getExportedValue('RAnEnExtra', paste('verify', metric, sep = '')),
       args = args.current, envir = parent.frame())
   }
 
