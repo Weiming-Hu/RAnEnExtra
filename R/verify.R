@@ -157,7 +157,7 @@ verify <- function(metrics, verbose = T, ...) {
                      paste(names(args.current), collapse = ',')
                      ,']...\n')
     ret[[metric]] <- do.call(
-      what = paste('verify', metric, sep = ''),
+      what = paste('RAnEnExtra::verify', metric, sep = ''),
       args = args.current, envir = parent.frame())
   }
 
