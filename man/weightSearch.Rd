@@ -13,7 +13,7 @@ weightSearch(
   config,
   metric = "RMSE",
   return.best.only = F,
-  combine_weights = T,
+  combine.weights = T,
   ...
 )
 }
@@ -39,7 +39,7 @@ is a 4-dimensional array of shape \verb{[stations, times, lead times, members]}.
 
 \item{return.best.only}{Whether to only return the best combination of weights}
 
-\item{combine_weights}{Whether to combine errors as an extra column to weight matrix. This does not work when \code{metric} is a function that returns multiple values.}
+\item{combine.weights}{Whether to combine errors as an extra column to weight matrix. This does not work when \code{metric} is a function that returns multiple values.}
 
 \item{...}{Extra parameters for metric if it is a function}
 }

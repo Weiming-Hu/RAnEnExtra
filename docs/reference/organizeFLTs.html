@@ -71,7 +71,7 @@ of the verification metrics." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RAnEnExtra</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.13</span>
       </span>
     </div>
 
@@ -121,7 +121,7 @@ it is easy to plot with ggplot. Currently, this function only knows how to organ
 of the verification metrics.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>organizeFLTs</span>(<span class='no'>results</span>, <span class='no'>flts</span>, <span class='kw'>parse_metrics</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>organizeFLTs</span>(<span class='no'>results</span>, <span class='no'>flts</span>, <span class='kw'>parse_metrics</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -137,6 +137,10 @@ of the verification metrics.</p>
     <tr>
       <th>parse_metrics</th>
       <td><p>The metrics to organize into a data frame. Default to all supported metrics.</p></td>
+    </tr>
+    <tr>
+      <th>normalize</th>
+      <td><p>If <code>RankHist</code> is in the <code>parse_metrics</code>, whether to normalize the rank histogram using the mean.</p></td>
     </tr>
     </table>
 

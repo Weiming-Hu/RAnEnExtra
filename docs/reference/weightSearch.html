@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RAnEnExtra</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.13</span>
       </span>
     </div>
 
@@ -125,7 +125,9 @@
   <span class='no'>search.times</span>,
   <span class='no'>config</span>,
   <span class='kw'>metric</span> <span class='kw'>=</span> <span class='st'>"RMSE"</span>,
-  <span class='kw'>return.best.only</span> <span class='kw'>=</span> <span class='no'>F</span>
+  <span class='kw'>return.best.only</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>combine.weights</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='no'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -158,13 +160,23 @@ of rows equal to the number of iterations; if it is a single numeral, it is the 
     </tr>
     <tr>
       <th>metric</th>
-      <td><p>The metric for <code><a href='verify.html'>RAnEnExtra::verify</a></code>. Please note two things: (1) please make sure the member <code>mean</code> exists in the verification
-results because it is used to evaluate different combinations of weights; (2) it is assumed that the metric is an error measurement so that
-the lowest metric is considered the best.</p></td>
+      <td><p>This can either be a function or a metric for <code><a href='verify.html'>RAnEnExtra::verify</a></code>. If it is a metric, please note two things: (1) the member
+<code>mean</code> exists in the verification results because it is used to evaluate different combinations of weights; (2) it is assumed that the
+metric is an error measurement so that the lowest metric is considered the best, when <code>return.best.only = T</code>. If it is a function, the first two arguments are
+<code>obs.aligned</code> and <code>AnEn$analogs</code>. <code>obs.aligned</code> is a 3-dimensional array of shape <code>[stations, times, lead times]</code>, and <code>AnEn$analogs</code>
+is a 4-dimensional array of shape <code>[stations, times, lead times, members]</code>. The return of this function is the error metric.</p></td>
     </tr>
     <tr>
       <th>return.best.only</th>
       <td><p>Whether to only return the best combination of weights</p></td>
+    </tr>
+    <tr>
+      <th>combine.weights</th>
+      <td><p>Whether to combine errors as an extra column to weight matrix. This does not work when <code>metric</code> is a function that returns multiple values.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Extra parameters for metric if it is a function</p></td>
     </tr>
     </table>
 

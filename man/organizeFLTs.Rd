@@ -4,7 +4,7 @@
 \alias{organizeFLTs}
 \title{RAnEnExtra::organizeFLTs}
 \usage{
-organizeFLTs(results, flts, parse_metrics = NULL)
+organizeFLTs(results, flts, parse_metrics = NULL, normalize = F)
 }
 \arguments{
 \item{results}{The results from RAnEnExtra::verify. It should be a list.}
@@ -12,6 +12,8 @@ organizeFLTs(results, flts, parse_metrics = NULL)
 \item{flts}{The forecast lead times to be copied to the data frame.}
 
 \item{parse_metrics}{The metrics to organize into a data frame. Default to all supported metrics.}
+
+\item{normalize}{If \code{RankHist} is in the \code{parse_metrics}, whether to normalize the rank histogram using the mean.}
 }
 \value{
 a data frame or a data table

@@ -23,17 +23,18 @@
 #' @param results The results from RAnEnExtra::verify. It should be a list.
 #' @param flts The forecast lead times to be copied to the data frame.
 #' @param parse_metrics The metrics to organize into a data frame. Default to all supported metrics.
+#' @param normalize If `RankHist` is in the `parse_metrics`, whether to normalize the rank histogram using the mean.
 #'
 #' @return a data frame or a data table
 #'
 #' @md
 #' @export
-organizeFLTs <- function(results, flts, parse_metrics = NULL) {
+organizeFLTs <- function(results, flts, parse_metrics = NULL, normalize = F) {
 
   # I know how to organize the following verification metrics
   known_metrics <- c('Bias', 'Correlation', 'Dispersion', 'MAE',
                      'RMSE', 'Spread', 'SpreadSkill', 'CRMSE',
-                     'CRPS', 'Brier')
+                     'CRPS', 'Brier', 'RankHist')
 
   if (is.null(parse_metrics)) {
     parse_metrics <- known_metrics
@@ -63,7 +64,25 @@ organizeFLTs <- function(results, flts, parse_metrics = NULL) {
       if (metric %in% parse_metrics) {
         if (metric %in% known_metrics) {
 
-          if (metric == 'Brier') {
+          if (metric == 'RankHist') {
+
+            values <- results[[method]][[metric]]$rank
+
+            if (normalize) {
+              values <- values / results[[method]][[metric]]$mean
+            }
+
+            if (use_data_table) {
+              df_single <- data.table::data.table(x = seq(0, 1, length = length(values)),
+                                                  Method = method, Metric = metric, y = values,
+                                                  floor = NA, ceiling = NA)
+            } else {
+              df_single <- data.frame(x = seq(0, 1, length = length(values)),
+                                      Method = method, Metric = metric, y = values,
+                                      floor = NA, ceiling = NA)
+            }
+
+          } else if (metric == 'Brier') {
 
             ##############
             # Parse Brier #
