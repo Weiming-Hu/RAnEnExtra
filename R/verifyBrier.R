@@ -113,19 +113,20 @@ verifyBrier <- function(
     return(NULL)
   }
   
-  # Convert each AnEn ensemble to a probability using the ensemble.func
-  if (!baseline) {
+  # If AnEn is just a baseline deterministic model, convert it accordingly
+  if (baseline) {
+    # The anen.ver is a deterministic baseline model, apply threshold to it
+    stopifnot(dim(anen.ver)[4] == 1)
+    anen.ver <- anen.ver >= threshold
+    dim(anen.ver) <- dim(anen.ver)[-4]
+    
+  } else {
+    # Otherwise, the AnEn should be fed into the ensemble function to be converted
     stopifnot(is.function(ensemble.func))
     stopifnot(dim(anen.ver)[4] > 1)
     
     # The anen.ver is an ensemble, apply ensemble function to it
     anen.ver <- apply(anen.ver, 1:3, ensemble.func, ...)
-    
-  } else {
-    # The anen.ver is a deterministic baseline model, apply threshold to it
-    stopifnot(dim(anen.ver)[4] == 1)
-    anen.ver <- anen.ver >= threshold
-    dim(anen.ver) <- dim(anen.ver)[-4]
   }
   
   # Convert observations to a binary variable using the threshold
